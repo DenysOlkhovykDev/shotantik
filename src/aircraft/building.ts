@@ -137,6 +137,7 @@ export abstract class Building {
     aircraft.hideCraftSigns();
     aircraft.deSelectAllBuildings();
 
+    aircraft.selectBuilding(this);
     this.backgroundDisplay.createSelectShadow(
       this.buildingConfig.boundsRadius + 1,
     );

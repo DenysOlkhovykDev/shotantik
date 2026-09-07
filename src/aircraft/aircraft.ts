@@ -41,11 +41,19 @@ export const buildingMap: Record<string, BuildingClass> = {
   GlassMaker,
 };
 
+interface SelectedBuilding {
+  array: "buildings" | "blueprints";
+  index?: number;
+}
+
 class Aircraft {
   public buildings: Building[] = [];
   public blueprints: Blueprint[] = [];
   public workers: Workers = new Workers();
-  public selectedBuilding?: number;
+  public constructionSource?: number;
+  public selectedBuilding: SelectedBuilding = {
+    array: "buildings",
+  };
 
   public airCraftLayer = new Container();
   public workersLayer = new Container();
@@ -60,8 +68,8 @@ class Aircraft {
     const building = new BuildingClass(x, y);
 
     const from =
-      this.buildings.length > 0 && this.selectedBuilding !== undefined
-        ? this.buildings[this.selectedBuilding]
+      this.buildings.length > 0 && this.constructionSource !== undefined
+        ? this.buildings[this.constructionSource]
         : undefined;
 
     if (from) {
@@ -91,8 +99,8 @@ class Aircraft {
     this.blueprints.push(blueprint);
     this.airCraftLayer.addChild(blueprint.root);
 
-    if (this.buildings.length > 0 && this.selectedBuilding !== undefined) {
-      const from = this.buildings[this.selectedBuilding];
+    if (this.buildings.length > 0 && this.constructionSource !== undefined) {
+      const from = this.buildings[this.constructionSource];
 
       blueprint.orientByBuildDirection(from);
 
@@ -147,9 +155,33 @@ class Aircraft {
     return blueprint;
   }
 
-  public selectBuilding(node: Building) {
-    this.selectedBuilding = this.buildings.indexOf(node);
-    this.showCraftSigns();
+  public setConstuctionSource(node: Building) {
+    this.constructionSource = this.buildings.indexOf(node);
+  }
+
+  public resetConstructionSource() {
+    this.constructionSource = undefined;
+  }
+
+  public selectBuilding(node: Building | Blueprint) {
+    const buildingIndex = this.buildings.indexOf(node as Building);
+
+    if (buildingIndex >= 0) {
+      this.selectedBuilding = {
+        array: "buildings",
+        index: buildingIndex,
+      };
+      return;
+    }
+
+    const blueprintIndex = this.blueprints.indexOf(node as Blueprint);
+
+    if (blueprintIndex >= 0) {
+      this.selectedBuilding = {
+        array: "blueprints",
+        index: blueprintIndex,
+      };
+    }
   }
 
   public deSelectAllBuildings() {
@@ -159,6 +191,22 @@ class Aircraft {
 
     for (const blueprint of this.blueprints) {
       blueprint.backgroundDisplay.removeSelectShadow();
+    }
+
+    this.selectedBuilding.index = undefined;
+  }
+
+  public getSelectedNodeType() {
+    if (
+      this.selectedBuilding.index !== undefined &&
+      this.selectedBuilding.index >= 0
+    ) {
+      if (this.selectedBuilding.array === "buildings") {
+        return aircraft.buildings[this.selectedBuilding.index].buildingType;
+      } else {
+        return aircraft.blueprints[this.selectedBuilding.index]
+          .targetBuildingType;
+      }
     }
   }
 
@@ -206,20 +254,88 @@ class Aircraft {
   }
 
   public deleteBlueprint(blueprint: Blueprint) {
+    const index = this.blueprints.indexOf(blueprint);
+
+    if (index === -1) return;
+
     blueprint.cleanup();
-    let index = -1;
-    for (let i = 0; i < this.blueprints.length; i++) {
-      if (this.blueprints[i] === blueprint) {
-        index = i;
-      }
-    }
+
     for (const link of blueprint.links) {
       link.graphic.destroy();
     }
     blueprint.root.destroy();
 
-    if (index !== -1) {
-      this.blueprints.splice(index, 1);
+    this.blueprints.splice(index, 1);
+
+    if (
+      this.selectedBuilding.array === "blueprints" &&
+      this.selectedBuilding.index === index
+    ) {
+      this.selectedBuilding.index = undefined;
+    } else if (
+      this.selectedBuilding.array === "blueprints" &&
+      this.selectedBuilding.index !== undefined &&
+      this.selectedBuilding.index > index
+    ) {
+      this.selectedBuilding.index--;
+    }
+  }
+
+  public deleteBuilding(building: Building) {
+    const index = this.buildings.indexOf(building);
+
+    if (index === -1) return;
+
+    for (const blueprint of [...this.blueprints]) {
+      if (blueprint.links.some((link) => link.from === building)) {
+        this.deleteBlueprint(blueprint);
+      }
+    }
+
+    for (const link of building.links) {
+      link.graphic.destroy();
+
+      const linkedBuilding = link.from === building ? link.to : link.from;
+      linkedBuilding.links = linkedBuilding.links.filter(
+        (linkedBuildingLink) => linkedBuildingLink !== link,
+      );
+    }
+    building.root.destroy();
+    this.buildings.splice(index, 1);
+
+    if (this.constructionSource === index) {
+      this.resetConstructionSource();
+    } else if (
+      this.constructionSource !== undefined &&
+      this.constructionSource > index
+    ) {
+      this.constructionSource--;
+    }
+
+    if (
+      this.selectedBuilding.array === "buildings" &&
+      this.selectedBuilding.index === index
+    ) {
+      this.selectedBuilding.index = undefined;
+    } else if (
+      this.selectedBuilding.array === "buildings" &&
+      this.selectedBuilding.index !== undefined &&
+      this.selectedBuilding.index > index
+    ) {
+      this.selectedBuilding.index--;
+    }
+  }
+
+  public deleteSelectedNode() {
+    if (
+      this.selectedBuilding.index !== undefined &&
+      this.selectedBuilding.index >= 0
+    ) {
+      if (this.selectedBuilding.array === "buildings") {
+        this.deleteBuilding(aircraft.buildings[this.selectedBuilding.index]);
+      } else {
+        this.deleteBlueprint(aircraft.blueprints[this.selectedBuilding.index]);
+      }
     }
   }
 }

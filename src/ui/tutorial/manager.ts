@@ -29,11 +29,8 @@ export class Tutorials extends Container {
 
   public updateTutorials() {
     if (this.tutorials.length > 0) {
-      this.tutorials[this.currentTutorial].updateTutorial();
-      if (!this.tutorials[this.currentTutorial].isActive) {
-        if (this.currentTutorial < this.tutorials.length - 1) {
-          this.currentTutorial++;
-        }
+      for (let i = 0; i < this.tutorials.length; i++) {
+        this.tutorials[i].updateTutorial();
       }
     }
   }

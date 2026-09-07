@@ -34,7 +34,7 @@ export class Blueprint extends Building {
     x: number,
     y: number,
     targetBuilding: BuildingClass,
-    private targetBuildingType: string,
+    public targetBuildingType: string,
   ) {
     super(x, y, 10, "Blueprint");
 
@@ -290,10 +290,10 @@ export class Blueprint extends Building {
       }
       this.reservedBuildResources = [];
 
-      aircraft.selectBuilding(source);
+      aircraft.setConstuctionSource(source);
       aircraft.addBuilding(this.x, this.y, this.targetBuildingType);
       aircraft.deleteBlueprint(this);
-      constructionManager.hideButton();
+      aircraft.resetConstructionSource();
     }
   }
 

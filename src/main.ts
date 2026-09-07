@@ -12,6 +12,7 @@ import { constructionManager } from "@construction/manager";
 import { gameScreen } from "./game-config";
 import { compasses } from "./ui/compass/manager";
 import { tutorials } from "./ui/tutorial/manager";
+import { header } from "./ui/header/manager";
 
 export const app = new Application();
 
@@ -41,6 +42,7 @@ UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
 constructionManager.initialize();
 UIcontainer.addChild(constructionManager);
+UIcontainer.addChild(header);
 UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
 
@@ -63,10 +65,13 @@ app.stage.on("pointerdown", (event) => {
     constructionManager.setBuildingType(undefined);
   }
 
+  aircraft.resetConstructionSource();
   aircraft.deSelectAllBuildings();
 
   constructionManager.hideButton();
   constructionManager.hideMenu();
+  constructionManager.updateDisplayBuildingType();
+
   aircraft.hideCraftSigns();
   joystick.hide();
 });
@@ -91,6 +96,8 @@ app.ticker.add((delta) => {
     }
 
     aircraft.movingBlueprints(deltaTime);
+
+    header.updateHeader();
 
     compasses.updateCompasses();
 

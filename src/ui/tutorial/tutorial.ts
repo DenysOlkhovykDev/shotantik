@@ -223,7 +223,7 @@ export class Tutorial extends Container {
   }
 
   public updateTutorial() {
-    if (this.findTarget !== undefined) {
+    if (this.findTarget !== undefined && this.isActive) {
       const { x: x, y: y } = this.findTarget();
 
       this.pointerX = x;
