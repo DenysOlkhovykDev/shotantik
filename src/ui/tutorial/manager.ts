@@ -4,7 +4,7 @@ import { Tutorial } from "./tutorial";
 export class Tutorials extends Container {
   tutorials: Tutorial[] = [];
 
-  i = 0;
+  currentTutorial = 0;
   public addTutorial(
     text: string,
     showCondition: Function,
@@ -29,10 +29,10 @@ export class Tutorials extends Container {
 
   public updateTutorials() {
     if (this.tutorials.length > 0) {
-      this.tutorials[this.i].updateTutorial();
-      if (!this.tutorials[this.i].isActive) {
-        if (this.i < this.tutorials.length - 1) {
-          this.i++;
+      this.tutorials[this.currentTutorial].updateTutorial();
+      if (!this.tutorials[this.currentTutorial].isActive) {
+        if (this.currentTutorial < this.tutorials.length - 1) {
+          this.currentTutorial++;
         }
       }
     }

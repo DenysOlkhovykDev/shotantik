@@ -6,16 +6,21 @@ export class Tutorial extends Container {
   isActive = true;
 
   overlay = new Graphics();
-  radius = 50;
+
+  tutorialParam = {
+    holeRadius: 50,
+    holeMessageSpacing: 10,
+    messagePadding: 10,
+    okButtonHeight: 30,
+  };
 
   messageContainer = new Container();
-  messageBackGround = new Graphics();
-  fontSize = 32;
-  message = new Text({
+  messageBackground = new Graphics();
+  messageText = new Text({
     text: "",
     style: new TextStyle({
       fill: "#000000",
-      fontSize: this.fontSize,
+      fontSize: 32,
     }),
   });
 
@@ -46,32 +51,13 @@ export class Tutorial extends Container {
 
     this.addChild(this.overlay, this.messageContainer);
 
-    if (this.needOkButton) {
-      this.messageContainer.addChild(
-        this.messageBackGround,
-        this.message,
-        this.okButton,
-        this.okText,
-      );
-    } else {
-      this.messageContainer.addChild(this.messageBackGround, this.message);
-    }
-
-    this.okButton.eventMode = "static";
-    this.okText.eventMode = "none";
-
-    this.okButton.on("pointerdown", (event) => {
-      this.isActive = false;
-      event.stopPropagation();
-    });
-
     this.draw();
 
     this.visible = false;
   }
 
   private draw() {
-    this.message.text = this.text;
+    this.messageText.text = this.text;
 
     this.drawOverlay();
     this.drawMessage();
@@ -80,65 +66,159 @@ export class Tutorial extends Container {
   private drawOverlay() {
     this.overlay.clear();
 
-    this.overlay
-      .rect(0, 0, gameScreen.width, gameScreen.height)
-      .fill({
-        color: "#000000",
-        alpha: 0.15,
-      })
-      .circle(this.pointerX!, this.pointerY!, this.radius)
-      .cut();
+    if (this.pointerX !== undefined && this.pointerY !== undefined) {
+      this.overlay
+        .rect(0, 0, gameScreen.width, gameScreen.height)
+        .fill({
+          color: "#000000",
+          alpha: 0.15,
+        })
+        .circle(this.pointerX, this.pointerY, this.tutorialParam.holeRadius)
+        .cut();
+
+      if (import.meta.env.VITE_IS_DEBUG === "true") {
+        this.overlay
+          .moveTo(this.pointerX, this.pointerY - this.tutorialParam.holeRadius)
+          .lineTo(
+            this.pointerX + 100,
+            this.pointerY - this.tutorialParam.holeRadius,
+          )
+          .stroke({
+            width: 4,
+            color: "#ff0000",
+          });
+
+        this.overlay
+          .moveTo(this.pointerX, this.pointerY)
+          .lineTo(this.pointerX + 100, this.pointerY)
+          .stroke({
+            width: 4,
+            color: "#ff0000",
+          });
+
+        this.overlay
+          .moveTo(this.pointerX, this.pointerY + this.tutorialParam.holeRadius)
+          .lineTo(
+            this.pointerX + 100,
+            this.pointerY + this.tutorialParam.holeRadius,
+          )
+          .stroke({
+            width: 4,
+            color: "#ff0000",
+          });
+      }
+    }
   }
 
   private drawMessage() {
-    const width = this.message.width;
-    const height = this.message.height;
+    this.drawMessageBackGround();
 
-    const messageX = this.pointerX! + this.radius + 20;
-    const messageY = this.pointerY! - this.fontSize / 2;
+    this.drawMessageText();
 
-    this.message.position.set(messageX, messageY);
+    this.drawMessageButton();
+  }
 
-    this.messageBackGround.clear();
+  private drawMessageBackGround() {
+    this.messageBackground.clear();
 
-    let messageBackGroundWidth = 20;
+    if (this.pointerX !== undefined && this.pointerY !== undefined) {
+      const backgroundX =
+        this.pointerX +
+        this.tutorialParam.holeRadius +
+        this.tutorialParam.holeMessageSpacing;
+      const backgroundY =
+        this.pointerY -
+        this.messageText.height / 2 -
+        this.tutorialParam.messagePadding -
+        (this.needOkButton ? this.tutorialParam.okButtonHeight / 2 : 0);
 
-    if (this.needOkButton) {
-      messageBackGroundWidth = 60;
+      const backgroundWidth =
+        this.messageText.width + this.tutorialParam.messagePadding * 2;
+      const backgroundHeight =
+        this.messageText.height +
+        this.tutorialParam.messagePadding * 2 +
+        (this.needOkButton ? this.tutorialParam.okButtonHeight : 0);
+
+      this.messageBackground
+        .roundRect(
+          backgroundX,
+          backgroundY,
+          backgroundWidth,
+          backgroundHeight,
+          20,
+        )
+        .fill("#cfcbc8")
+        .stroke({
+          width: 4,
+          color: "#000000",
+        });
+
+      this.messageBackground.eventMode = "none";
+      this.messageContainer.addChild(this.messageBackground);
     }
+  }
 
-    this.messageBackGround
-      .roundRect(
-        this.pointerX! + this.radius + 10,
-        this.pointerY! - this.fontSize / 1.3,
-        width + messageBackGroundWidth,
-        height + 20,
-        10,
-      )
-      .fill("#cfcbc8")
-      .stroke({
-        width: 4,
-        color: "#000000",
-      });
+  private drawMessageText() {
+    if (this.pointerX !== undefined && this.pointerY !== undefined) {
+      const textX =
+        this.pointerX +
+        this.tutorialParam.holeRadius +
+        this.tutorialParam.holeMessageSpacing +
+        this.tutorialParam.messagePadding;
+      const textY =
+        this.pointerY -
+        this.messageText.height / 2 -
+        (this.needOkButton ? this.tutorialParam.okButtonHeight / 2 : 0);
 
-    this.messageBackGround.eventMode = "none";
-    this.message.eventMode = "none";
+      this.messageText.position.set(textX, textY);
+      this.messageText.eventMode = "none";
+      this.messageContainer.addChild(this.messageText);
+    }
+  }
 
-    const buttonX = this.pointerX! + this.radius + 23 + width;
-    const buttonY = this.pointerY! - this.fontSize * 1.4 + height;
-
+  private drawMessageButton() {
     this.okButton.clear();
 
-    if (this.needOkButton) {
+    if (
+      this.pointerX !== undefined &&
+      this.pointerY !== undefined &&
+      this.needOkButton
+    ) {
+      const buttonX =
+        this.pointerX +
+        this.tutorialParam.holeRadius +
+        this.tutorialParam.holeMessageSpacing +
+        this.tutorialParam.messagePadding;
+      const buttonY =
+        this.pointerY +
+        this.messageText.height / 2 +
+        this.tutorialParam.messagePadding * 2 -
+        this.tutorialParam.okButtonHeight;
+
+      const buttonWidth = this.messageText.width;
+      const buttonHeight = this.tutorialParam.okButtonHeight - 5;
+
       this.okButton
-        .roundRect(buttonX, buttonY, 40, 25, 10)
+        .roundRect(buttonX, buttonY, buttonWidth, buttonHeight, 10)
         .fill("#a6a4a3")
         .stroke({
           width: 4,
           color: "#000000",
         });
 
-      this.okText.position.set(buttonX + 9, buttonY);
+      this.okText.position.set(
+        buttonX + buttonWidth / 2 - this.okText.width / 2,
+        buttonY,
+      );
+
+      this.okButton.eventMode = "static";
+      this.okText.eventMode = "none";
+      this.okButton.on("pointerdown", (event) => {
+        this.isActive = false;
+        event.stopPropagation();
+      });
+
+      this.messageContainer.addChild(this.okButton, this.okText);
     }
   }
 
