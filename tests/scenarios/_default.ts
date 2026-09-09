@@ -1,10 +1,22 @@
 import { Scenario } from "@test-situations/test-situation";
-import { constructionManager } from "@construction/manager";
-import { aircraft } from "@aircraft/aircraft";
-import { getDistance } from "@utils/basic-geometry";
 import { gameScreen } from "../../src/game-config";
-import { joystick } from "@joystick/joystick";
-import { getWorldCoordinates } from "../../src/main";
+
+import {
+  findFirstBlueprint,
+  findFirstBuilding,
+  findFirstBuildingByName,
+  hasClickedOnConstructionMenuButton,
+  hasClickedOnEngine,
+  hasClickedOnFirstBlueprint,
+  hasClickedOnPlatform,
+  hasClickedOnPlatformAfterPlacingBlueprint,
+  hasClickedOnPlatformNearTarget,
+  hasDestroyedOneOfImportantBuildings,
+  hasEngineBuilded,
+  hasPlacedSecondBlueprint,
+  hasSelectedBuildingFromConstructionMenu,
+  isNearTarget,
+} from "@utils/tutorial-conditions";
 
 export const defaultScenario: Scenario = {
   aircraft: {
@@ -36,73 +48,34 @@ export const defaultScenario: Scenario = {
         text: `This is the
 blueprint 
 of Engine`,
-        showCondition: () => aircraft.blueprints.length > 0,
-        hideCondition: () =>
-          aircraft.blueprints.length > 0 &&
-          aircraft.blueprints[0].recipeSign.children.length > 0,
+        showCondition: () => true,
+        hideCondition: () => hasClickedOnFirstBlueprint(),
         needOkButton: false,
-        findTarget: () => {
-          const blueprint = aircraft.blueprints[0];
-
-          if (!blueprint) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-          return {
-            x: blueprint.x,
-            y: blueprint.y,
-          };
-        },
+        findTarget: () => findFirstBlueprint(),
       },
       {
         text: `This is the
 Platform.
 You can build
 from it`,
-        showCondition: () => {
-          return (
-            aircraft.blueprints.length > 0 &&
-            aircraft.blueprints[0].recipeSign.children.length > 0
-          );
-        },
-        hideCondition: () => constructionManager.isButtonVisible(),
+        showCondition: () => hasClickedOnFirstBlueprint(),
+        hideCondition: () => hasClickedOnPlatform(),
         needOkButton: false,
-        findTarget: () => {
-          const building = aircraft.buildings[0];
-
-          if (!building) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-
-          return {
-            x: building.x,
-            y: building.y,
-          };
-        },
+        findTarget: () => findFirstBuilding(),
       },
       {
         text: `Click to open
 building menu`,
-        showCondition: () => {
-          return constructionManager.isButtonVisible();
-        },
-        hideCondition: () => constructionManager.isMenuVisible(),
+        showCondition: () => hasClickedOnPlatform(),
+        hideCondition: () => hasClickedOnConstructionMenuButton(),
         needOkButton: false,
         x: gameScreen.width / 2,
         y: gameScreen.height - gameScreen.height / 20,
       },
       {
         text: "Select the Mixer",
-        showCondition: () => {
-          return constructionManager.isMenuVisible();
-        },
-        hideCondition: () =>
-          constructionManager.getBuildingType() !== undefined,
+        showCondition: () => hasClickedOnConstructionMenuButton(),
+        hideCondition: () => hasSelectedBuildingFromConstructionMenu(),
         needOkButton: false,
         x: 360,
         y: 1070,
@@ -110,10 +83,8 @@ building menu`,
       {
         text: `Place it 
 here`,
-        showCondition: () => {
-          return constructionManager.getBuildingType() !== undefined;
-        },
-        hideCondition: () => aircraft.blueprints.length > 1,
+        showCondition: () => hasSelectedBuildingFromConstructionMenu(),
+        hideCondition: () => hasPlacedSecondBlueprint(),
         needOkButton: false,
         x: 475,
         y: 675,
@@ -122,147 +93,42 @@ here`,
         text: `Also build
 Assembler  
 and Grinder`,
-        showCondition: () => {
-          return aircraft.blueprints.length > 1;
-        },
-        hideCondition: () =>
-          constructionManager.isButtonVisible() &&
-          aircraft.blueprints.length > 1,
+        showCondition: () => hasPlacedSecondBlueprint(),
+        hideCondition: () => hasClickedOnPlatformAfterPlacingBlueprint(),
         needOkButton: true,
-        findTarget: () => {
-          const building = aircraft.buildings[0];
-
-          if (!building) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-
-          return {
-            x: building.x,
-            y: building.y,
-          };
-        },
+        findTarget: () => findFirstBuilding(),
       },
       {
         text: `Use Engine
 to follow the
 green compass 
 arrow`,
-        showCondition: () => {
-          const engines = aircraft.buildings.filter(
-            (b) => b.buildingType === "Engine",
-          );
-
-          return engines.length > 0;
-        },
-        hideCondition: () => joystick.isVisible(),
+        showCondition: () => hasEngineBuilded(),
+        hideCondition: () => hasClickedOnEngine(),
         needOkButton: false,
-        findTarget: () => {
-          const engines = aircraft.buildings.filter(
-            (b) => b.buildingType === "Engine",
-          );
-
-          if (engines.length === 0) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-
-          return {
-            x: engines[0].x,
-            y: engines[0].y,
-          };
-        },
+        findTarget: () => findFirstBuildingByName("Engine"),
       },
       {
         text: `You Win`,
-        showCondition: () => {
-          return (
-            getDistance(
-              getWorldCoordinates().x,
-              getWorldCoordinates().y,
-              1000,
-              100,
-            ) < 50
-          );
-        },
-        hideCondition: () =>
-          getDistance(
-            getWorldCoordinates().x,
-            getWorldCoordinates().y,
-            1000,
-            100,
-          ) < 50 && constructionManager.isButtonVisible(),
+        showCondition: () => isNearTarget(),
+        hideCondition: () => hasClickedOnPlatformNearTarget(),
         needOkButton: true,
-        findTarget: () => {
-          const building = aircraft.buildings[0];
-
-          if (!building) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-
-          return {
-            x: building.x,
-            y: building.y,
-          };
-        },
+        findTarget: () => findFirstBuilding(),
       },
       {
         text: `You can't
 complete tutorial.
 Try again`,
-        showCondition: () => {
-          const farms = aircraft.buildings.filter(
-            (b) => b.buildingType === "Farm",
-          );
-          const extractors = aircraft.buildings.filter(
-            (b) => b.buildingType === "Extractor",
-          );
-          const collectors = aircraft.buildings.filter(
-            (b) => b.buildingType === "Collector",
-          );
-
-          return (
-            farms.length === 0 ||
-            extractors.length === 0 ||
-            collectors.length === 0
-          );
-        },
+        showCondition: () => hasDestroyedOneOfImportantBuildings(),
         hideCondition: () => false,
         needOkButton: true,
-        findTarget: () => {
-          const building = aircraft.buildings[0];
-
-          if (!building) {
-            return {
-              x: 0,
-              y: 0,
-            };
-          }
-
-          return {
-            x: building.x,
-            y: building.y,
-          };
-        },
+        findTarget: () => findFirstBuilding(),
       },
     ],
 
     compasses: [
       {
-        condition: () => {
-          const engines = aircraft.buildings.filter(
-            (b) => b.buildingType === "Engine",
-          );
-
-          return engines.length > 0;
-        },
+        condition: () => hasEngineBuilded(),
         x: 1000,
         y: 100,
       },
