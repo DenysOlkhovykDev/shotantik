@@ -44,6 +44,15 @@ export class Farm extends Building {
     movingSpeed: 0.05,
     maxAmplitude: 3,
     kelpTime: 0,
+    trunksColor: "#34612c",
+    leavesColor: "#559c48",
+  };
+
+  buildingParams = {
+    groundRingColor: "#a3791f",
+    baseColor: "#b0ca75",
+    plantCenterColor: "#77c06a",
+    plantLeavesColor: "#67a75c",
   };
 
   private kelpLeavesPoints: {
@@ -84,13 +93,13 @@ export class Farm extends Building {
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize,
-      "#a3791f",
+      this.buildingParams.groundRingColor,
       true,
     );
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize - 2,
-      "#b0ca75",
+      this.buildingParams.baseColor,
       false,
     );
 
@@ -138,7 +147,11 @@ export class Farm extends Building {
       baseGraphics
         .moveTo(line.startX, line.startY)
         .lineTo(line.endX, line.endY)
-        .stroke({ width: 4, color: "#34612c", cap: "round" });
+        .stroke({
+          width: 4,
+          color: this.kelpsParams.trunksColor,
+          cap: "round",
+        });
     }
   }
 
@@ -146,7 +159,7 @@ export class Farm extends Building {
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize - 18,
-      "#77c06a",
+      this.buildingParams.plantCenterColor,
       false,
     );
 
@@ -157,7 +170,7 @@ export class Farm extends Building {
         Farm.buildingConfig.baseGraphicalSize - 20,
       );
 
-      baseGraphics.circle(x1, y1, 8).fill("#67a75c");
+      baseGraphics.circle(x1, y1, 8).fill(this.buildingParams.plantLeavesColor);
 
       const { x: x2, y: y2 } = getRadialPoint(
         i * 5 + 1,
@@ -165,14 +178,14 @@ export class Farm extends Building {
         Farm.buildingConfig.baseGraphicalSize - 20,
       );
 
-      baseGraphics.circle(x2, y2, 8).fill("#67a75c");
+      baseGraphics.circle(x2, y2, 8).fill(this.buildingParams.plantLeavesColor);
 
       baseGraphics
         .moveTo(0, 0)
         .lineTo(x1, y1)
         .lineTo(x2, y2)
         .closePath()
-        .fill("#67a75c");
+        .fill(this.buildingParams.plantLeavesColor);
     }
   }
 
@@ -197,7 +210,7 @@ export class Farm extends Building {
 
       this.kelpLeavesGraphics[i].stroke({
         width: this.kelpsParams.leavesWidth,
-        color: "#559c48",
+        color: this.kelpsParams.leavesColor,
         cap: "round",
         join: "round",
       });

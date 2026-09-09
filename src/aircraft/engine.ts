@@ -48,6 +48,8 @@ export class Engine extends Building {
   propellerParams = {
     amount: 3,
     size: 7,
+    strokeColor: "#000000",
+    wingColor: "#a7a7a7",
     rotationSpeed: 0.035,
   };
 
@@ -59,9 +61,15 @@ export class Engine extends Building {
       Engine.buildingConfig.baseGraphicalSize - 10,
       Engine.buildingConfig.baseGraphicalSize - 5,
     ],
+    color: "#a7a7a7",
+  };
+
+  buildingParams = {
+    baseColor: "#c9c9c9",
   };
 
   particles: Particle[] = [];
+  particlesColor = "#000000";
   amountOfParticles: number = 4;
 
   constructor(x: number, y: number) {
@@ -87,7 +95,7 @@ export class Engine extends Building {
     this.contentContainer.addChild(base);
 
     for (let i = 0; i < this.amountOfParticles; i++) {
-      const particle = new Graphics().circle(0, 0, 5).fill("#000000");
+      const particle = new Graphics().circle(0, 0, 5).fill(this.particlesColor);
 
       this.particles.push({
         gfx: particle,
@@ -115,14 +123,16 @@ export class Engine extends Building {
         Engine.buildingConfig.baseGraphicalSize + this.propellerParams.size,
       );
 
-      this.propellerGraphics
-        .moveTo(x1, y1)
-        .lineTo(x2, y2)
-        .stroke({ width: 14, color: "#000000", cap: "round" });
-      this.propellerGraphics
-        .moveTo(x1, y1)
-        .lineTo(x2, y2)
-        .stroke({ width: 10, color: "#a7a7a7", cap: "round" });
+      this.propellerGraphics.moveTo(x1, y1).lineTo(x2, y2).stroke({
+        width: 14,
+        color: this.propellerParams.strokeColor,
+        cap: "round",
+      });
+      this.propellerGraphics.moveTo(x1, y1).lineTo(x2, y2).stroke({
+        width: 10,
+        color: this.propellerParams.wingColor,
+        cap: "round",
+      });
     }
     this.contentContainer.addChild(this.propellerGraphics);
   }
@@ -135,7 +145,7 @@ export class Engine extends Building {
     makeBasicCircle(
       baseGraphics,
       Engine.buildingConfig.baseGraphicalSize,
-      "#c9c9c9",
+      this.buildingParams.baseColor,
       true,
     );
 
@@ -145,7 +155,7 @@ export class Engine extends Building {
   }
 
   private makeDecorativePropellerBlades(baseGraphics: Graphics) {
-    baseGraphics.circle(0, 0, 3).fill("#a7a7a7");
+    baseGraphics.circle(0, 0, 3).fill(this.decoPropellerParams.color);
 
     for (let i = 0; i < this.decoPropellerParams.amount; i++) {
       const { x: x1, y: y1 } = getRadialPoint(
@@ -162,7 +172,7 @@ export class Engine extends Building {
 
       baseGraphics.moveTo(x1, y1).lineTo(x2, y2);
 
-      baseGraphics.stroke({ width: 6, color: "#a7a7a7" });
+      baseGraphics.stroke({ width: 6, color: this.decoPropellerParams.color });
 
       const { angle } = getRadialPoint(i, this.decoPropellerParams.amount, 1);
 
@@ -183,7 +193,10 @@ export class Engine extends Building {
           angle,
         );
 
-        baseGraphics.stroke({ width: j + 1, color: "#a7a7a7" });
+        baseGraphics.stroke({
+          width: j + 1,
+          color: this.decoPropellerParams.color,
+        });
       }
     }
   }

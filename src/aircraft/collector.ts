@@ -41,7 +41,14 @@ export class Collector extends Building {
     amount: 3,
     sizes: [6.5, 12, 12],
     angleOffsets: { small: 1.05, medium: 0.5 },
+    color: "#173b67",
     rotationSpeed: 0.005,
+  };
+
+  buildingParams = {
+    baseColor: "#a8d0db",
+    lineColors: "#6ba6de",
+    circlesColors: "#81bcf3",
   };
 
   constructor(x: number, y: number) {
@@ -114,7 +121,7 @@ export class Collector extends Building {
           medium.angle - this.gridsParams.angleOffsets.medium,
           true,
         )
-        .stroke({ width: 3, color: "#173b67", cap: "round" });
+        .stroke({ width: 3, color: this.gridsParams.color, cap: "round" });
     }
     this.contentContainer.addChild(this.gridsGraphics);
   }
@@ -127,7 +134,7 @@ export class Collector extends Building {
     makeBasicCircle(
       baseGraphics,
       Collector.buildingConfig.baseGraphicalSize,
-      "#a8d0db",
+      this.buildingParams.baseColor,
       true,
     );
 
@@ -146,10 +153,16 @@ export class Collector extends Building {
       .lineTo(points[1].x, points[1].y)
       .lineTo(points[2].x, points[2].y)
       .closePath();
-    baseGraphics.stroke({ width: 8, color: "#6ba6de", cap: "round" });
+    baseGraphics.stroke({
+      width: 8,
+      color: this.buildingParams.lineColors,
+      cap: "round",
+    });
 
     for (let i = 0; i < 3; i++) {
-      baseGraphics.circle(points[i].x, points[i].y, 12).fill("#81bcf3");
+      baseGraphics
+        .circle(points[i].x, points[i].y, 12)
+        .fill(this.buildingParams.circlesColors);
     }
 
     Collector.baseTexture = generateTextureFromOrigin(baseGraphics);

@@ -45,9 +45,15 @@ export class Mixer extends Building {
     amount: 8,
     size: 5,
     rotationSpeed: 0.05,
+    color: "#861e38",
+    stroke: "#000000",
   };
 
-  amountOfDecorativeCircles: number = 6;
+  buildingParams = {
+    baseColor: "#cc92c3",
+    decorativeCirclesColor: "#b762ac",
+    amountOfDecorativeCircles: 6,
+  };
 
   constructor(x: number, y: number) {
     super(x, y, "Mixer");
@@ -88,8 +94,8 @@ export class Mixer extends Building {
         this.satelitesGraphics[i]
           .moveTo(x, y)
           .circle(x, y, this.satelitesParams.size)
-          .fill("#861e38")
-          .stroke({ width: 2, color: "#000000" });
+          .fill(this.satelitesParams.color)
+          .stroke({ width: 2, color: this.satelitesParams.stroke });
       }
 
       this.contentContainer.addChild(this.satelitesGraphics[i]);
@@ -104,7 +110,7 @@ export class Mixer extends Building {
     makeBasicCircle(
       baseGraphics,
       Mixer.buildingConfig.baseGraphicalSize,
-      "#cc92c3",
+      this.buildingParams.baseColor,
       true,
     );
 
@@ -114,26 +120,32 @@ export class Mixer extends Building {
   }
 
   private makeDecorativeCircles(baseGraphics: Graphics) {
-    baseGraphics.circle(0, 0, 8).fill("#b762ac");
+    baseGraphics
+      .circle(0, 0, 8)
+      .fill(this.buildingParams.decorativeCirclesColor);
 
-    for (let i = 0; i < this.amountOfDecorativeCircles; i++) {
+    for (let i = 0; i < this.buildingParams.amountOfDecorativeCircles; i++) {
       const { x, y } = getRadialPoint(
         i * 2 - 1,
-        this.amountOfDecorativeCircles * 2,
+        this.buildingParams.amountOfDecorativeCircles * 2,
         Mixer.buildingConfig.baseGraphicalSize - 24,
       );
 
-      baseGraphics.circle(x, y, 6).fill("#b762ac");
+      baseGraphics
+        .circle(x, y, 6)
+        .fill(this.buildingParams.decorativeCirclesColor);
     }
 
-    for (let i = 0; i < this.amountOfDecorativeCircles; i++) {
+    for (let i = 0; i < this.buildingParams.amountOfDecorativeCircles; i++) {
       const { x, y } = getRadialPoint(
         i,
-        this.amountOfDecorativeCircles,
+        this.buildingParams.amountOfDecorativeCircles,
         Mixer.buildingConfig.baseGraphicalSize - 12,
       );
 
-      baseGraphics.circle(x, y, 8).fill("#b762ac");
+      baseGraphics
+        .circle(x, y, 8)
+        .fill(this.buildingParams.decorativeCirclesColor);
     }
   }
 
