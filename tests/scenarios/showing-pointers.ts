@@ -1,8 +1,8 @@
-import { aircraft } from "@aircraft/aircraft";
-import { getDistance } from "@utils/basic-geometry";
-import { getWorldCoordinates } from "../../src/main";
 import { Scenario } from "@test-situations/test-situation";
-import { gameScreen } from "../../src/game-config";
+import {
+  findFirstBlueprint,
+  hasPlacedFirstBlueprint,
+} from "@utils/tutorial-conditions";
 
 export const showingPointers: Scenario = {
   aircraft: {
@@ -20,21 +20,10 @@ export const showingPointers: Scenario = {
     tutorials: [
       {
         text: `Hello world`,
-        showCondition: () => aircraft.blueprints.length > 0,
+        showCondition: () => hasPlacedFirstBlueprint(),
         hideCondition: () => false,
         needOkButton: true,
-        findTarget: () => {
-          const blueprint = aircraft.blueprints[0];
-
-          if (!blueprint) {
-            return;
-          }
-
-          return {
-            x: blueprint.x,
-            y: blueprint.y,
-          };
-        },
+        findTarget: () => findFirstBlueprint(),
       },
     ],
 
