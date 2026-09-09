@@ -11,6 +11,8 @@ export class Mixer extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
+    inventorySize: 4,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 45,
 
@@ -48,7 +50,7 @@ export class Mixer extends Building {
   amountOfDecorativeCircles: number = 6;
 
   constructor(x: number, y: number) {
-    super(x, y, 4, "Mixer");
+    super(x, y, "Mixer");
     this.draw();
 
     this.priorityForTasks = 5;

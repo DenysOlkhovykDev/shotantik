@@ -11,6 +11,8 @@ export class GlassMaker extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 12,
 
+    inventorySize: 10,
+
     boundsCenter: { x: 15, y: 0 },
     boundsRadius: 35,
 
@@ -27,7 +29,7 @@ export class GlassMaker extends Building {
   ];
 
   constructor(x: number, y: number) {
-    super(x, y, 10, "GlassMaker");
+    super(x, y, "GlassMaker");
     this.draw();
   }
 

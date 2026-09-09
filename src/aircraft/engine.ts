@@ -22,6 +22,8 @@ export class Engine extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 12,
 
+    inventorySize: 1,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 27,
 
@@ -63,7 +65,7 @@ export class Engine extends Building {
   amountOfParticles: number = 4;
 
   constructor(x: number, y: number) {
-    super(x, y, 1, "Engine");
+    super(x, y, "Engine");
     this.draw();
   }
 

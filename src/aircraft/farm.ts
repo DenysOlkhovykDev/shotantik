@@ -11,6 +11,8 @@ export class Farm extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
+    inventorySize: 5,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 43,
 
@@ -52,7 +54,7 @@ export class Farm extends Building {
   }[] = [];
 
   constructor(x: number, y: number) {
-    super(x, y, 5, "Farm");
+    super(x, y, "Farm");
     this.draw();
 
     this.priorityForTasks = 5;

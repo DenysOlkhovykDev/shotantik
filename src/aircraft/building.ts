@@ -25,6 +25,8 @@ export interface BuildingConfig {
 
   storageRadius: number;
 
+  inventorySize: number;
+
   boundsCenter: {
     x: number;
     y: number;
@@ -88,7 +90,6 @@ export abstract class Building {
   constructor(
     public x: number,
     public y: number,
-    public inventorySize: number,
     public buildingType: string,
   ) {
     this.initEvents();
@@ -99,7 +100,7 @@ export abstract class Building {
     this.geometry = new GeometryCalulator(this);
     this.craftingProcessor = new CraftingProcessor(this);
     this.resourceStorage = new ResourceStorage(
-      this.inventorySize,
+      this.buildingConfig.inventorySize,
       this.buildingConfig.storageRadius,
     );
     this.taskManager = new TaskManager(this);
