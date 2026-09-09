@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => ({
       "@roads": path.resolve(__dirname, "src/roads"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@test-situations": path.resolve(__dirname, "src/test-situations"),
+      "@test-scenarios": path.resolve(__dirname, "tests/scenarios"),
     },
   },
 }));
