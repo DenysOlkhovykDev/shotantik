@@ -17,6 +17,7 @@
       "@roads/*": ["./src/roads/*"],
       "@utils/*": ["./src/utils/*"],
       "@test-situations/*": ["./src/test-situations/*"],
+      "@test-scenarios/*": ["./tests/scenarios/*"],
     }
   }
 }
