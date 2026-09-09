@@ -36,12 +36,15 @@ export class House extends Building {
     totalAmount: 3,
     currentAmount: 3,
     angleOffset: Math.PI / 4,
+    color: "#000000",
   };
 
   buildingParams = {
     changeSizeDelay: 300,
     isGrowing: true,
     aircraftize: 1,
+    baseColor: "#72ac4a",
+    centerColor: "#5b8937",
   };
 
   constructor(x: number, y: number) {
@@ -54,13 +57,7 @@ export class House extends Building {
       House.buildingConfig.baseGraphicalSize,
     );
 
-    this.makeAntennas(
-      this.antennasGraphics,
-      this.antennasParams.angleOffset,
-      House.buildingConfig.baseGraphicalSize,
-      this.antennasParams.totalAmount,
-      this.antennasParams.currentAmount,
-    );
+    this.makeAntennas();
 
     this.createBaseTexture();
 
@@ -68,37 +65,29 @@ export class House extends Building {
     this.contentContainer.addChild(base);
   }
 
-  private makeAntennas(
-    antennasGraphics: Graphics[],
-    angleOffset: number,
-    baseRadius: number,
-    totalAmount: number,
-    currentAmount?: number,
-  ) {
-    const amount = currentAmount ? currentAmount : totalAmount;
+  private makeAntennas() {
+    for (let i = 0; i < this.antennasParams.currentAmount; i++) {
+      this.antennasGraphics[i] = new Graphics();
 
-    for (let i = 0; i < amount; i++) {
-      antennasGraphics[i] = new Graphics();
+      const { angle } = getRadialPoint(i, this.antennasParams.totalAmount, 1);
 
-      const { angle } = getRadialPoint(i, totalAmount, 1);
+      const cos = Math.cos(angle + this.antennasParams.angleOffset);
+      const sin = Math.sin(angle + this.antennasParams.angleOffset);
 
-      const cos = Math.cos(angle + angleOffset);
-      const sin = Math.sin(angle + angleOffset);
+      const x1 = cos * (House.buildingConfig.baseGraphicalSize - 5);
+      const y1 = sin * (House.buildingConfig.baseGraphicalSize - 5);
 
-      const x1 = cos * (baseRadius - 5);
-      const y1 = sin * (baseRadius - 5);
+      const x2 = cos * (House.buildingConfig.baseGraphicalSize + 18);
+      const y2 = sin * (House.buildingConfig.baseGraphicalSize + 18);
 
-      const x2 = cos * (baseRadius + 18);
-      const y2 = sin * (baseRadius + 18);
-
-      antennasGraphics[i]
+      this.antennasGraphics[i]
         .moveTo(x1, y1)
         .lineTo(x2, y2)
-        .stroke({ width: 4, color: "#000000" })
+        .stroke({ width: 4, color: this.antennasParams.color })
         .circle(x2, y2, 4)
-        .fill("#000000");
+        .fill(this.antennasParams.color);
 
-      this.contentContainer.addChild(antennasGraphics[i]);
+      this.contentContainer.addChild(this.antennasGraphics[i]);
     }
   }
 
@@ -110,14 +99,14 @@ export class House extends Building {
     makeBasicCircle(
       baseGraphics,
       House.buildingConfig.baseGraphicalSize,
-      "#72ac4a",
+      this.buildingParams.baseColor,
       true,
     );
 
     makeBasicCircle(
       baseGraphics,
       House.buildingConfig.baseGraphicalSize - 18,
-      "#5b8937",
+      this.buildingParams.centerColor,
       false,
     );
 

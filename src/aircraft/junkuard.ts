@@ -39,7 +39,12 @@ export class Junkuard extends Building {
   // ├── particles
   // ├── baseGraphics
 
+  buildingParams = {
+    baseColor: "#cac8a5",
+  };
+
   particles: Particle[] = [];
+  particlesColor = "#000000";
   amountOfParticles: number = 4;
 
   constructor(x: number, y: number) {
@@ -68,7 +73,7 @@ export class Junkuard extends Building {
     makeBasicCircle(
       baseGraphics,
       Junkuard.buildingConfig.baseGraphicalSize,
-      "#cac8a5",
+      this.buildingParams.baseColor,
       true,
     );
 
@@ -77,7 +82,9 @@ export class Junkuard extends Building {
 
   private createParticles() {
     for (let i = 0; i < this.amountOfParticles; i++) {
-      const particle = new Graphics().circle(0, 0, 20).fill("#000000");
+      const particle = new Graphics()
+        .circle(0, 0, 20)
+        .fill(this.particlesColor);
 
       this.particles.push({
         gfx: particle,

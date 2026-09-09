@@ -12,6 +12,8 @@ export class Blueprint extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 0,
 
+    inventorySize: 10,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 0,
 
@@ -36,7 +38,7 @@ export class Blueprint extends Building {
     targetBuilding: BuildingClass,
     public targetBuildingType: string,
   ) {
-    super(x, y, 10, "Blueprint");
+    super(x, y, "Blueprint");
 
     this.targetBuilding = targetBuilding;
     this.draw();

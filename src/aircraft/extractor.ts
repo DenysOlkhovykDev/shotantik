@@ -41,12 +41,21 @@ export class Extractor extends Building {
     amount: 4,
     angleOffset: Math.PI / 4,
     offsetFromCenter: 0,
-    movingDirection: true,
+    movingDirection: 1,
+    color: "#000000",
   };
 
   spikeParams = {
     amount: 4,
     shape: new Triangle(-10, 0, 6, 10, 6, -10),
+    color: "#b06667",
+    stroke: "#000000",
+  };
+
+  buildingParams = {
+    baseColor: "#b06667",
+    ringColor: "#965859",
+    centerColor: "#c08484",
   };
 
   constructor(x: number, y: number) {
@@ -62,12 +71,7 @@ export class Extractor extends Building {
       Extractor.buildingConfig.baseGraphicalSize,
     );
 
-    this.makeAntennas(
-      this.antennasGraphics,
-      this.antennasParams.angleOffset,
-      Extractor.buildingConfig.baseGraphicalSize,
-      this.antennasParams.amount,
-    );
+    this.makeAntennas();
 
     this.createBaseTexture();
 
@@ -75,37 +79,29 @@ export class Extractor extends Building {
     this.contentContainer.addChild(base);
   }
 
-  private makeAntennas(
-    antennasGraphics: Graphics[],
-    angleOffset: number,
-    baseRadius: number,
-    totalAmount: number,
-    currentAmount?: number,
-  ) {
-    const amount = currentAmount ? currentAmount : totalAmount;
+  private makeAntennas() {
+    for (let i = 0; i < this.antennasParams.amount; i++) {
+      this.antennasGraphics[i] = new Graphics();
 
-    for (let i = 0; i < amount; i++) {
-      antennasGraphics[i] = new Graphics();
+      const { angle } = getRadialPoint(i, this.antennasParams.amount, 1);
 
-      const { angle } = getRadialPoint(i, totalAmount, 1);
+      const cos = Math.cos(angle + this.antennasParams.angleOffset);
+      const sin = Math.sin(angle + this.antennasParams.angleOffset);
 
-      const cos = Math.cos(angle + angleOffset);
-      const sin = Math.sin(angle + angleOffset);
+      const x1 = cos * (Extractor.buildingConfig.baseGraphicalSize - 5);
+      const y1 = sin * (Extractor.buildingConfig.baseGraphicalSize - 5);
 
-      const x1 = cos * (baseRadius - 5);
-      const y1 = sin * (baseRadius - 5);
+      const x2 = cos * (Extractor.buildingConfig.baseGraphicalSize + 18);
+      const y2 = sin * (Extractor.buildingConfig.baseGraphicalSize + 18);
 
-      const x2 = cos * (baseRadius + 18);
-      const y2 = sin * (baseRadius + 18);
-
-      antennasGraphics[i]
+      this.antennasGraphics[i]
         .moveTo(x1, y1)
         .lineTo(x2, y2)
-        .stroke({ width: 4, color: "#000000" })
+        .stroke({ width: 4, color: this.antennasParams.color })
         .circle(x2, y2, 4)
-        .fill("#000000");
+        .fill(this.antennasParams.color);
 
-      this.contentContainer.addChild(antennasGraphics[i]);
+      this.contentContainer.addChild(this.antennasGraphics[i]);
     }
   }
 
@@ -117,7 +113,7 @@ export class Extractor extends Building {
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize,
-      "#b06667",
+      this.buildingParams.baseColor,
       true,
     );
 
@@ -126,14 +122,14 @@ export class Extractor extends Building {
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize,
-      "#965859",
+      this.buildingParams.ringColor,
       false,
     );
 
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize - 5,
-      "#c08484",
+      this.buildingParams.centerColor,
       false,
     );
 
@@ -167,9 +163,9 @@ export class Extractor extends Building {
         .lineTo(ex, ey)
         .lineTo(x1, y1)
         .closePath()
-        .fill("#b06667");
+        .fill(this.spikeParams.color);
 
-      baseGraphics.stroke({ width: 2, color: "#000000" });
+      baseGraphics.stroke({ width: 2, color: this.spikeParams.stroke });
 
       const {
         startX: sx2,
@@ -194,9 +190,9 @@ export class Extractor extends Building {
         .lineTo(ex2, ey2)
         .lineTo(x2, y2)
         .closePath()
-        .fill("#b06667");
+        .fill(this.spikeParams.color);
 
-      baseGraphics.stroke({ width: 2, color: "#000000" });
+      baseGraphics.stroke({ width: 2, color: this.spikeParams.stroke });
     }
   }
 
@@ -216,7 +212,7 @@ export class Extractor extends Building {
       .lineTo(points[1].x, points[1].y)
       .lineTo(points[2].x, points[2].y)
       .closePath()
-      .fill("#b06667");
+      .fill(this.buildingParams.baseColor);
 
     const points2 = [];
     for (let i = 0; i < 3; i++) {
@@ -233,18 +229,17 @@ export class Extractor extends Building {
       .lineTo(points2[1].x, points2[1].y)
       .lineTo(points2[2].x, points2[2].y)
       .closePath()
-      .fill("#c08484");
+      .fill(this.buildingParams.centerColor);
   }
 
   animation(delta: number) {
-    const direction = this.antennasParams.movingDirection ? 1 : -1;
-
-    this.antennasParams.offsetFromCenter += 0.1 * delta * direction;
+    this.antennasParams.offsetFromCenter +=
+      0.1 * delta * this.antennasParams.movingDirection;
 
     if (this.antennasParams.offsetFromCenter > -2)
-      this.antennasParams.movingDirection = false;
+      this.antennasParams.movingDirection = -1;
     if (this.antennasParams.offsetFromCenter < -12)
-      this.antennasParams.movingDirection = true;
+      this.antennasParams.movingDirection = 1;
 
     for (let i = 0; i < this.antennasParams.amount; i++) {
       const { angle } = getRadialPoint(i, this.antennasParams.amount, 1);
