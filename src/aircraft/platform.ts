@@ -67,7 +67,7 @@ export class Platform extends Building {
   animation(delta: number) {}
 
   onClick(event: FederatedPointerEvent) {
-    aircraft.selectBuilding(this);
+    aircraft.setConstuctionSource(this);
     super.onClick(event);
     constructionManager.showButton();
     aircraft.showCraftSigns();

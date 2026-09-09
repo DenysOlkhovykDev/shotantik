@@ -122,13 +122,17 @@ blueprint
 of Engine`,
           showCondition: () => aircraft.blueprints.length > 0,
           hideCondition: () =>
+            aircraft.blueprints.length > 0 &&
             aircraft.blueprints[0].recipeSign.children.length > 0,
           needOkButton: false,
           findTarget: () => {
             const blueprint = aircraft.blueprints[0];
 
             if (!blueprint) {
-              return;
+              return {
+                x: 0,
+                y: 0,
+              };
             }
             return {
               x: blueprint.x,
@@ -153,7 +157,10 @@ from it`,
             const building = aircraft.buildings[0];
 
             if (!building) {
-              return;
+              return {
+                x: 0,
+                y: 0,
+              };
             }
 
             return {
@@ -200,15 +207,20 @@ here`,
 Assembler  
 and Grinder`,
           showCondition: () => {
-            return true;
+            return aircraft.blueprints.length > 1;
           },
-          hideCondition: () => constructionManager.isButtonVisible(),
+          hideCondition: () =>
+            constructionManager.isButtonVisible() &&
+            aircraft.blueprints.length > 1,
           needOkButton: true,
           findTarget: () => {
             const building = aircraft.buildings[0];
 
             if (!building) {
-              return;
+              return {
+                x: 0,
+                y: 0,
+              };
             }
 
             return {
@@ -252,24 +264,70 @@ arrow`,
         {
           text: `You Win`,
           showCondition: () => {
-            if (
+            return (
               getDistance(
                 getWorldCoordinates().x,
                 getWorldCoordinates().y,
                 1000,
                 100,
               ) < 50
-            ) {
-              return true;
-            }
+            );
           },
-          hideCondition: () => constructionManager.isButtonVisible(),
+          hideCondition: () =>
+            getDistance(
+              getWorldCoordinates().x,
+              getWorldCoordinates().y,
+              1000,
+              100,
+            ) < 50 && constructionManager.isButtonVisible(),
           needOkButton: true,
           findTarget: () => {
             const building = aircraft.buildings[0];
 
             if (!building) {
-              return;
+              return {
+                x: 0,
+                y: 0,
+              };
+            }
+
+            return {
+              x: building.x,
+              y: building.y,
+            };
+          },
+        },
+        {
+          text: `You can't
+complete tutorial.
+Try again`,
+          showCondition: () => {
+            const farms = aircraft.buildings.filter(
+              (b) => b.buildingType === "Farm",
+            );
+            const extractors = aircraft.buildings.filter(
+              (b) => b.buildingType === "Extractor",
+            );
+            const collectors = aircraft.buildings.filter(
+              (b) => b.buildingType === "Collector",
+            );
+
+            return (
+              farms.length === 0 ||
+              extractors.length === 0 ||
+              collectors.length === 0
+            );
+          },
+          hideCondition: () => false,
+          needOkButton: true,
+          findTarget: () => {
+            const building = aircraft.buildings[0];
+
+            if (!building) {
+              return {
+                x: 0,
+                y: 0,
+              };
             }
 
             return {
@@ -327,5 +385,6 @@ export function createTestSituation(worldLayer: Container) {
   createTestWorld(worldLayer);
 
   aircraft.hideCraftSigns();
+  aircraft.resetConstructionSource();
   constructionManager.hideButton();
 }
