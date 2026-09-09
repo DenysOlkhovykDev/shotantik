@@ -11,6 +11,8 @@ export class House extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 17,
 
+    inventorySize: 5,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 30,
 
@@ -43,7 +45,7 @@ export class House extends Building {
   };
 
   constructor(x: number, y: number) {
-    super(x, y, 5, "House");
+    super(x, y, "House");
     this.draw();
   }
 

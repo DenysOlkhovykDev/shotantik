@@ -12,6 +12,8 @@ export class Grinder extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
+    inventorySize: 4,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 48,
 
@@ -65,7 +67,7 @@ export class Grinder extends Building {
   };
 
   constructor(x: number, y: number) {
-    super(x, y, 4, "Grinder");
+    super(x, y, "Grinder");
     this.draw();
 
     this.priorityForTasks = 5;

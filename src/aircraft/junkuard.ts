@@ -19,6 +19,8 @@ export class Junkuard extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 52,
 
+    inventorySize: 20,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 60,
 
@@ -41,7 +43,7 @@ export class Junkuard extends Building {
   amountOfParticles: number = 4;
 
   constructor(x: number, y: number) {
-    super(x, y, 20, "Junkuard");
+    super(x, y, "Junkuard");
     this.draw();
   }
 

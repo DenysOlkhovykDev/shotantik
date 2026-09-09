@@ -12,6 +12,8 @@ export class Platform extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
+    inventorySize: 10,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 40,
 
@@ -27,7 +29,7 @@ export class Platform extends Building {
   ];
 
   constructor(x: number, y: number) {
-    super(x, y, 10, "Platform");
+    super(x, y, "Platform");
     this.draw();
   }
 

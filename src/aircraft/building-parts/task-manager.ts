@@ -84,7 +84,7 @@ export class TaskManager {
     );
     const canFitMissingResources =
       totalMissingResources <=
-      this.building.inventorySize -
+      this.building.buildingConfig.inventorySize -
         this.building.resourceStorage.recources.length;
 
     for (const missingResource of missingResources) {

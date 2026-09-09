@@ -11,6 +11,8 @@ export class Collector extends Building {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
+    inventorySize: 5,
+
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 45,
 
@@ -43,7 +45,7 @@ export class Collector extends Building {
   };
 
   constructor(x: number, y: number) {
-    super(x, y, 5, "Collector");
+    super(x, y, "Collector");
     this.draw();
     this.priorityForTasks = 5;
     this.refreshTasks();
