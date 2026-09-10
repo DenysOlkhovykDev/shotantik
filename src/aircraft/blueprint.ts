@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Text } from "pixi.js";
 import { Building, BuildingConfig } from "@aircraft/building";
 import { BuildingClass, aircraft } from "@aircraft/aircraft";
 import { getDistance } from "@utils/basic-geometry";
@@ -26,11 +26,19 @@ export class Blueprint extends Building {
   static constructionRecipe = [];
 
   private targetBuilding: BuildingClass;
-  redraws: number = 0;
+  collisions: number = 0;
 
   tasks: Task[] = [];
   buildResources: string[] = [];
   reservedBuildResources: Resource[] = [];
+
+  DEBUGCollisionDisplay = new Text({
+    text: "",
+    style: {
+      fill: "#000000",
+      fontSize: 24,
+    },
+  });
 
   constructor(
     x: number,
@@ -42,6 +50,8 @@ export class Blueprint extends Building {
 
     this.targetBuilding = targetBuilding;
     this.draw();
+
+    this.root.addChild(this.DEBUGCollisionDisplay);
   }
 
   public get buildingConfig(): BuildingConfig {
@@ -152,55 +162,64 @@ export class Blueprint extends Building {
   }
 
   public checkAndMove(building: Building, delta: number) {
-    const thisBoundsCenter = this.getBoundsCenterInWorld();
-    const otherBoundsCenter = building.getBoundsCenterInWorld();
-    const minDistanceToBuilding =
+    const prevPosition = this.getBoundsCenterInWorld();
+
+    if (
+      this.getDistanceToBuilding(building) <=
       this.targetBuilding.buildingConfig.boundsRadius +
-      building.buildingConfig.boundsRadius +
-      20;
-    const distanceBetween = getDistance(
-      otherBoundsCenter.x,
-      otherBoundsCenter.y,
-      thisBoundsCenter.x,
-      thisBoundsCenter.y,
-    );
-
-    const baseCenter = this.getBaseCenterInWorld();
-    const sourceBaseCenter = this.links[0].from.getBaseCenterInWorld();
-    const linkLength = getDistance(
-      sourceBaseCenter.x,
-      sourceBaseCenter.y,
-      baseCenter.x,
-      baseCenter.y,
-    );
-
-    const prevRedraws = this.redraws;
-
-    if (distanceBetween <= minDistanceToBuilding) {
-      this.redraws += 5;
+        building.buildingConfig.boundsRadius +
+        20
+    ) {
+      this.collisions += 5 * delta;
       this.moveAwayFrom(
-        otherBoundsCenter.x,
-        otherBoundsCenter.y,
+        building.getBoundsCenterInWorld().x,
+        building.getBoundsCenterInWorld().y,
         delta,
         2,
-        thisBoundsCenter,
+        this.getBoundsCenterInWorld(),
       );
     }
 
-    if (linkLength <= this.targetBuilding.buildingConfig.minLinkLength) {
-      this.redraws++;
-      this.moveAwayFrom(sourceBaseCenter.x, sourceBaseCenter.y, delta, 0.5);
+    if (
+      this.getDistanceToSource() <=
+      this.targetBuilding.buildingConfig.minLinkLength
+    ) {
+      this.collisions += 1 * delta;
+      this.moveAwayFrom(
+        this.links[0].from.getBaseCenterInWorld().x,
+        this.links[0].from.getBaseCenterInWorld().y,
+        delta,
+        0.5,
+      );
     }
 
-    if (linkLength >= this.targetBuilding.buildingConfig.maxLinkLength) {
-      this.redraws++;
-      this.moveTowards(sourceBaseCenter.x, sourceBaseCenter.y, delta, 0.5);
+    if (
+      this.getDistanceToSource() >=
+      this.targetBuilding.buildingConfig.maxLinkLength
+    ) {
+      this.collisions += 1 * delta;
+      this.moveTowards(
+        this.links[0].from.getBaseCenterInWorld().x,
+        this.links[0].from.getBaseCenterInWorld().y,
+        delta,
+        0.5,
+      );
     }
 
     this.checkLinksCollision(building, delta);
-    if (prevRedraws === this.redraws) {
-      this.redraws = 0;
-      if (this.contentContainer.tint !== 0x000000) {
+
+    if (
+      getDistance(
+        prevPosition.x,
+        prevPosition.y,
+        this.getBoundsCenterInWorld().x,
+        this.getBoundsCenterInWorld().y,
+      ) === 0
+    ) {
+      if (this.collisions > 0) {
+        this.collisions -= 2 * delta;
+      }
+      if (this.collisions < 1 && this.contentContainer.tint !== 0x000000) {
         this.contentContainer.tint = "#000000";
       }
     } else {
@@ -208,6 +227,23 @@ export class Blueprint extends Building {
         this.contentContainer.tint = "#ff0000";
       }
     }
+
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
+      this.DEBUGCollisionDisplay.text = Math.trunc(this.collisions);
+    }
+  }
+
+  private getDistanceToBuilding(building: Building) {
+    return getDistance(
+      building.getBoundsCenterInWorld().x,
+      building.getBoundsCenterInWorld().y,
+      this.getBoundsCenterInWorld().x,
+      this.getBoundsCenterInWorld().y,
+    );
+  }
+
+  private getDistanceToSource() {
+    return this.getDistanceToBuilding(this.links[0].from);
   }
 
   private checkLinksCollision(building: Building, delta: number) {
@@ -245,7 +281,7 @@ export class Blueprint extends Building {
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < minDist) {
-        this.redraws += 5;
+        this.collisions += 5 * delta;
         this.moveAwayFrom(closestX, closestY, delta, 2, boundsCenter);
       }
     }
@@ -292,10 +328,16 @@ export class Blueprint extends Building {
       }
       this.reservedBuildResources = [];
 
+      const oldConstructionSource = aircraft.constructionSource;
+
       aircraft.setConstuctionSource(source);
       aircraft.addBuilding(this.x, this.y, this.targetBuildingType);
       aircraft.deleteBlueprint(this);
-      aircraft.resetConstructionSource();
+      if (oldConstructionSource !== undefined) {
+        aircraft.setConstuctionSource(
+          aircraft.buildings[oldConstructionSource],
+        );
+      }
     }
   }
 

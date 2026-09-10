@@ -18,6 +18,11 @@ export class BlueprintRoad {
     this.drawDashedLine(from, to);
 
     this.graphic.alpha = 0.75;
+    this.graphic.eventMode = "static";
+
+    this.graphic.on("pointerdown", (e) => {
+      e.stopPropagation();
+    });
   }
 
   public drawDashedLine(from: Building, to: Building, dash = 10, gap = 10) {

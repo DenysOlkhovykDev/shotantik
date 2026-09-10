@@ -4,8 +4,8 @@ export const collisionBlueprints: Scenario = {
   aircraft: {
     buildings: [
       { from: "", id: "p0", type: "Platform", x: 360, y: 600 },
-      { from: "p0", id: "p1", type: "Platform", x: 560, y: 500 },
-      { from: "p0", id: "p2", type: "Platform", x: 560, y: 700 },
+      { from: "p0", id: "p1", type: "Platform", x: 560, y: 480 },
+      { from: "p0", id: "p2", type: "Platform", x: 560, y: 720 },
     ],
     buildingTasks: [
       {

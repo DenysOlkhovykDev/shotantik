@@ -248,7 +248,7 @@ class Aircraft {
     }
 
     for (let i = this.blueprints.length - 1; i >= 0; i--) {
-      if (this.blueprints[i].redraws > 5000) {
+      if (this.blueprints[i].collisions > 500) {
         this.deleteBlueprint(this.blueprints[i]);
       }
     }
@@ -258,6 +258,13 @@ class Aircraft {
     const index = this.blueprints.indexOf(blueprint);
 
     if (index === -1) return;
+
+    for (let i = 0; i < this.blueprints[index].tasks.length; i++) {
+      const resource = this.blueprints[index].tasks[i].reservedResource;
+      if (resource !== undefined) {
+        resource.isReserved = false;
+      }
+    }
 
     blueprint.cleanup();
 
