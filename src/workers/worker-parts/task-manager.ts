@@ -28,6 +28,7 @@ export class TaskManager {
 
     if (task) {
       task.status = TaskStatus.inProgress;
+      task.target.refreshTasks();
     }
 
     return task;
@@ -53,8 +54,10 @@ export class TaskManager {
 
       if (result) {
         this.resetProductionProgress();
+        this.task.target.refreshTasks();
       } else {
         this.task.status = TaskStatus.completed;
+        this.task.target.refreshTasks();
         this.task = undefined;
         this.resetProductionProgress();
       }
