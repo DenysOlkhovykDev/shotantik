@@ -165,7 +165,7 @@ export abstract class Building {
 
   // TaskManager
 
-  protected refreshTasks() {
+  public refreshTasks() {
     this.taskManager.refreshTasks();
 
     if (import.meta.env.VITE_IS_DEBUG === "true") {
@@ -195,6 +195,19 @@ export abstract class Building {
         this.DEBUGTaskDisplay.circle(x, y, 10).fill("#00ff00");
       } else if (taskList[i].jobType === "building") {
         this.DEBUGTaskDisplay.circle(x, y, 10).fill("#0000ff");
+      }
+
+      if (taskList[i].status === "available") {
+        this.DEBUGTaskDisplay.circle(x, y, 6).fill("#ffffff");
+      } else if (taskList[i].status === "inProgress") {
+        this.DEBUGTaskDisplay.circle(x, y, 6)
+          .fill("#ffffff")
+          .moveTo(x, y - 4)
+          .lineTo(x, y)
+          .lineTo(x + 4, y + 4)
+          .stroke({ width: 2, color: "#000000" });
+      } else if (taskList[i].status === "completed") {
+        this.DEBUGTaskDisplay.circle(x, y, 6).fill("#000000");
       }
     }
   }

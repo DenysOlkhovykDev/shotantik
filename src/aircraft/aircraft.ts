@@ -127,6 +127,7 @@ class Aircraft {
               5,
               constructionRecipe[i].resourceName,
             );
+            from.refreshTasks();
             if (task) {
               blueprint.tasks.push(task);
             }
