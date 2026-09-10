@@ -22,5 +22,10 @@ export class Road {
       .stroke({ width: 8, color: "#000000" });
 
     this.graphic.alpha = 0.5;
+    this.graphic.eventMode = "static";
+
+    this.graphic.on("pointerdown", (e) => {
+      e.stopPropagation();
+    });
   }
 }
