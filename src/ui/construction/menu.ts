@@ -1,6 +1,6 @@
 import { buildingMap } from "@aircraft/aircraft";
 import { Container, Graphics, Text } from "pixi.js";
-import { Platform } from "@aircraft/platform";
+import { Platform } from "@aircraft/modules/platform";
 import { Building } from "@aircraft/building";
 import { RecipeSign } from "@aircraft/building-parts/recipe-sign";
 import { gameScreen } from "../../game-config";

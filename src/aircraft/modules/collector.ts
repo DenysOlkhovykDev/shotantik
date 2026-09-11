@@ -7,7 +7,7 @@ import {
 import { getRadialPoint, getRadialLine } from "@utils/basic-geometry";
 
 export class Collector extends Building {
-  static readonly buildingConfig: BuildingConfig = {
+  static buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
@@ -32,12 +32,7 @@ export class Collector extends Building {
     result: "Water",
   };
 
-  // contentContainer
-  // ├── gridsGraphics
-  // ├── baseGraphics
-
-  gridsGraphics: Graphics = new Graphics();
-  gridsParams = {
+  static gridsParams = {
     amount: 3,
     sizes: [6.5, 12, 12],
     angleOffsets: { small: 1.05, medium: 0.5 },
@@ -45,11 +40,17 @@ export class Collector extends Building {
     rotationSpeed: 0.005,
   };
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#a8d0db",
     lineColors: "#6ba6de",
     circlesColors: "#81bcf3",
   };
+
+  // contentContainer
+  // ├── gridsGraphics
+  // ├── baseGraphics
+
+  gridsGraphics: Graphics = new Graphics();
 
   constructor(x: number, y: number) {
     super(x, y, "Collector");
@@ -72,26 +73,29 @@ export class Collector extends Building {
   }
 
   private createSatelites() {
-    for (let i = 0; i < this.gridsParams.amount; i++) {
+    for (let i = 0; i < Collector.gridsParams.amount; i++) {
       const small = getRadialLine(
         i * 4 + 2,
-        this.gridsParams.amount * 4,
+        Collector.gridsParams.amount * 4,
         Collector.buildingConfig.baseGraphicalSize,
-        Collector.buildingConfig.baseGraphicalSize + this.gridsParams.sizes[0],
+        Collector.buildingConfig.baseGraphicalSize +
+          Collector.gridsParams.sizes[0],
       );
 
       const medium = getRadialLine(
         i * 4 + 1,
-        this.gridsParams.amount * 4,
+        Collector.gridsParams.amount * 4,
         Collector.buildingConfig.baseGraphicalSize,
-        Collector.buildingConfig.baseGraphicalSize + this.gridsParams.sizes[1],
+        Collector.buildingConfig.baseGraphicalSize +
+          Collector.gridsParams.sizes[1],
       );
 
       const large = getRadialLine(
         i * 4,
-        this.gridsParams.amount * 4,
+        Collector.gridsParams.amount * 4,
         Collector.buildingConfig.baseGraphicalSize,
-        Collector.buildingConfig.baseGraphicalSize + this.gridsParams.sizes[2],
+        Collector.buildingConfig.baseGraphicalSize +
+          Collector.gridsParams.sizes[2],
       );
 
       this.gridsGraphics
@@ -106,9 +110,9 @@ export class Collector extends Building {
           0,
           0,
           Collector.buildingConfig.baseGraphicalSize +
-            this.gridsParams.sizes[0],
+            Collector.gridsParams.sizes[0],
           small.angle,
-          small.angle - this.gridsParams.angleOffsets.small,
+          small.angle - Collector.gridsParams.angleOffsets.small,
           true,
         )
         .moveTo(medium.endX, medium.endY)
@@ -116,12 +120,12 @@ export class Collector extends Building {
           0,
           0,
           Collector.buildingConfig.baseGraphicalSize +
-            this.gridsParams.sizes[1],
+            Collector.gridsParams.sizes[1],
           medium.angle,
-          medium.angle - this.gridsParams.angleOffsets.medium,
+          medium.angle - Collector.gridsParams.angleOffsets.medium,
           true,
         )
-        .stroke({ width: 3, color: this.gridsParams.color, cap: "round" });
+        .stroke({ width: 3, color: Collector.gridsParams.color, cap: "round" });
     }
     this.contentContainer.addChild(this.gridsGraphics);
   }
@@ -134,7 +138,7 @@ export class Collector extends Building {
     makeBasicCircle(
       baseGraphics,
       Collector.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Collector.buildingParams.baseColor,
       true,
     );
 
@@ -155,20 +159,20 @@ export class Collector extends Building {
       .closePath();
     baseGraphics.stroke({
       width: 8,
-      color: this.buildingParams.lineColors,
+      color: Collector.buildingParams.lineColors,
       cap: "round",
     });
 
     for (let i = 0; i < 3; i++) {
       baseGraphics
         .circle(points[i].x, points[i].y, 12)
-        .fill(this.buildingParams.circlesColors);
+        .fill(Collector.buildingParams.circlesColors);
     }
 
     Collector.baseTexture = generateTextureFromOrigin(baseGraphics);
   }
 
   animation(delta: number) {
-    this.gridsGraphics.rotation -= this.gridsParams.rotationSpeed * delta;
+    this.gridsGraphics.rotation -= Collector.gridsParams.rotationSpeed * delta;
   }
 }

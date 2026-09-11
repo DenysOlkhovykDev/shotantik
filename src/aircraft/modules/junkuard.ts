@@ -35,13 +35,13 @@ export class Junkuard extends Building {
     { resourceName: "Water", amount: 2 },
   ];
 
+  static buildingParams = {
+    baseColor: "#cac8a5",
+  };
+
   // contentContainer
   // ├── particles
   // ├── baseGraphics
-
-  buildingParams = {
-    baseColor: "#cac8a5",
-  };
 
   particles: Particle[] = [];
   particlesColor = "#000000";
@@ -73,7 +73,7 @@ export class Junkuard extends Building {
     makeBasicCircle(
       baseGraphics,
       Junkuard.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Junkuard.buildingParams.baseColor,
       true,
     );
 

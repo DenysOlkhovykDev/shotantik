@@ -36,12 +36,7 @@ export class Mixer extends Building {
     result: "Gum",
   };
 
-  // contentContainer
-  // ├── satelitesGraphics
-  // ├── baseGraphics
-
-  satelitesGraphics: Graphics[] = [];
-  satelitesParams = {
+  static satelitesParams = {
     amount: 8,
     size: 5,
     rotationSpeed: 0.05,
@@ -49,11 +44,17 @@ export class Mixer extends Building {
     stroke: "#000000",
   };
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#cc92c3",
     decorativeCirclesColor: "#b762ac",
     amountOfDecorativeCircles: 6,
   };
+
+  // contentContainer
+  // ├── satelitesGraphics
+  // ├── baseGraphics
+
+  satelitesGraphics: Graphics[] = [];
 
   constructor(x: number, y: number) {
     super(x, y, "Mixer");
@@ -77,12 +78,12 @@ export class Mixer extends Building {
   }
 
   private createSatelites() {
-    for (let i = 0; i < this.satelitesParams.amount; i++) {
+    for (let i = 0; i < Mixer.satelitesParams.amount; i++) {
       this.satelitesGraphics[i] = new Graphics();
 
       const { x: cx, y: cy } = getRadialPoint(
         i,
-        this.satelitesParams.amount,
+        Mixer.satelitesParams.amount,
         Mixer.buildingConfig.baseGraphicalSize - 5,
       );
 
@@ -93,9 +94,9 @@ export class Mixer extends Building {
 
         this.satelitesGraphics[i]
           .moveTo(x, y)
-          .circle(x, y, this.satelitesParams.size)
-          .fill(this.satelitesParams.color)
-          .stroke({ width: 2, color: this.satelitesParams.stroke });
+          .circle(x, y, Mixer.satelitesParams.size)
+          .fill(Mixer.satelitesParams.color)
+          .stroke({ width: 2, color: Mixer.satelitesParams.stroke });
       }
 
       this.contentContainer.addChild(this.satelitesGraphics[i]);
@@ -110,7 +111,7 @@ export class Mixer extends Building {
     makeBasicCircle(
       baseGraphics,
       Mixer.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Mixer.buildingParams.baseColor,
       true,
     );
 
@@ -122,37 +123,37 @@ export class Mixer extends Building {
   private makeDecorativeCircles(baseGraphics: Graphics) {
     baseGraphics
       .circle(0, 0, 8)
-      .fill(this.buildingParams.decorativeCirclesColor);
+      .fill(Mixer.buildingParams.decorativeCirclesColor);
 
-    for (let i = 0; i < this.buildingParams.amountOfDecorativeCircles; i++) {
+    for (let i = 0; i < Mixer.buildingParams.amountOfDecorativeCircles; i++) {
       const { x, y } = getRadialPoint(
         i * 2 - 1,
-        this.buildingParams.amountOfDecorativeCircles * 2,
+        Mixer.buildingParams.amountOfDecorativeCircles * 2,
         Mixer.buildingConfig.baseGraphicalSize - 24,
       );
 
       baseGraphics
         .circle(x, y, 6)
-        .fill(this.buildingParams.decorativeCirclesColor);
+        .fill(Mixer.buildingParams.decorativeCirclesColor);
     }
 
-    for (let i = 0; i < this.buildingParams.amountOfDecorativeCircles; i++) {
+    for (let i = 0; i < Mixer.buildingParams.amountOfDecorativeCircles; i++) {
       const { x, y } = getRadialPoint(
         i,
-        this.buildingParams.amountOfDecorativeCircles,
+        Mixer.buildingParams.amountOfDecorativeCircles,
         Mixer.buildingConfig.baseGraphicalSize - 12,
       );
 
       baseGraphics
         .circle(x, y, 8)
-        .fill(this.buildingParams.decorativeCirclesColor);
+        .fill(Mixer.buildingParams.decorativeCirclesColor);
     }
   }
 
   animation(delta: number) {
-    for (let i = 0; i < this.satelitesParams.amount; i++) {
+    for (let i = 0; i < Mixer.satelitesParams.amount; i++) {
       this.satelitesGraphics[i].rotation +=
-        this.satelitesParams.rotationSpeed * delta;
+        Mixer.satelitesParams.rotationSpeed * delta;
     }
   }
 }

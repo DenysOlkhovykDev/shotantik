@@ -28,7 +28,7 @@ export class Platform extends Building {
     { resourceName: "Water", amount: 1 },
   ];
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#cccbcb",
     centerColor: "#a9a9a9",
   };
@@ -57,14 +57,14 @@ export class Platform extends Building {
     makeBasicCircle(
       baseGraphics,
       Platform.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Platform.buildingParams.baseColor,
       true,
     );
 
     makeBasicCircle(
       baseGraphics,
       Platform.buildingConfig.baseGraphicalSize - 10,
-      this.buildingParams.centerColor,
+      Platform.buildingParams.centerColor,
       false,
     );
 

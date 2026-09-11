@@ -7,7 +7,7 @@ import {
 import { getRadialLine, getRadialPoint } from "@utils/basic-geometry";
 
 export class Farm extends Building {
-  static readonly buildingConfig: BuildingConfig = {
+  static buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
@@ -29,6 +29,24 @@ export class Farm extends Building {
     result: "Organic",
   };
 
+  static kelpsParams = {
+    amount: 4,
+    leavesSize: 16,
+    leavesWidth: 20,
+    leafSegments: 6,
+    movingSpeed: 0.05,
+    maxAmplitude: 3,
+    trunksColor: "#34612c",
+    leavesColor: "#559c48",
+  };
+
+  static buildingParams = {
+    groundRingColor: "#a3791f",
+    baseColor: "#b0ca75",
+    plantCenterColor: "#77c06a",
+    plantLeavesColor: "#67a75c",
+  };
+
   // contentContainer
   // ├── kelpLeavesGraphics
   // ├── kelpTrunksGraphics
@@ -36,23 +54,9 @@ export class Farm extends Building {
 
   kelpLeavesGraphics: Graphics[] = [];
   kelpTrunksGraphics: Graphics = new Graphics();
-  kelpsParams = {
-    amount: 4,
-    leavesSize: 16,
-    leavesWidth: 20,
-    leafSegments: 6,
-    movingSpeed: 0.05,
-    maxAmplitude: 3,
-    kelpTime: 0,
-    trunksColor: "#34612c",
-    leavesColor: "#559c48",
-  };
 
-  buildingParams = {
-    groundRingColor: "#a3791f",
-    baseColor: "#b0ca75",
-    plantCenterColor: "#77c06a",
-    plantLeavesColor: "#67a75c",
+  kelpsPostion = {
+    time: 0,
   };
 
   private kelpLeavesPoints: {
@@ -93,13 +97,13 @@ export class Farm extends Building {
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize,
-      this.buildingParams.groundRingColor,
+      Farm.buildingParams.groundRingColor,
       true,
     );
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize - 2,
-      this.buildingParams.baseColor,
+      Farm.buildingParams.baseColor,
       false,
     );
 
@@ -109,10 +113,10 @@ export class Farm extends Building {
   }
 
   private createKelpLeaves() {
-    for (let i = 0; i < this.kelpsParams.amount; i++) {
+    for (let i = 0; i < Farm.kelpsParams.amount; i++) {
       const { angle, x, y } = getRadialPoint(
         i,
-        this.kelpsParams.amount,
+        Farm.kelpsParams.amount,
         Farm.buildingConfig.baseGraphicalSize - 6,
       );
 
@@ -120,10 +124,10 @@ export class Farm extends Building {
       const sin = Math.sin(angle);
 
       this.kelpLeavesPoints[i] = {
-        xRight: -sin * this.kelpsParams.leavesSize,
-        yRight: cos * this.kelpsParams.leavesSize,
-        xLeft: sin * this.kelpsParams.leavesSize,
-        yLeft: -cos * this.kelpsParams.leavesSize,
+        xRight: -sin * Farm.kelpsParams.leavesSize,
+        yRight: cos * Farm.kelpsParams.leavesSize,
+        xLeft: sin * Farm.kelpsParams.leavesSize,
+        yLeft: -cos * Farm.kelpsParams.leavesSize,
       };
 
       const graphics = new Graphics();
@@ -136,10 +140,10 @@ export class Farm extends Building {
   }
 
   private createKelpTrunks(baseGraphics: Graphics) {
-    for (let i = 0; i < this.kelpsParams.amount; i++) {
+    for (let i = 0; i < Farm.kelpsParams.amount; i++) {
       const line = getRadialLine(
         i,
-        this.kelpsParams.amount,
+        Farm.kelpsParams.amount,
         Farm.buildingConfig.baseGraphicalSize,
         Farm.buildingConfig.baseGraphicalSize + 3,
       );
@@ -149,7 +153,7 @@ export class Farm extends Building {
         .lineTo(line.endX, line.endY)
         .stroke({
           width: 4,
-          color: this.kelpsParams.trunksColor,
+          color: Farm.kelpsParams.trunksColor,
           cap: "round",
         });
     }
@@ -159,7 +163,7 @@ export class Farm extends Building {
     makeBasicCircle(
       baseGraphics,
       Farm.buildingConfig.baseGraphicalSize - 18,
-      this.buildingParams.plantCenterColor,
+      Farm.buildingParams.plantCenterColor,
       false,
     );
 
@@ -170,7 +174,7 @@ export class Farm extends Building {
         Farm.buildingConfig.baseGraphicalSize - 20,
       );
 
-      baseGraphics.circle(x1, y1, 8).fill(this.buildingParams.plantLeavesColor);
+      baseGraphics.circle(x1, y1, 8).fill(Farm.buildingParams.plantLeavesColor);
 
       const { x: x2, y: y2 } = getRadialPoint(
         i * 5 + 1,
@@ -178,21 +182,21 @@ export class Farm extends Building {
         Farm.buildingConfig.baseGraphicalSize - 20,
       );
 
-      baseGraphics.circle(x2, y2, 8).fill(this.buildingParams.plantLeavesColor);
+      baseGraphics.circle(x2, y2, 8).fill(Farm.buildingParams.plantLeavesColor);
 
       baseGraphics
         .moveTo(0, 0)
         .lineTo(x1, y1)
         .lineTo(x2, y2)
         .closePath()
-        .fill(this.buildingParams.plantLeavesColor);
+        .fill(Farm.buildingParams.plantLeavesColor);
     }
   }
 
   animation(delta: number) {
-    this.kelpsParams.kelpTime += delta * this.kelpsParams.movingSpeed;
+    this.kelpsPostion.time += delta * Farm.kelpsParams.movingSpeed;
 
-    for (let i = 0; i < this.kelpsParams.amount; i++) {
+    for (let i = 0; i < Farm.kelpsParams.amount; i++) {
       this.kelpLeavesGraphics[i].clear();
 
       this.makeLeaf(
@@ -209,8 +213,8 @@ export class Farm extends Building {
       );
 
       this.kelpLeavesGraphics[i].stroke({
-        width: this.kelpsParams.leavesWidth,
-        color: this.kelpsParams.leavesColor,
+        width: Farm.kelpsParams.leavesWidth,
+        color: Farm.kelpsParams.leavesColor,
         cap: "round",
         join: "round",
       });
@@ -233,16 +237,16 @@ export class Farm extends Building {
 
     leafGraphics.moveTo(0, 0);
 
-    for (let j = 1; j <= this.kelpsParams.leafSegments; j++) {
-      const t = j / this.kelpsParams.leafSegments;
+    for (let j = 1; j <= Farm.kelpsParams.leafSegments; j++) {
+      const t = j / Farm.kelpsParams.leafSegments;
 
       const px = dx * length * t;
       const py = dy * length * t;
 
-      const localAmplitude = this.kelpsParams.maxAmplitude * t * t;
+      const localAmplitude = Farm.kelpsParams.maxAmplitude * t * t;
 
       const offset =
-        Math.sin(this.kelpsParams.kelpTime + t * Math.PI * 2 + index * 0.35) *
+        Math.sin(this.kelpsPostion.time + t * Math.PI * 2 + index * 0.35) *
         localAmplitude;
 
       leafGraphics.lineTo(px + nx * offset, py + ny * offset);
