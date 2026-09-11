@@ -16,6 +16,8 @@ export class Compass extends Container {
   }
 
   private draw(x: number, y: number) {
+    this.graphics.clear();
+
     const centerX = gameScreen.width / 2;
     const centerY = gameScreen.height / 2;
 
