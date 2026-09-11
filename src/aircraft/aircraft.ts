@@ -300,6 +300,18 @@ class Aircraft {
       }
     }
 
+    for (const worker of this.workers.workers) {
+      if (worker.navigator.currentPlatform === building) {
+        const linkedBuilding =
+          building.links[0].from === building
+            ? building.links[0].to
+            : building.links[0].from;
+
+        worker.navigator.currentPlatform = linkedBuilding;
+        worker.position.set(linkedBuilding.x, linkedBuilding.y);
+      }
+    }
+
     for (const link of building.links) {
       link.graphic.destroy();
 
