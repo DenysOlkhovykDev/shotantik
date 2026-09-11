@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { gameScreen } from "../../game-config";
 import { buildingMap } from "@aircraft/aircraft";
-import { Platform } from "@aircraft/platform";
+import { Platform } from "@aircraft/modules/platform";
 
 export class ConstructionDisplay extends Container {
   constructor() {

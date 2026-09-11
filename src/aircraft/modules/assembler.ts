@@ -35,13 +35,7 @@ export class Assembler extends Building {
     result: "Truss",
   };
 
-  // contentContainer
-  // ├── maniulatorsGraphics
-  // ├── baseGraphics
-
-  maniulatorsGraphics: Graphics[] = [];
-
-  manipulatorsParams = {
+  static manipulatorsParams = {
     amount: 3,
     jointRadius: 5,
     jointBorderWidth: 3,
@@ -51,14 +45,12 @@ export class Assembler extends Building {
     backgroundColor: "#000000",
     baseColor: "#ffe600",
 
-    rotation: [0.1, 0.15, 0.2],
-    direction: [1, 1, 1],
     minRotation: 0,
     maxRotation: 0.2,
     speed: 0.01,
   };
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#bc9c56",
     centerColor: "#ebdc5d",
     square: {
@@ -74,6 +66,17 @@ export class Assembler extends Building {
       length: 30,
       width: 4,
     },
+  };
+
+  // contentContainer
+  // ├── maniulatorsGraphics
+  // ├── baseGraphics
+
+  maniulatorsGraphics: Graphics[] = [];
+
+  manipulatorsPosition = {
+    rotation: [0.1, 0.15, 0.2],
+    direction: [1, 1, 1],
   };
 
   constructor(x: number, y: number) {
@@ -129,8 +132,8 @@ export class Assembler extends Building {
         .moveTo(end.x, end.y)
         .lineTo(head.x, head.y)
         .stroke({
-          width: this.manipulatorsParams.headWidth,
-          color: this.manipulatorsParams.backgroundColor,
+          width: Assembler.manipulatorsParams.headWidth,
+          color: Assembler.manipulatorsParams.backgroundColor,
         });
 
       this.maniulatorsGraphics[i]
@@ -138,8 +141,8 @@ export class Assembler extends Building {
         .lineTo(middle.x, middle.y)
         .lineTo(end.x, end.y)
         .stroke({
-          width: this.manipulatorsParams.handWidth * 2,
-          color: this.manipulatorsParams.backgroundColor,
+          width: Assembler.manipulatorsParams.handWidth * 2,
+          color: Assembler.manipulatorsParams.backgroundColor,
           cap: "round",
         });
 
@@ -148,23 +151,29 @@ export class Assembler extends Building {
         .lineTo(middle.x, middle.y)
         .lineTo(end.x, end.y)
         .stroke({
-          width: this.manipulatorsParams.handWidth,
-          color: this.manipulatorsParams.baseColor,
+          width: Assembler.manipulatorsParams.handWidth,
+          color: Assembler.manipulatorsParams.baseColor,
           cap: "round",
         });
 
       this.maniulatorsGraphics[i]
-        .circle(start.x, start.y, this.manipulatorsParams.jointRadius)
-        .fill(this.manipulatorsParams.baseColor)
-        .stroke({ width: 3, color: this.manipulatorsParams.backgroundColor });
+        .circle(start.x, start.y, Assembler.manipulatorsParams.jointRadius)
+        .fill(Assembler.manipulatorsParams.baseColor)
+        .stroke({
+          width: 3,
+          color: Assembler.manipulatorsParams.backgroundColor,
+        });
 
       this.maniulatorsGraphics[i]
-        .circle(middle.x, middle.y, this.manipulatorsParams.jointRadius)
-        .fill(this.manipulatorsParams.baseColor)
-        .stroke({ width: 3, color: this.manipulatorsParams.backgroundColor });
+        .circle(middle.x, middle.y, Assembler.manipulatorsParams.jointRadius)
+        .fill(Assembler.manipulatorsParams.baseColor)
+        .stroke({
+          width: 3,
+          color: Assembler.manipulatorsParams.backgroundColor,
+        });
 
       this.maniulatorsGraphics[i].rotation =
-        this.manipulatorsParams.rotation[i];
+        this.manipulatorsPosition.rotation[i];
 
       this.contentContainer.addChild(this.maniulatorsGraphics[i]);
     }
@@ -178,39 +187,63 @@ export class Assembler extends Building {
     makeBasicCircle(
       baseGraphics,
       Assembler.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Assembler.buildingParams.baseColor,
       true,
     );
 
     makeBasicCircle(
       baseGraphics,
       Assembler.buildingConfig.baseGraphicalSize - 6,
-      this.buildingParams.centerColor,
+      Assembler.buildingParams.centerColor,
       false,
     );
 
     baseGraphics
       .roundRect(
-        this.buildingParams.square.x,
-        this.buildingParams.square.y,
-        this.buildingParams.square.width,
-        this.buildingParams.square.height,
-        this.buildingParams.square.radius,
+        Assembler.buildingParams.square.x,
+        Assembler.buildingParams.square.y,
+        Assembler.buildingParams.square.width,
+        Assembler.buildingParams.square.height,
+        Assembler.buildingParams.square.radius,
       )
-      .fill(this.buildingParams.square.color);
+      .fill(Assembler.buildingParams.square.color);
 
     baseGraphics
-      .moveTo(-this.buildingParams.grid.gap, -this.buildingParams.grid.length)
-      .lineTo(-this.buildingParams.grid.gap, this.buildingParams.grid.length)
-      .moveTo(this.buildingParams.grid.gap, -this.buildingParams.grid.length)
-      .lineTo(this.buildingParams.grid.gap, this.buildingParams.grid.length)
-      .moveTo(-this.buildingParams.grid.length, -this.buildingParams.grid.gap)
-      .lineTo(this.buildingParams.grid.length, -this.buildingParams.grid.gap)
-      .moveTo(-this.buildingParams.grid.length, this.buildingParams.grid.gap)
-      .lineTo(this.buildingParams.grid.length, this.buildingParams.grid.gap)
+      .moveTo(
+        -Assembler.buildingParams.grid.gap,
+        -Assembler.buildingParams.grid.length,
+      )
+      .lineTo(
+        -Assembler.buildingParams.grid.gap,
+        Assembler.buildingParams.grid.length,
+      )
+      .moveTo(
+        Assembler.buildingParams.grid.gap,
+        -Assembler.buildingParams.grid.length,
+      )
+      .lineTo(
+        Assembler.buildingParams.grid.gap,
+        Assembler.buildingParams.grid.length,
+      )
+      .moveTo(
+        -Assembler.buildingParams.grid.length,
+        -Assembler.buildingParams.grid.gap,
+      )
+      .lineTo(
+        Assembler.buildingParams.grid.length,
+        -Assembler.buildingParams.grid.gap,
+      )
+      .moveTo(
+        -Assembler.buildingParams.grid.length,
+        Assembler.buildingParams.grid.gap,
+      )
+      .lineTo(
+        Assembler.buildingParams.grid.length,
+        Assembler.buildingParams.grid.gap,
+      )
       .stroke({
-        width: this.buildingParams.grid.width,
-        color: this.buildingParams.centerColor,
+        width: Assembler.buildingParams.grid.width,
+        color: Assembler.buildingParams.centerColor,
       });
 
     Assembler.baseTexture = generateTextureFromOrigin(baseGraphics);
@@ -219,24 +252,24 @@ export class Assembler extends Building {
   animation(delta: number) {
     for (let i = 0; i < this.maniulatorsGraphics.length; i++) {
       if (
-        this.manipulatorsParams.rotation[i] <=
-        this.manipulatorsParams.minRotation
+        this.manipulatorsPosition.rotation[i] <=
+        Assembler.manipulatorsParams.minRotation
       ) {
-        this.manipulatorsParams.direction[i] = 1;
+        this.manipulatorsPosition.direction[i] = 1;
       } else if (
-        this.manipulatorsParams.rotation[i] >=
-        this.manipulatorsParams.maxRotation
+        this.manipulatorsPosition.rotation[i] >=
+        Assembler.manipulatorsParams.maxRotation
       ) {
-        this.manipulatorsParams.direction[i] = -1;
+        this.manipulatorsPosition.direction[i] = -1;
       }
 
-      this.manipulatorsParams.rotation[i] +=
-        this.manipulatorsParams.speed *
+      this.manipulatorsPosition.rotation[i] +=
+        Assembler.manipulatorsParams.speed *
         delta *
-        this.manipulatorsParams.direction[i];
+        this.manipulatorsPosition.direction[i];
 
       this.maniulatorsGraphics[i].rotation =
-        this.manipulatorsParams.rotation[i];
+        this.manipulatorsPosition.rotation[i];
     }
   }
 }
