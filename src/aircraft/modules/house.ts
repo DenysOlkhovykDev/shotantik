@@ -27,25 +27,26 @@ export class House extends Building {
     { resourceName: "Water", amount: 5 },
   ];
 
+  static antennasParams = {
+    totalAmount: 3,
+    angleOffset: Math.PI / 4,
+    color: "#000000",
+  };
+
+  static buildingParams = {
+    baseColor: "#72ac4a",
+    centerColor: "#5b8937",
+  };
+
   // contentContainer
   // ├── antennasGraphics
   // ├── baseGraphics
 
   antennasGraphics: Graphics[] = [];
-  antennasParams = {
-    totalAmount: 3,
-    currentAmount: 3,
-    angleOffset: Math.PI / 4,
-    color: "#000000",
-  };
 
-  buildingParams = {
-    changeSizeDelay: 300,
-    isGrowing: true,
-    aircraftize: 1,
-    baseColor: "#72ac4a",
-    centerColor: "#5b8937",
-  };
+  antennasState = { currentAmount: 3 };
+
+  buildingState = { growingDirection: 1, size: 1, changeSizeDelay: 300 };
 
   constructor(x: number, y: number) {
     super(x, y, "House");
@@ -66,13 +67,13 @@ export class House extends Building {
   }
 
   private makeAntennas() {
-    for (let i = 0; i < this.antennasParams.currentAmount; i++) {
+    for (let i = 0; i < this.antennasState.currentAmount; i++) {
       this.antennasGraphics[i] = new Graphics();
 
-      const { angle } = getRadialPoint(i, this.antennasParams.totalAmount, 1);
+      const { angle } = getRadialPoint(i, House.antennasParams.totalAmount, 1);
 
-      const cos = Math.cos(angle + this.antennasParams.angleOffset);
-      const sin = Math.sin(angle + this.antennasParams.angleOffset);
+      const cos = Math.cos(angle + House.antennasParams.angleOffset);
+      const sin = Math.sin(angle + House.antennasParams.angleOffset);
 
       const x1 = cos * (House.buildingConfig.baseGraphicalSize - 5);
       const y1 = sin * (House.buildingConfig.baseGraphicalSize - 5);
@@ -83,9 +84,9 @@ export class House extends Building {
       this.antennasGraphics[i]
         .moveTo(x1, y1)
         .lineTo(x2, y2)
-        .stroke({ width: 4, color: this.antennasParams.color })
+        .stroke({ width: 4, color: House.antennasParams.color })
         .circle(x2, y2, 4)
-        .fill(this.antennasParams.color);
+        .fill(House.antennasParams.color);
 
       this.contentContainer.addChild(this.antennasGraphics[i]);
     }
@@ -99,14 +100,14 @@ export class House extends Building {
     makeBasicCircle(
       baseGraphics,
       House.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      House.buildingParams.baseColor,
       true,
     );
 
     makeBasicCircle(
       baseGraphics,
       House.buildingConfig.baseGraphicalSize - 18,
-      this.buildingParams.centerColor,
+      House.buildingParams.centerColor,
       false,
     );
 
@@ -115,27 +116,27 @@ export class House extends Building {
 
   private updateAntennasVisibility() {
     for (let i = 0; i < this.antennasGraphics.length; i++) {
-      this.antennasGraphics[i].visible = i < this.antennasParams.currentAmount;
+      this.antennasGraphics[i].visible = i < this.antennasState.currentAmount;
     }
   }
 
   animation(delta: number) {
-    if (this.buildingParams.changeSizeDelay <= 0) {
-      const direction = this.buildingParams.isGrowing ? 1 : -1;
-      this.buildingParams.aircraftize += 0.01 * delta * direction;
-      if (this.buildingParams.aircraftize > 1.1) {
-        this.buildingParams.isGrowing = false;
+    if (this.buildingState.changeSizeDelay <= 0) {
+      this.buildingState.size +=
+        0.01 * delta * this.buildingState.growingDirection;
+      if (this.buildingState.size > 1.1) {
+        this.buildingState.growingDirection = -1;
         // this.antennasParams.currentAmount--;
         // this.updateAntennasVisibility();
       }
-      if (this.buildingParams.aircraftize <= 1) {
-        this.buildingParams.isGrowing = true;
-        this.buildingParams.changeSizeDelay = 300;
+      if (this.buildingState.size <= 1) {
+        this.buildingState.growingDirection = 1;
+        this.buildingState.changeSizeDelay = 300;
       }
 
-      this.contentContainer.scale.set(this.buildingParams.aircraftize);
+      this.contentContainer.scale.set(this.buildingState.size);
     } else {
-      this.buildingParams.changeSizeDelay -= delta;
+      this.buildingState.changeSizeDelay -= delta;
     }
   }
 }

@@ -18,7 +18,7 @@ interface Particle {
 }
 
 export class Engine extends Building {
-  static readonly buildingConfig: BuildingConfig = {
+  static buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 12,
 
@@ -39,13 +39,7 @@ export class Engine extends Building {
     { resourceName: "Truss", amount: 1 },
   ];
 
-  // contentContainer
-  // ├── particle
-  // ├── propellerGraphics
-  // ├── baseGraphics
-
-  propellerGraphics: Graphics = new Graphics();
-  propellerParams = {
+  static propellerParams = {
     amount: 3,
     size: 7,
     strokeColor: "#000000",
@@ -53,7 +47,7 @@ export class Engine extends Building {
     rotationSpeed: 0.035,
   };
 
-  decoPropellerParams = {
+  static decoPropellerParams = {
     amount: 3,
     tracesWidth: 1.6,
     traceRadiuses: [
@@ -64,9 +58,16 @@ export class Engine extends Building {
     color: "#a7a7a7",
   };
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#c9c9c9",
   };
+
+  // contentContainer
+  // ├── particle
+  // ├── propellerGraphics
+  // ├── baseGraphics
+
+  propellerGraphics: Graphics = new Graphics();
 
   particles: Particle[] = [];
   particlesColor = "#000000";
@@ -110,27 +111,27 @@ export class Engine extends Building {
   }
 
   private createPropellerBlades() {
-    for (let i = 0; i < this.propellerParams.amount; i++) {
+    for (let i = 0; i < Engine.propellerParams.amount; i++) {
       const { x: x1, y: y1 } = getRadialPoint(
         i * 8,
-        this.propellerParams.amount * 8,
+        Engine.propellerParams.amount * 8,
         Engine.buildingConfig.baseGraphicalSize,
       );
 
       const { x: x2, y: y2 } = getRadialPoint(
         i * 8 - 1,
-        this.propellerParams.amount * 8,
-        Engine.buildingConfig.baseGraphicalSize + this.propellerParams.size,
+        Engine.propellerParams.amount * 8,
+        Engine.buildingConfig.baseGraphicalSize + Engine.propellerParams.size,
       );
 
       this.propellerGraphics.moveTo(x1, y1).lineTo(x2, y2).stroke({
         width: 14,
-        color: this.propellerParams.strokeColor,
+        color: Engine.propellerParams.strokeColor,
         cap: "round",
       });
       this.propellerGraphics.moveTo(x1, y1).lineTo(x2, y2).stroke({
         width: 10,
-        color: this.propellerParams.wingColor,
+        color: Engine.propellerParams.wingColor,
         cap: "round",
       });
     }
@@ -145,7 +146,7 @@ export class Engine extends Building {
     makeBasicCircle(
       baseGraphics,
       Engine.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Engine.buildingParams.baseColor,
       true,
     );
 
@@ -155,47 +156,54 @@ export class Engine extends Building {
   }
 
   private makeDecorativePropellerBlades(baseGraphics: Graphics) {
-    baseGraphics.circle(0, 0, 3).fill(this.decoPropellerParams.color);
+    baseGraphics.circle(0, 0, 3).fill(Engine.decoPropellerParams.color);
 
-    for (let i = 0; i < this.decoPropellerParams.amount; i++) {
+    for (let i = 0; i < Engine.decoPropellerParams.amount; i++) {
       const { x: x1, y: y1 } = getRadialPoint(
         i,
-        this.decoPropellerParams.amount,
+        Engine.decoPropellerParams.amount,
         Engine.buildingConfig.baseGraphicalSize - 15,
       );
 
       const { x: x2, y: y2 } = getRadialPoint(
         i,
-        this.decoPropellerParams.amount,
+        Engine.decoPropellerParams.amount,
         Engine.buildingConfig.baseGraphicalSize - 4,
       );
 
       baseGraphics.moveTo(x1, y1).lineTo(x2, y2);
 
-      baseGraphics.stroke({ width: 6, color: this.decoPropellerParams.color });
+      baseGraphics.stroke({
+        width: 6,
+        color: Engine.decoPropellerParams.color,
+      });
 
-      const { angle } = getRadialPoint(i, this.decoPropellerParams.amount, 1);
+      const { angle } = getRadialPoint(i, Engine.decoPropellerParams.amount, 1);
 
-      for (let j = 0; j < this.decoPropellerParams.traceRadiuses.length; j++) {
+      for (
+        let j = 0;
+        j < Engine.decoPropellerParams.traceRadiuses.length;
+        j++
+      ) {
         const startX =
-          Math.cos(angle - this.decoPropellerParams.tracesWidth) *
-          this.decoPropellerParams.traceRadiuses[j];
+          Math.cos(angle - Engine.decoPropellerParams.tracesWidth) *
+          Engine.decoPropellerParams.traceRadiuses[j];
         const startY =
-          Math.sin(angle - this.decoPropellerParams.tracesWidth) *
-          this.decoPropellerParams.traceRadiuses[j];
+          Math.sin(angle - Engine.decoPropellerParams.tracesWidth) *
+          Engine.decoPropellerParams.traceRadiuses[j];
 
         baseGraphics.moveTo(startX, startY);
         baseGraphics.arc(
           0,
           0,
-          this.decoPropellerParams.traceRadiuses[j],
-          angle - this.decoPropellerParams.tracesWidth,
+          Engine.decoPropellerParams.traceRadiuses[j],
+          angle - Engine.decoPropellerParams.tracesWidth,
           angle,
         );
 
         baseGraphics.stroke({
           width: j + 1,
-          color: this.decoPropellerParams.color,
+          color: Engine.decoPropellerParams.color,
         });
       }
     }
@@ -203,7 +211,7 @@ export class Engine extends Building {
 
   animation(delta: number, movingAngle?: number) {
     this.propellerGraphics.rotation +=
-      this.propellerParams.rotationSpeed * delta;
+      Engine.propellerParams.rotationSpeed * delta;
 
     const isMoving = movingAngle !== undefined;
     const backAngle = isMoving ? movingAngle + this.geometry.orientation : 0;

@@ -7,7 +7,7 @@ import {
 import { getRadialPoint, getRadialLine } from "@utils/basic-geometry";
 
 export class Extractor extends Building {
-  static readonly buildingConfig: BuildingConfig = {
+  static buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
@@ -32,30 +32,34 @@ export class Extractor extends Building {
     result: "Metal",
   };
 
-  // contentContainer
-  // ├── antennasGraphics
-  // ├── baseGraphics
-
-  antennasGraphics: Graphics[] = [];
-  antennasParams = {
+  static antennasParams = {
     amount: 4,
     angleOffset: Math.PI / 4,
-    offsetFromCenter: 0,
-    movingDirection: 1,
     color: "#000000",
   };
 
-  spikeParams = {
+  static spikeParams = {
     amount: 4,
     shape: new Triangle(-10, 0, 6, 10, 6, -10),
     color: "#b06667",
     stroke: "#000000",
   };
 
-  buildingParams = {
+  static buildingParams = {
     baseColor: "#b06667",
     ringColor: "#965859",
     centerColor: "#c08484",
+  };
+
+  // contentContainer
+  // ├── antennasGraphics
+  // ├── baseGraphics
+
+  antennasGraphics: Graphics[] = [];
+
+  antennasPosition = {
+    offsetFromCenter: 0,
+    movingDirection: 1,
   };
 
   constructor(x: number, y: number) {
@@ -80,13 +84,13 @@ export class Extractor extends Building {
   }
 
   private makeAntennas() {
-    for (let i = 0; i < this.antennasParams.amount; i++) {
+    for (let i = 0; i < Extractor.antennasParams.amount; i++) {
       this.antennasGraphics[i] = new Graphics();
 
-      const { angle } = getRadialPoint(i, this.antennasParams.amount, 1);
+      const { angle } = getRadialPoint(i, Extractor.antennasParams.amount, 1);
 
-      const cos = Math.cos(angle + this.antennasParams.angleOffset);
-      const sin = Math.sin(angle + this.antennasParams.angleOffset);
+      const cos = Math.cos(angle + Extractor.antennasParams.angleOffset);
+      const sin = Math.sin(angle + Extractor.antennasParams.angleOffset);
 
       const x1 = cos * (Extractor.buildingConfig.baseGraphicalSize - 5);
       const y1 = sin * (Extractor.buildingConfig.baseGraphicalSize - 5);
@@ -97,9 +101,9 @@ export class Extractor extends Building {
       this.antennasGraphics[i]
         .moveTo(x1, y1)
         .lineTo(x2, y2)
-        .stroke({ width: 4, color: this.antennasParams.color })
+        .stroke({ width: 4, color: Extractor.antennasParams.color })
         .circle(x2, y2, 4)
-        .fill(this.antennasParams.color);
+        .fill(Extractor.antennasParams.color);
 
       this.contentContainer.addChild(this.antennasGraphics[i]);
     }
@@ -113,7 +117,7 @@ export class Extractor extends Building {
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize,
-      this.buildingParams.baseColor,
+      Extractor.buildingParams.baseColor,
       true,
     );
 
@@ -122,14 +126,14 @@ export class Extractor extends Building {
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize,
-      this.buildingParams.ringColor,
+      Extractor.buildingParams.ringColor,
       false,
     );
 
     makeBasicCircle(
       baseGraphics,
       Extractor.buildingConfig.baseGraphicalSize - 5,
-      this.buildingParams.centerColor,
+      Extractor.buildingParams.centerColor,
       false,
     );
 
@@ -139,7 +143,7 @@ export class Extractor extends Building {
   }
 
   private makeSpikes(baseGraphics: Graphics) {
-    for (let i = 0; i < this.spikeParams.amount; i++) {
+    for (let i = 0; i < Extractor.spikeParams.amount; i++) {
       const {
         startX: sx,
         startY: sy,
@@ -147,14 +151,14 @@ export class Extractor extends Building {
         endY: ey,
       } = getRadialLine(
         i * 10 + 4,
-        this.spikeParams.amount * 10,
+        Extractor.spikeParams.amount * 10,
         Extractor.buildingConfig.baseGraphicalSize - 1,
         Extractor.buildingConfig.baseGraphicalSize + 8,
       );
 
       const { x: x1, y: y1 } = getRadialPoint(
         i * 10 + 1,
-        this.spikeParams.amount * 10,
+        Extractor.spikeParams.amount * 10,
         Extractor.buildingConfig.baseGraphicalSize,
       );
 
@@ -163,9 +167,9 @@ export class Extractor extends Building {
         .lineTo(ex, ey)
         .lineTo(x1, y1)
         .closePath()
-        .fill(this.spikeParams.color);
+        .fill(Extractor.spikeParams.color);
 
-      baseGraphics.stroke({ width: 2, color: this.spikeParams.stroke });
+      baseGraphics.stroke({ width: 2, color: Extractor.spikeParams.stroke });
 
       const {
         startX: sx2,
@@ -174,14 +178,14 @@ export class Extractor extends Building {
         endY: ey2,
       } = getRadialLine(
         i * 10 + 6,
-        this.spikeParams.amount * 10,
+        Extractor.spikeParams.amount * 10,
         Extractor.buildingConfig.baseGraphicalSize - 1,
         Extractor.buildingConfig.baseGraphicalSize + 8,
       );
 
       const { x: x2, y: y2 } = getRadialPoint(
         i * 10 + 9,
-        this.spikeParams.amount * 10,
+        Extractor.spikeParams.amount * 10,
         Extractor.buildingConfig.baseGraphicalSize,
       );
 
@@ -190,9 +194,9 @@ export class Extractor extends Building {
         .lineTo(ex2, ey2)
         .lineTo(x2, y2)
         .closePath()
-        .fill(this.spikeParams.color);
+        .fill(Extractor.spikeParams.color);
 
-      baseGraphics.stroke({ width: 2, color: this.spikeParams.stroke });
+      baseGraphics.stroke({ width: 2, color: Extractor.spikeParams.stroke });
     }
   }
 
@@ -212,7 +216,7 @@ export class Extractor extends Building {
       .lineTo(points[1].x, points[1].y)
       .lineTo(points[2].x, points[2].y)
       .closePath()
-      .fill(this.buildingParams.baseColor);
+      .fill(Extractor.buildingParams.baseColor);
 
     const points2 = [];
     for (let i = 0; i < 3; i++) {
@@ -229,26 +233,26 @@ export class Extractor extends Building {
       .lineTo(points2[1].x, points2[1].y)
       .lineTo(points2[2].x, points2[2].y)
       .closePath()
-      .fill(this.buildingParams.centerColor);
+      .fill(Extractor.buildingParams.centerColor);
   }
 
   animation(delta: number) {
-    this.antennasParams.offsetFromCenter +=
-      0.1 * delta * this.antennasParams.movingDirection;
+    this.antennasPosition.offsetFromCenter +=
+      0.1 * delta * this.antennasPosition.movingDirection;
 
-    if (this.antennasParams.offsetFromCenter > -2)
-      this.antennasParams.movingDirection = -1;
-    if (this.antennasParams.offsetFromCenter < -12)
-      this.antennasParams.movingDirection = 1;
+    if (this.antennasPosition.offsetFromCenter > -2)
+      this.antennasPosition.movingDirection = -1;
+    if (this.antennasPosition.offsetFromCenter < -12)
+      this.antennasPosition.movingDirection = 1;
 
-    for (let i = 0; i < this.antennasParams.amount; i++) {
-      const { angle } = getRadialPoint(i, this.antennasParams.amount, 1);
+    for (let i = 0; i < Extractor.antennasParams.amount; i++) {
+      const { angle } = getRadialPoint(i, Extractor.antennasParams.amount, 1);
 
-      const cos = Math.cos(angle + this.antennasParams.angleOffset);
-      const sin = Math.sin(angle + this.antennasParams.angleOffset);
+      const cos = Math.cos(angle + Extractor.antennasParams.angleOffset);
+      const sin = Math.sin(angle + Extractor.antennasParams.angleOffset);
 
-      const x1 = cos * this.antennasParams.offsetFromCenter;
-      const y1 = sin * this.antennasParams.offsetFromCenter;
+      const x1 = cos * this.antennasPosition.offsetFromCenter;
+      const y1 = sin * this.antennasPosition.offsetFromCenter;
 
       this.antennasGraphics[i].position.set(x1, y1);
     }

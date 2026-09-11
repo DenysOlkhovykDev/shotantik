@@ -7,7 +7,7 @@ import {
 import { getRadialPoint, getRadialLine } from "@utils/basic-geometry";
 
 export class Collector extends Building {
-  static readonly buildingConfig: BuildingConfig = {
+  static buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 32,
 
