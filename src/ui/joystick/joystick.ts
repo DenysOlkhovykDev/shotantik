@@ -1,5 +1,5 @@
 import { Container, Graphics, FederatedPointerEvent } from "pixi.js";
-import { gameScreen } from "../../game-config";
+import { getJoyStickPosition } from "../ui-config";
 
 class Joystick extends Container {
   private base: Graphics;
@@ -18,10 +18,7 @@ class Joystick extends Container {
 
     this.eventMode = "static";
 
-    this.position.set(
-      gameScreen.width / 2,
-      gameScreen.height - gameScreen.height / 15,
-    );
+    this.position.set(getJoyStickPosition().x, getJoyStickPosition().y);
 
     this.base = new Graphics()
       .circle(0, 0, this.radius)

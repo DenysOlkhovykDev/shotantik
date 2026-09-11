@@ -2,7 +2,7 @@ import { Container, Texture } from "pixi.js";
 import { Building, BuildingConfig } from "@aircraft/building";
 import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
-import { JobType, Task } from "@dashboard/task";
+import { JobType, Task, TaskStatus } from "@dashboard/task";
 import { Resource } from "@resources/resource";
 
 import { Platform } from "@aircraft/modules/platform";
@@ -141,16 +141,12 @@ class Aircraft {
 
       const unsubscribe = source.unsubscribeResourceListners(
         (task: Task, resource: Resource) => {
-          blueprint.onBlueprintResourceAdded(
-            task,
-            resource,
-            this.airCraftLayer,
-          );
+          blueprint.onBlueprintResourceAdded(task, resource);
         },
       );
 
       blueprint.unsubscribe = unsubscribe;
-      blueprint.blueprinToBuilding(this.airCraftLayer);
+      blueprint.blueprinToBuilding();
     }
 
     return blueprint;
@@ -254,19 +250,42 @@ class Aircraft {
     }
   }
 
+  public findWhereToReuseUselessResource(resource: Resource) {
+    for (const blueprint of [...this.blueprints]) {
+      blueprint.reuseUselessResource(resource);
+    }
+  }
+
   public deleteBlueprint(blueprint: Blueprint) {
     const index = this.blueprints.indexOf(blueprint);
 
     if (index === -1) return;
 
-    for (let i = 0; i < this.blueprints[index].tasks.length; i++) {
-      const resource = this.blueprints[index].tasks[i].reservedResource;
+    for (let i = 0; i < blueprint.tasks.length; i++) {
+      const resource = blueprint.tasks[i].reservedResource;
+
       if (resource !== undefined) {
         resource.isReserved = false;
       }
+
+      blueprint.tasks[i].status = TaskStatus.completed;
     }
 
+    const linkedBuilding =
+      blueprint.links[0].from === blueprint
+        ? blueprint.links[0].to
+        : blueprint.links[0].from;
+
+    linkedBuilding.refreshTasks();
+
     blueprint.cleanup();
+
+    for (let i = 0; i < linkedBuilding.resourceStorage.recources.length; i++) {
+      const resource = linkedBuilding.resourceStorage.recources[i];
+      if (!resource.isReserved) {
+        this.findWhereToReuseUselessResource(resource);
+      }
+    }
 
     for (const link of blueprint.links) {
       link.graphic.destroy();

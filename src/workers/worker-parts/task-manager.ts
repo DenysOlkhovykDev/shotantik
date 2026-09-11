@@ -87,7 +87,6 @@ export class TaskManager {
         this.task?.reservedResource,
       );
 
-      this.task.reservedResource = undefined;
       return resource;
     }
   }

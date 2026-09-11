@@ -1,7 +1,7 @@
 import { Container, Graphics } from "pixi.js";
-import { gameScreen } from "../../game-config";
 import { getDistance } from "@utils/basic-geometry";
 import { getGlobalWorldCoordinates } from "../../main";
+import { getGameScreenCenter } from "../ui-config";
 
 export class Compass extends Container {
   graphics = new Graphics();
@@ -18,8 +18,8 @@ export class Compass extends Container {
   private draw(x: number, y: number) {
     this.graphics.clear();
 
-    const centerX = gameScreen.width / 2;
-    const centerY = gameScreen.height / 2;
+    const centerX = getGameScreenCenter().x;
+    const centerY = getGameScreenCenter().y;
 
     const dx = x - centerX;
     const dy = y - centerY;
@@ -45,8 +45,8 @@ export class Compass extends Container {
   }
 
   public updateCompassPosition() {
-    const centerX = gameScreen.width / 2;
-    const centerY = gameScreen.height / 2;
+    const centerX = getGameScreenCenter().x;
+    const centerY = getGameScreenCenter().y;
 
     const { x, y } = getGlobalWorldCoordinates(
       this.compassTargetX,

@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
-import { gameScreen } from "../../game-config";
 import { Display } from "./display";
 import { aircraft } from "@aircraft/aircraft";
 import { constructionManager } from "@construction/manager";
 import { InfoButton } from "./info-button";
 import { DeleteButton } from "./delete-button";
+import { getHeaderPosition } from "../ui-config";
 
 class Header extends Container {
   display: Display;
@@ -22,7 +22,7 @@ class Header extends Container {
     this.addChild(this.deleteButton);
     this.addChild(this.infoButton);
 
-    this.position.set(gameScreen.width / 2, 20);
+    this.position.set(getHeaderPosition().x, getHeaderPosition().y);
   }
 
   updateHeader() {
