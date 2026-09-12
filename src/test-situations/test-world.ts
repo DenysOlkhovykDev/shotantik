@@ -1,6 +1,9 @@
 import { Container, Graphics } from "pixi.js";
+import { backgroundManager } from "../backround/manager";
 
 export function createTestWorld(worldLayer: Container) {
+  worldLayer.addChild(backgroundManager);
+
   const testCircle = new Graphics()
     .circle(400, 100, 100)
     .stroke({ width: 4, color: "#000000" })

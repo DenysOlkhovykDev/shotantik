@@ -7,7 +7,7 @@ let centerY = getGameScreenCenter().y;
 const ship = {
   x: 0,
   y: 0,
-  m: 1,
+  m: 0.5,
   speed: 2,
 };
 
@@ -47,7 +47,7 @@ export function moveWorld(
   worldLayer.pivot.set(ship.x, ship.y);
   worldLayer.position.set(centerX, centerY);
 
-  worldLayer.rotation -= vr / 200;
+  worldLayer.rotation -= vr / 150;
 
   worldLayer.scale.set(ship.m);
   buildingsLayer.scale.set(ship.m);

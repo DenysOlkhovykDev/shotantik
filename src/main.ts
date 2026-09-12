@@ -50,9 +50,10 @@ const worldLayer = new Container(); // Temp
 
 createTestSituation(worldLayer);
 
+app.stage.addChild(worldLayer); // Temp
+
 aircraft.initilaizeAircraft(app.stage);
 
-app.stage.addChild(worldLayer); // Temp
 app.stage.addChild(UIcontainer); // Temp
 
 app.stage.on("pointerdown", (event) => {
