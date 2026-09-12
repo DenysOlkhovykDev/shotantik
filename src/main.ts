@@ -78,7 +78,9 @@ app.stage.on("pointerdown", (event) => {
 
 app.ticker.add((delta) => {
   if (!pauseManager.isPaused()) {
-    const deltaTime = isTest ? 1 : delta.deltaTime * speedManager.getSpeed();
+    const deltaTime = isTest
+      ? 1 * speedManager.getSpeed()
+      : delta.deltaTime * speedManager.getSpeed();
 
     const angle = moveWorld(
       deltaTime,

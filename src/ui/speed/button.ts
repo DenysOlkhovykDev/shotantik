@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { speedManager } from "./manager";
+import { getSpeedButtonPosition } from "../ui-config";
 
 class SpeedButton extends Container {
   private symbol = new Graphics();
@@ -15,7 +16,9 @@ class SpeedButton extends Container {
   }
 
   private createBackground(): void {
-    this.background.rect(60, 20, 30, 40).fill({ color: "#e5ecea", alpha: 0 });
+    this.background
+      .rect(getSpeedButtonPosition().x, getSpeedButtonPosition().y, 30, 40)
+      .fill({ color: "#e5ecea", alpha: 0 });
 
     this.background.eventMode = "static";
 

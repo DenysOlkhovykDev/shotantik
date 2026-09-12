@@ -1,5 +1,5 @@
 import { Scenario } from "@test-situations/test-situation";
-import { gameScreen } from "../../src/game-config";
+import { getConstructionButtonPosition } from "../../src/ui/ui-config";
 
 import {
   findFirstBlueprint,
@@ -69,8 +69,8 @@ building menu`,
         showCondition: () => hasClickedOnPlatform(),
         hideCondition: () => hasClickedOnConstructionMenuButton(),
         needOkButton: false,
-        x: gameScreen.width / 2,
-        y: gameScreen.height - gameScreen.height / 20,
+        x: getConstructionButtonPosition().x,
+        y: getConstructionButtonPosition().y,
       },
       {
         text: "Select the Mixer",

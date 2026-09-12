@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { pauseManager } from "./manager";
+import { getPauseButtonPosition } from "../ui-config";
 
 class PauseButton extends Container {
   private symbol = new Graphics();
@@ -15,7 +16,9 @@ class PauseButton extends Container {
   }
 
   private createBackground() {
-    this.background.rect(20, 20, 30, 40).fill({ color: "#e5ecea", alpha: 0 });
+    this.background
+      .rect(getPauseButtonPosition().x, getPauseButtonPosition().y, 30, 40)
+      .fill({ color: "#e5ecea", alpha: 0 });
 
     this.background.eventMode = "static";
 

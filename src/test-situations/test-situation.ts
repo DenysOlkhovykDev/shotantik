@@ -12,7 +12,13 @@ import { collisionBlueprints } from "@test-scenarios/collision-blueprints";
 import { constructionOfBuildings } from "@test-scenarios/construction-of-buildings";
 import { craftingResourcesForConstruction } from "@test-scenarios/crafting-resources-for-construction";
 import { craftingResources } from "@test-scenarios/crafting-resources";
+import { deleteBlueprint } from "@test-scenarios/delete-blueprint";
+import { deleteBuilding } from "@test-scenarios/delete-building";
+import { deliveringPriorities } from "@test-scenarios/delivering-priorities";
 import { differentAngles } from "@test-scenarios/different-angles";
+import { interfacePause } from "@test-scenarios/interface-pause";
+import { interfaceSpeed } from "@test-scenarios/interface-speed";
+import { joystickMoving } from "@test-scenarios/joystick-moving";
 import { movingBlueprints } from "@test-scenarios/moving-blueprints";
 import { movingResources } from "@test-scenarios/moving-resources";
 import { multipleConstructionOfBuildings } from "@test-scenarios/multiple-construction-of-buildings";
@@ -20,6 +26,9 @@ import { multipleConstructionOfDifferentBuildings } from "@test-scenarios/multip
 import { multipleDelivering } from "@test-scenarios/multiple-delivering";
 import { sceneRender } from "@test-scenarios/scene-render";
 import { showingPointers } from "@test-scenarios/showing-pointers";
+import { productionPriorities } from "@test-scenarios/production-priorities";
+import { reuseResources } from "@test-scenarios/reuse-resources";
+import { constructionMenu } from "@test-scenarios/construction-menu";
 
 function getScenarioName() {
   const params = new URLSearchParams(window.location.search);
@@ -90,18 +99,27 @@ const scenarios: Record<string, Scenario> = {
   // tests
   "auto-construction-of-buildings": autoConstructionOfBuildings,
   "collision-blueprints": collisionBlueprints,
+  "construction-menu": constructionMenu,
   "construction-of-buildings": constructionOfBuildings,
+  "crafting-resources-for-construction": craftingResourcesForConstruction,
   "crafting-resources": craftingResources,
+  "delete-blueprint": deleteBlueprint,
+  "delete-building": deleteBuilding,
+  "delivering-priorities": deliveringPriorities,
   "different-angles": differentAngles,
+  "interface-pause": interfacePause,
+  "interface-speed": interfaceSpeed,
+  "joystick-moving": joystickMoving,
   "moving-blueprints": movingBlueprints,
   "moving-resources": movingResources,
   "multiple-construction-of-buildings": multipleConstructionOfBuildings,
   "multiple-construction-of-different-buildings":
     multipleConstructionOfDifferentBuildings,
   "multiple-delivering": multipleDelivering,
-  "showing-pointers": showingPointers,
-  "crafting-resources-for-construction": craftingResourcesForConstruction,
+  "production-priorities": productionPriorities,
+  "reuse-resources": reuseResources,
   "scene-render": sceneRender,
+  "showing-pointers": showingPointers,
 };
 
 export function createTestSituation(worldLayer: Container) {

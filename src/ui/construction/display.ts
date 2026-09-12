@@ -1,15 +1,15 @@
-import { Container, Graphics } from "pixi.js";
-import { gameScreen } from "../../game-config";
+import { Container } from "pixi.js";
 import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
+import { getConstructionDisplayPosition } from "../ui-config";
 
 export class ConstructionDisplay extends Container {
   constructor() {
     super();
 
     this.position.set(
-      gameScreen.width / 2,
-      gameScreen.height - gameScreen.height / 20,
+      getConstructionDisplayPosition().x,
+      getConstructionDisplayPosition().y,
     );
   }
 

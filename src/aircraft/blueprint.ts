@@ -3,9 +3,10 @@ import { Building, BuildingConfig } from "@aircraft/building";
 import { BuildingClass, aircraft } from "@aircraft/aircraft";
 import { getDistance } from "@utils/basic-geometry";
 import { Resource } from "@resources/resource";
-import { Task } from "@dashboard/task";
+import { Task, TaskStatus } from "@dashboard/task";
 import { constructionManager } from "@construction/manager";
 import { Graphics } from "pixi.js";
+import { RecipeIngredient } from "./building-parts/recipe-sign";
 
 export class Blueprint extends Building {
   static readonly blueprintConfig: BuildingConfig = {
@@ -59,6 +60,14 @@ export class Blueprint extends Building {
       return this.targetBuilding.buildingConfig;
     } else {
       return Blueprint.blueprintConfig;
+    }
+  }
+
+  public get constructionRecipe(): RecipeIngredient[] {
+    if (this.targetBuilding) {
+      return this.targetBuilding.constructionRecipe;
+    } else {
+      return Blueprint.constructionRecipe;
     }
   }
 
@@ -292,14 +301,11 @@ export class Blueprint extends Building {
     this.reservedBuildResources.push(resource);
   }
 
-  public onBlueprintResourceAdded(
-    task: Task,
-    resource: Resource,
-    container: Container,
-  ) {
+  public onBlueprintResourceAdded(task: Task, resource: Resource) {
     if (task.resource) {
       const index = this.tasks.indexOf(task);
       if (index !== -1) {
+        task.status = TaskStatus.completed;
         this.tasks.splice(index, 1);
         this.reserveBuildResource(resource);
       }
@@ -309,10 +315,20 @@ export class Blueprint extends Building {
       this.updateRecipeSign();
     }
 
-    this.blueprinToBuilding(container);
+    this.blueprinToBuilding();
   }
 
-  public blueprinToBuilding(container: Container) {
+  public reuseUselessResource(resource: Resource) {
+    const task = this.tasks.find(
+      (task) => task.resource === resource.resourceType,
+    );
+
+    if (task && !resource.isReserved) {
+      this.onBlueprintResourceAdded(task, resource);
+    }
+  }
+
+  public blueprinToBuilding() {
     const source = this.links[0]?.from;
     if (!source) return;
 

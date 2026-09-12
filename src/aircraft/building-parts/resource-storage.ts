@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { Resource } from "@resources/resource";
 import { Task } from "@dashboard/task";
+import { aircraft } from "@aircraft/aircraft";
 
 type ResourceListener = (task: Task, resource: Resource) => void;
 
@@ -84,6 +85,9 @@ export class ResourceStorage extends Container {
     this.placeResource(resource);
 
     for (const fn of this.resourceListeners) {
+      if (!resource.isReserved) {
+        aircraft.findWhereToReuseUselessResource(resource);
+      }
       if (task) {
         fn(task, resource);
       }
