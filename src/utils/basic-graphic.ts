@@ -90,3 +90,19 @@ export function makeGear(
 
   graphics.circle(0, 0, centerRadius).fill(centerColor);
 }
+
+export function makeBrighterColor(color: string, variation: number): string {
+  const value = parseInt(color.slice(1), 16);
+
+  const r = (value >> 16) & 255;
+  const g = (value >> 8) & 255;
+  const b = value & 255;
+
+  const newR = Math.max(0, Math.min(255, r + variation));
+  const newG = Math.max(0, Math.min(255, g + variation));
+  const newB = Math.max(0, Math.min(255, b + variation));
+
+  return `#${((newR << 16) | (newG << 8) | newB)
+    .toString(16)
+    .padStart(6, "0")}`;
+}
