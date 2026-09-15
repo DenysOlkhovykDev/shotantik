@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { testSettings, clickCanvas, initGame } from "./test-infra";
+import { testSettings, clickCanvas, initGame } from "./test-infra/test-infra";
 import { getGameScreenCenter } from "../src/ui/ui-config";
 
 const testName = "joystick-moving";
