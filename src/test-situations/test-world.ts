@@ -1,9 +1,6 @@
 import { Container, Graphics } from "pixi.js";
-import { backgroundManager } from "../backround/manager";
 
 export function createTestWorld(worldLayer: Container) {
-  worldLayer.addChild(backgroundManager);
-
   const testCircle = new Graphics();
 
   testCircle

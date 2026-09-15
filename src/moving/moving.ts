@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import { getGameScreenCenter } from "../ui/ui-config";
+import { backgroundManager } from "../main";
 
 let centerX = getGameScreenCenter().x;
 let centerY = getGameScreenCenter().y;
@@ -43,6 +44,10 @@ export function moveWorld(
 
   ship.x += worldVx * ship.speed * delta;
   ship.y += worldVy * ship.speed * delta;
+
+  if (import.meta.env.MODE !== "test") {
+    backgroundManager.update(ship.x, ship.y);
+  }
 
   worldLayer.pivot.set(ship.x, ship.y);
   worldLayer.position.set(centerX, centerY);

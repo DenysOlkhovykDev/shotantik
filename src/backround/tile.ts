@@ -62,8 +62,6 @@ export class BackgroundTile extends Container {
       }
     }
 
-    console.log(this.backgroundSize * this.cellSize);
-
     this.addChild(this.fogParts);
   }
 

@@ -13,6 +13,7 @@ import { gameScreen } from "./game-config";
 import { compasses } from "./ui/compass/manager";
 import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
+import { BackgroundManager } from "./backround/manager";
 
 export const app = new Application();
 
@@ -47,6 +48,10 @@ UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
 
 const worldLayer = new Container(); // Temp
+export const backgroundManager = new BackgroundManager();
+if (import.meta.env.MODE !== "test") {
+  worldLayer.addChild(backgroundManager);
+}
 
 createTestSituation(worldLayer);
 
