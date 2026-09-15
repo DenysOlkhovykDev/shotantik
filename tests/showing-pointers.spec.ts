@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { testSettings, skipFrames, initGame } from "./test-infra";
+import { testSettings, skipFrames, initGame } from "./test-infra/test-infra";
 
 const testName = "showing-pointers";
 
