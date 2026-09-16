@@ -7,7 +7,7 @@ const testName = "construction-of-buildings";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
-  await skipFrames(page, 6);
+  await skipFrames(page, 15);
 
   const screenshot = await page.locator("canvas").screenshot();
 

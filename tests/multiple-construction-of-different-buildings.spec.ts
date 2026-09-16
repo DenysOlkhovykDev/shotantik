@@ -7,7 +7,7 @@ const testName = "multiple-construction-of-different-buildings";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
-  await skipFrames(page, 30);
+  await skipFrames(page, 35);
 
   const screenshot = await page.locator("canvas").screenshot();
 

@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { testSettings, clickCanvas, initGame } from "./test-infra/test-infra";
+import {
+  testSettings,
+  clickCanvas,
+  initGame,
+  setGameReady,
+} from "./test-infra/test-infra";
 import {
   getConstructionButtonPosition,
   getGameScreenCenter,
@@ -10,6 +15,8 @@ const testName = "construction-menu";
 
 test(testName, async ({ page }) => {
   await initGame(page, testName);
+
+  await setGameReady(page);
 
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 

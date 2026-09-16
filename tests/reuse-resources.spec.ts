@@ -7,7 +7,7 @@ const testName = "reuse-resources";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
-  await skipFrames(page, 45);
+  await skipFrames(page, 65);
 
   const screenshot = await page.locator("canvas").screenshot();
 
