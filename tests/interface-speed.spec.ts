@@ -18,7 +18,7 @@ test(testName, async ({ page }) => {
     getSpeedButtonPosition().y,
   );
 
-  await skipFrames(page, 150);
+  await skipFrames(page, 160);
 
   let screenshot = await page.locator("canvas").screenshot();
 

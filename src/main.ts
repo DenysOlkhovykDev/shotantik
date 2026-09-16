@@ -9,7 +9,7 @@ import { pauseManager } from "@pause/manager";
 import { speedButton } from "@speed/button";
 import { speedManager } from "@speed/manager";
 import { constructionManager } from "@construction/manager";
-import { gameScreen } from "./game-config";
+import { gameScreen, getIsGameReady, setIsGameReady } from "./game-config";
 import { compasses } from "./ui/compass/manager";
 import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
@@ -34,6 +34,7 @@ const isTest = import.meta.env.MODE === "test";
 
 if (isTest) {
   setTestRandom();
+  (window as any).setIsGameReady = setIsGameReady;
 }
 
 const UIcontainer = new Container(); // Temp
@@ -83,7 +84,7 @@ app.stage.on("pointerdown", (event) => {
 });
 
 app.ticker.add((delta) => {
-  if (!pauseManager.isPaused()) {
+  if (!pauseManager.isPaused() && (!isTest || getIsGameReady())) {
     const deltaTime = isTest
       ? 1 * speedManager.getSpeed()
       : delta.deltaTime * speedManager.getSpeed();

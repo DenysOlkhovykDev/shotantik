@@ -6,12 +6,20 @@ export const testSettings = {
   maxDiffPixelRatio: 0.0005,
 };
 
+export async function setGameReady(page: Page) {
+  await page.evaluate(() => {
+    (window as any).setIsGameReady(true);
+  });
+}
+
 export async function skipFrames(page: Page, frames: number, step = 16.66) {
   await page.evaluate(
     ({ frames, step }) => {
       const app = (window as any).app;
 
       app.ticker.stop();
+
+      (window as any).setIsGameReady(true);
 
       let time = 0;
       const scale = 1;

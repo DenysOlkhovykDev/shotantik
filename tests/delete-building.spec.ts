@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { testSettings, clickCanvas, initGame } from "./test-infra/test-infra";
+import {
+  testSettings,
+  clickCanvas,
+  initGame,
+  setGameReady,
+} from "./test-infra/test-infra";
 import {
   getGameScreenCenter,
   getHeaderDeleteButtonPosition,
@@ -9,6 +14,8 @@ const testName = "delete-building";
 
 test(testName, async ({ page }) => {
   await initGame(page, testName);
+
+  await setGameReady(page);
 
   await clickCanvas(
     page,

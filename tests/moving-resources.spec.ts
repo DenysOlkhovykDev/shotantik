@@ -7,7 +7,7 @@ const testName = "moving-resources";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
-  await skipFrames(page, 10);
+  await skipFrames(page, 20);
 
   const screenshot = await page.locator("canvas").screenshot();
 

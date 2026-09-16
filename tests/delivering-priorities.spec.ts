@@ -7,7 +7,7 @@ const testName = "delivering-priorities";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
-  await skipFrames(page, 1);
+  await skipFrames(page, 7);
 
   const screenshot = await page.locator("canvas").screenshot();
 
