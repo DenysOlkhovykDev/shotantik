@@ -8,7 +8,7 @@ import {
 import {
   getGameScreenCenter,
   getHeaderDeleteButtonPosition,
-} from "../src/ui/ui-config";
+} from "@utils/ui-config";
 
 const testName = "delete-blueprint";
 

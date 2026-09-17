@@ -1,5 +1,5 @@
 import { Scenario } from "@test-situations/test-situation";
-import { getConstructionButtonPosition } from "../../src/ui/ui-config";
+import { getConstructionButtonPosition } from "@utils/ui-config";
 
 import {
   findFirstBlueprint,

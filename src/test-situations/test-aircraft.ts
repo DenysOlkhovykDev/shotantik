@@ -62,4 +62,11 @@ export function createAirCraftByScenario(scenario: AircraftScenario) {
     aircraft.setConstuctionSource(buildingsMap.get(blueprint.from));
     aircraft.addBlueprint(blueprint.x, blueprint.y, blueprint.buildingType);
   }
+
+  for (const blueprintRoad of scenario.buildingAlternativeRoadsTasks || []) {
+    aircraft.addAlternativeBlueprintRoad(
+      buildingsMap.get(blueprintRoad.from),
+      buildingsMap.get(blueprintRoad.to),
+    );
+  }
 }

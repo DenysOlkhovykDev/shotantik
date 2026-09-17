@@ -1,5 +1,5 @@
 import { Container, Graphics, FederatedPointerEvent } from "pixi.js";
-import { getJoyStickPosition } from "../ui-config";
+import { getJoyStickPosition } from "@utils/ui-config";
 
 class Joystick extends Container {
   private base: Graphics;

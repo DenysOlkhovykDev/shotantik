@@ -36,8 +36,8 @@ export interface BuildingConfig {
 
   baseGraphicalSize: number;
 
-  minLinkLength: number;
-  maxLinkLength: number;
+  minRoadLength: number;
+  maxRoadLength: number;
 }
 
 export abstract class Building {
@@ -60,7 +60,7 @@ export abstract class Building {
   static baseTexture: Texture;
   geometry: GeometryCalulator;
 
-  links: Road[] = [];
+  roads: Road[] = [];
 
   priorityForTasks: number = -1;
   taskManager: TaskManager;
@@ -159,8 +159,8 @@ export abstract class Building {
     return this.geometry.getBoundsCenterInWorld();
   }
 
-  addLinkedBuilding(line: Road) {
-    this.links.push(line);
+  addRoad(road: Road) {
+    this.roads.push(road);
   }
 
   // TaskManager

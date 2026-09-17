@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { getConstructionButtonPosition } from "../ui-config";
+import { getConstructionButtonPosition } from "@utils/ui-config";
 
 export class ConstructionButton extends Container {
   graphic = new Graphics();

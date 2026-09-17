@@ -18,8 +18,8 @@ export class GlassMaker extends Building {
 
     baseGraphicalSize: 20,
 
-    minLinkLength: 120,
-    maxLinkLength: 200,
+    minRoadLength: 120,
+    maxRoadLength: 200,
   };
 
   static constructionRecipe = [

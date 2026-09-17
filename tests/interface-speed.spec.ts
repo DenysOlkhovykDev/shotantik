@@ -5,7 +5,7 @@ import {
   clickCanvas,
   initGame,
 } from "./test-infra/test-infra";
-import { getSpeedButtonPosition } from "../src/ui/ui-config";
+import { getSpeedButtonPosition } from "@utils/ui-config";
 
 const testName = "interface-speed";
 

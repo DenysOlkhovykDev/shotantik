@@ -1,7 +1,8 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
-import { getConstructionDisplayPosition } from "../ui-config";
+import { getConstructionDisplayPosition } from "@utils/ui-config";
+import { Road } from "@roads/road";
 
 export class ConstructionDisplay extends Container {
   constructor() {
@@ -15,15 +16,20 @@ export class ConstructionDisplay extends Container {
 
   public displayBuildingType(buildingName: string | undefined) {
     if (buildingName) {
-      const BuildingClass = buildingMap[buildingName] || Platform;
+      if (buildingName == "Road") {
+        const root = Road.crateRoadImage();
 
-      const building = new BuildingClass(0, 0);
+        root.eventMode = "none";
+        this.addChild(root);
+      } else {
+        const BuildingClass = buildingMap[buildingName] || Platform;
 
-      building.root.scale = 0.8;
+        const building = new BuildingClass(0, 0);
 
-      building.root.eventMode = "none";
-
-      this.addChild(building.root);
+        building.root.scale = 0.8;
+        building.root.eventMode = "none";
+        this.addChild(building.root);
+      }
       this.visible = true;
     } else {
       this.removeChildren();
@@ -31,7 +37,3 @@ export class ConstructionDisplay extends Container {
     }
   }
 }
-
-// Мені воно не дуже подобається як виглядає
-
-// Треба кнопку відміни будівництва

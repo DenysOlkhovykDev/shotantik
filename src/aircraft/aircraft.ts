@@ -67,6 +67,9 @@ class Aircraft {
     const BuildingClass = buildingMap[buildingType] || Platform;
     const building = new BuildingClass(x, y);
 
+    this.buildings.push(building);
+    this.airCraftLayer.addChild(building.root);
+
     const from =
       this.buildings.length > 0 && this.constructionSource !== undefined
         ? this.buildings[this.constructionSource]
@@ -74,18 +77,7 @@ class Aircraft {
 
     if (from) {
       building.orientByBuildDirection(from);
-    }
-
-    this.buildings.push(building);
-    this.airCraftLayer.addChild(building.root);
-
-    if (from) {
-      const line = new Road(from, building);
-
-      from.addLinkedBuilding(line);
-      building.addLinkedBuilding(line);
-
-      this.airCraftLayer.addChildAt(line.graphic, 0);
+      this.addRoad(from, building);
     }
 
     return building;
@@ -93,22 +85,20 @@ class Aircraft {
 
   public addBlueprint(x: number, y: number, buildingType: string) {
     const BuildingClass = buildingMap[buildingType] || Platform;
-
     const blueprint = new Blueprint(x, y, BuildingClass, buildingType);
 
     this.blueprints.push(blueprint);
     this.airCraftLayer.addChild(blueprint.root);
 
-    if (this.buildings.length > 0 && this.constructionSource !== undefined) {
-      const from = this.buildings[this.constructionSource];
+    const from =
+      this.buildings.length > 0 && this.constructionSource !== undefined
+        ? this.buildings[this.constructionSource]
+        : undefined;
 
+    if (from) {
       blueprint.orientByBuildDirection(from);
+      this.addBlueprintRoad(from, blueprint);
 
-      const line = new BlueprintRoad(from, blueprint);
-
-      blueprint.addLinkedBuilding(line);
-
-      this.airCraftLayer.addChildAt(line.graphic, 0);
       const constructionRecipe = BuildingClass.constructionRecipe;
 
       for (let i = 0; i < constructionRecipe.length; i++) {
@@ -137,9 +127,7 @@ class Aircraft {
         }
       }
 
-      const source = blueprint.links[0].from;
-
-      const unsubscribe = source.unsubscribeResourceListners(
+      const unsubscribe = from.unsubscribeResourceListners(
         (task: Task, resource: Resource) => {
           blueprint.onBlueprintResourceAdded(task, resource);
         },
@@ -150,6 +138,64 @@ class Aircraft {
     }
 
     return blueprint;
+  }
+
+  public addRoad(from: Building, to: Building) {
+    const road = new Road(from, to);
+
+    from.addRoad(road);
+    to.addRoad(road);
+
+    this.airCraftLayer.addChildAt(road.graphic, 0);
+  }
+
+  public addBlueprintRoad(from: Building, to: Building) {
+    const blueprintRoad = new BlueprintRoad(from, to);
+
+    to.addRoad(blueprintRoad);
+
+    this.airCraftLayer.addChildAt(blueprintRoad.graphic, 0);
+
+    return blueprintRoad;
+  }
+
+  public addAlternativeBlueprintRoad(from: Building, to: Building) {
+    const alreadyHaveRoad = from.roads.filter(
+      (road) =>
+        (road.from === from && road.to === to) ||
+        (road.to === from && road.from === to),
+    );
+
+    if (alreadyHaveRoad.length === 0) {
+      const blueprintRoad = this.addBlueprintRoad(from, to);
+
+      const availableResource = from.resourceStorage.recources.find(
+        (resource) => resource.resourceType === "Metal" && !resource.isReserved,
+      );
+
+      if (availableResource) {
+        blueprintRoad.reserveBuildResource(availableResource);
+      } else {
+        const [task] = from.taskManager.addTasks(JobType.building, 5, "Metal");
+        from.refreshTasks();
+        if (task) {
+          blueprintRoad.task = task;
+        }
+      }
+
+      const unsubscribe = from.unsubscribeResourceListners(
+        (task: Task, resource: Resource) => {
+          blueprintRoad.onBlueprintResourceAdded(task, resource);
+        },
+      );
+
+      blueprintRoad.unsubscribe = unsubscribe;
+      blueprintRoad.blueprintRoadToRoad();
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public setConstuctionSource(node: Building) {
@@ -271,24 +317,24 @@ class Aircraft {
       blueprint.tasks[i].status = TaskStatus.completed;
     }
 
-    const linkedBuilding =
-      blueprint.links[0].from === blueprint
-        ? blueprint.links[0].to
-        : blueprint.links[0].from;
+    const sourceBuilding =
+      blueprint.roads[0].from === blueprint
+        ? blueprint.roads[0].to
+        : blueprint.roads[0].from;
 
-    linkedBuilding.refreshTasks();
+    sourceBuilding.refreshTasks();
 
     blueprint.cleanup();
 
-    for (let i = 0; i < linkedBuilding.resourceStorage.recources.length; i++) {
-      const resource = linkedBuilding.resourceStorage.recources[i];
+    for (let i = 0; i < sourceBuilding.resourceStorage.recources.length; i++) {
+      const resource = sourceBuilding.resourceStorage.recources[i];
       if (!resource.isReserved) {
         this.findWhereToReuseUselessResource(resource);
       }
     }
 
-    for (const link of blueprint.links) {
-      link.graphic.destroy();
+    for (const road of blueprint.roads) {
+      road.graphic.destroy();
     }
     blueprint.root.destroy();
 
@@ -314,29 +360,29 @@ class Aircraft {
     if (index === -1) return;
 
     for (const blueprint of [...this.blueprints]) {
-      if (blueprint.links.some((link) => link.from === building)) {
+      if (blueprint.roads.some((road) => road.from === building)) {
         this.deleteBlueprint(blueprint);
       }
     }
 
     for (const worker of this.workers.workers) {
       if (worker.navigator.currentPlatform === building) {
-        const linkedBuilding =
-          building.links[0].from === building
-            ? building.links[0].to
-            : building.links[0].from;
+        const newBuilding =
+          building.roads[0].from === building
+            ? building.roads[0].to
+            : building.roads[0].from;
 
-        worker.navigator.currentPlatform = linkedBuilding;
-        worker.position.set(linkedBuilding.x, linkedBuilding.y);
+        worker.navigator.currentPlatform = newBuilding;
+        worker.position.set(newBuilding.x, newBuilding.y);
       }
     }
 
-    for (const link of building.links) {
-      link.graphic.destroy();
+    for (const road of building.roads) {
+      road.graphic.destroy();
 
-      const linkedBuilding = link.from === building ? link.to : link.from;
-      linkedBuilding.links = linkedBuilding.links.filter(
-        (linkedBuildingLink) => linkedBuildingLink !== link,
+      const connectedBuilding = road.from === building ? road.to : road.from;
+      connectedBuilding.roads = connectedBuilding.roads.filter(
+        (connectedBuildingRoad) => connectedBuildingRoad !== road,
       );
     }
     building.root.destroy();

@@ -1,8 +1,14 @@
 import { Graphics } from "pixi.js";
 import { Building } from "@aircraft/building";
+import { Resource } from "@resources/resource";
+import { Task, TaskStatus } from "@dashboard/task";
+import { aircraft } from "@aircraft/aircraft";
 
 export class BlueprintRoad {
   graphic: Graphics;
+
+  reservedBuildResource: Resource | undefined = undefined;
+  task: Task | undefined;
 
   constructor(
     public from: Building,
@@ -79,4 +85,42 @@ export class BlueprintRoad {
 
     this.graphic.stroke({ width: 6, color: "#000000" });
   }
+
+  public reserveBuildResource(resource: Resource) {
+    resource.isReserved = true;
+    this.reservedBuildResource = resource;
+  }
+
+  public onBlueprintResourceAdded(task: Task, resource: Resource) {
+    if (task.resource) {
+      if (task === this.task) {
+        task.status = TaskStatus.completed;
+        this.task = undefined;
+        this.reserveBuildResource(resource);
+      }
+    }
+
+    this.blueprintRoadToRoad();
+  }
+
+  public blueprintRoadToRoad() {
+    if (this.reservedBuildResource) {
+      const hasAllReservedResources =
+        this.from.resourceStorage.recources.includes(
+          this.reservedBuildResource,
+        );
+
+      if (this.task === undefined && hasAllReservedResources) {
+        this.from.takeResourceByTypeWithoutRefresh(this.reservedBuildResource);
+
+        this.reservedBuildResource = undefined;
+
+        aircraft.addRoad(this.from, this.to);
+
+        this.graphic.destroy();
+      }
+    }
+  }
+
+  public unsubscribe?: () => void;
 }
