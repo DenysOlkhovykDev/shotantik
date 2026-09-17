@@ -100,9 +100,7 @@ app.ticker.add((delta) => {
 
     aircraft.workers.moveWorkers(deltaTime);
 
-    if (!isTest) {
-      aircraft.buildingAnimations(deltaTime, angle);
-    }
+    aircraft.buildingAnimations(deltaTime, angle);
 
     aircraft.movingBlueprints(deltaTime);
 
