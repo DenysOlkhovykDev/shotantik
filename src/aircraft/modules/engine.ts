@@ -152,6 +152,13 @@ export class Engine extends Building {
 
     this.makeDecorativePropellerBlades(baseGraphics);
 
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
+      baseGraphics
+        .moveTo(0, 0)
+        .lineTo(0, 30)
+        .stroke({ width: 4, color: "#ff0000" });
+    }
+
     Engine.baseTexture = generateTextureFromOrigin(baseGraphics);
   }
 
@@ -214,7 +221,7 @@ export class Engine extends Building {
       Engine.propellerParams.rotationSpeed * delta;
 
     const isMoving = movingAngle !== undefined;
-    const backAngle = isMoving ? movingAngle + this.geometry.orientation : 0;
+    const backAngle = isMoving ? -movingAngle - this.geometry.orientation : 0;
 
     for (const particle of this.particles) {
       if (particle.scale <= 0.1) {

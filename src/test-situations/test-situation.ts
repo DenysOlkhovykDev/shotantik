@@ -16,9 +16,9 @@ import { deleteBlueprint } from "@test-scenarios/delete-blueprint";
 import { deleteBuilding } from "@test-scenarios/delete-building";
 import { deliveringPriorities } from "@test-scenarios/delivering-priorities";
 import { differentAngles } from "@test-scenarios/different-angles";
+import { engineGases } from "@test-scenarios/engine-gases";
 import { interfacePause } from "@test-scenarios/interface-pause";
 import { interfaceSpeed } from "@test-scenarios/interface-speed";
-import { joystickMoving } from "@test-scenarios/joystick-moving";
 import { movingBlueprints } from "@test-scenarios/moving-blueprints";
 import { movingResources } from "@test-scenarios/moving-resources";
 import { multipleConstructionOfBuildings } from "@test-scenarios/multiple-construction-of-buildings";
@@ -107,9 +107,9 @@ const scenarios: Record<string, Scenario> = {
   "delete-building": deleteBuilding,
   "delivering-priorities": deliveringPriorities,
   "different-angles": differentAngles,
+  "engine-gases": engineGases,
   "interface-pause": interfacePause,
   "interface-speed": interfaceSpeed,
-  "joystick-moving": joystickMoving,
   "moving-blueprints": movingBlueprints,
   "moving-resources": movingResources,
   "multiple-construction-of-buildings": multipleConstructionOfBuildings,

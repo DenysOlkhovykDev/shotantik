@@ -5,10 +5,11 @@ import {
   initGame,
   setGameReady,
   skipFrames,
+  swipeCanvas,
 } from "./test-infra/test-infra";
-import { getGameScreenCenter } from "../src/ui/ui-config";
+import { getGameScreenCenter, getJoyStickPosition } from "../src/ui/ui-config";
 
-const testName = "joystick-moving";
+const testName = "engine-gases";
 
 test(testName, async ({ page }) => {
   await initGame(page, testName);
@@ -20,10 +21,20 @@ test(testName, async ({ page }) => {
   await clickCanvas(
     page,
     getGameScreenCenter().x,
-    getGameScreenCenter().y + 200,
+    getGameScreenCenter().y + 100,
   );
 
   await skipFrames(page, 2);
+
+  await swipeCanvas(
+    page,
+    getJoyStickPosition().x,
+    getJoyStickPosition().y,
+    getJoyStickPosition().x,
+    getJoyStickPosition().y - 10,
+  );
+
+  await skipFrames(page, 38);
 
   let screenshot = await page.locator("canvas").screenshot();
 
