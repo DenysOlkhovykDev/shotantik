@@ -4,6 +4,7 @@ import {
   clickCanvas,
   initGame,
   setGameReady,
+  skipFrames,
 } from "./test-infra/test-infra";
 import {
   getConstructionButtonPosition,
@@ -18,7 +19,11 @@ test(testName, async ({ page }) => {
 
   await setGameReady(page);
 
+  await skipFrames(page, 0);
+
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
+
+  await skipFrames(page, 2);
 
   let screenshot = await page.locator("canvas").screenshot();
 
@@ -27,11 +32,15 @@ test(testName, async ({ page }) => {
     testSettings,
   );
 
+  await skipFrames(page, 0);
+
   await clickCanvas(
     page,
     getConstructionButtonPosition().x,
     getConstructionButtonPosition().y,
   );
+
+  await skipFrames(page, 2);
 
   screenshot = await page.locator("canvas").screenshot();
 
@@ -40,11 +49,15 @@ test(testName, async ({ page }) => {
     testSettings,
   );
 
+  await skipFrames(page, 0);
+
   await clickCanvas(
     page,
     getMixerPositionInConstructionMenuPosition().x,
     getMixerPositionInConstructionMenuPosition().y,
   );
+
+  await skipFrames(page, 2);
 
   screenshot = await page.locator("canvas").screenshot();
 
@@ -53,11 +66,15 @@ test(testName, async ({ page }) => {
     testSettings,
   );
 
+  await skipFrames(page, 0);
+
   await clickCanvas(
     page,
     getGameScreenCenter().x + 200,
     getGameScreenCenter().y,
   );
+
+  await skipFrames(page, 2);
 
   screenshot = await page.locator("canvas").screenshot();
 
@@ -66,6 +83,8 @@ test(testName, async ({ page }) => {
     testSettings,
   );
 
+  await skipFrames(page, 0);
+
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 
   await clickCanvas(
@@ -86,12 +105,16 @@ test(testName, async ({ page }) => {
     getGameScreenCenter().y,
   );
 
+  await skipFrames(page, 2);
+
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
     testName + "-5-place-mixer-blueprint" + ".png",
     testSettings,
   );
+
+  await skipFrames(page, 0);
 
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 
@@ -119,12 +142,16 @@ test(testName, async ({ page }) => {
     getGameScreenCenter().y + 200,
   );
 
+  await skipFrames(page, 2);
+
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
     testName + "-6-change-construction-position" + ".png",
     testSettings,
   );
+
+  await skipFrames(page, 0);
 
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 
@@ -134,12 +161,16 @@ test(testName, async ({ page }) => {
     getGameScreenCenter().y - 100,
   );
 
+  await skipFrames(page, 2);
+
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
     testName + "-7-hide-construction-button" + ".png",
     testSettings,
   );
+
+  await skipFrames(page, 0);
 
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 
@@ -154,6 +185,8 @@ test(testName, async ({ page }) => {
     getGameScreenCenter().x,
     getGameScreenCenter().y - 100,
   );
+
+  await skipFrames(page, 2);
 
   screenshot = await page.locator("canvas").screenshot();
 
