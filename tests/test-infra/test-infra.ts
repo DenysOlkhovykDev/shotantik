@@ -63,3 +63,31 @@ export async function clickCanvas(page: Page, x: number, y: number) {
 
   await page.mouse.click(box.x + x * scaleX, box.y + y * scaleY);
 }
+
+export async function swipeCanvas(
+  page: Page,
+  xStart: number,
+  yStart: number,
+  xFinish: number,
+  yFinish: number,
+) {
+  const canvas = page.locator("canvas");
+  const box = await canvas.boundingBox();
+
+  if (!box) {
+    throw new Error("Canvas is not visible");
+  }
+
+  const gameWidth = 720;
+  const gameHeight = 1280;
+
+  const scaleX = box.width / gameWidth;
+  const scaleY = box.height / gameHeight;
+
+  await page.mouse.move(box.x + xStart * scaleX, box.y + yStart * scaleY);
+  await page.mouse.down();
+
+  await page.mouse.move(box.x + xFinish * scaleX, box.y + yFinish * scaleY, {
+    steps: 10,
+  });
+}
