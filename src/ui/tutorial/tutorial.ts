@@ -1,6 +1,6 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 
-import { gameScreen } from "../../game-config";
+import { gameScreen } from "@utils/game-config";
 
 export class Tutorial extends Container {
   isActive = true;

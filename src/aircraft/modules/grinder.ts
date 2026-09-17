@@ -19,8 +19,8 @@ export class Grinder extends Building {
 
     baseGraphicalSize: 40,
 
-    minLinkLength: 120,
-    maxLinkLength: 200,
+    minRoadLength: 120,
+    maxRoadLength: 200,
   };
 
   static constructionRecipe = [

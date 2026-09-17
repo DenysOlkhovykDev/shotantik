@@ -9,7 +9,7 @@ import { pauseManager } from "@pause/manager";
 import { speedButton } from "@speed/button";
 import { speedManager } from "@speed/manager";
 import { constructionManager } from "@construction/manager";
-import { gameScreen, getIsGameReady, setIsGameReady } from "./game-config";
+import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import { compasses } from "./ui/compass/manager";
 import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
@@ -65,22 +65,24 @@ app.stage.addChild(UIcontainer); // Temp
 app.stage.on("pointerdown", (event) => {
   const buildingType = constructionManager.getBuildingType();
 
-  if (buildingType !== undefined) {
-    const { x, y } = event.global;
+  if (buildingType !== "Road") {
+    if (buildingType !== undefined) {
+      const { x, y } = event.global;
 
-    aircraft.addBlueprint(x, y, buildingType);
-    constructionManager.setBuildingType(undefined);
+      aircraft.addBlueprint(x, y, buildingType);
+      constructionManager.setBuildingType(undefined);
+    }
+
+    aircraft.resetConstructionSource();
+    aircraft.deSelectAllBuildings();
+
+    constructionManager.hideButton();
+    constructionManager.hideMenu();
+    constructionManager.updateDisplayBuildingType();
+
+    aircraft.hideCraftSigns();
+    joystick.hide();
   }
-
-  aircraft.resetConstructionSource();
-  aircraft.deSelectAllBuildings();
-
-  constructionManager.hideButton();
-  constructionManager.hideMenu();
-  constructionManager.updateDisplayBuildingType();
-
-  aircraft.hideCraftSigns();
-  joystick.hide();
 });
 
 app.ticker.add((delta) => {

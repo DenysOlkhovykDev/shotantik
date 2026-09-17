@@ -7,7 +7,7 @@ import {
   skipFrames,
   swipeCanvas,
 } from "./test-infra/test-infra";
-import { getGameScreenCenter, getJoyStickPosition } from "../src/ui/ui-config";
+import { getGameScreenCenter, getJoyStickPosition } from "@utils/ui-config";
 
 const testName = "engine-gases";
 

@@ -10,6 +10,7 @@ import { defaultScenario } from "@test-scenarios/_default";
 import { autoConstructionOfBuildings } from "@test-scenarios/auto-construction-of-buildings";
 import { collisionBlueprints } from "@test-scenarios/collision-blueprints";
 import { constructionOfBuildings } from "@test-scenarios/construction-of-buildings";
+import { constructionRoads } from "@test-scenarios/construction-roads";
 import { craftingResourcesForConstruction } from "@test-scenarios/crafting-resources-for-construction";
 import { craftingResources } from "@test-scenarios/crafting-resources";
 import { deleteBlueprint } from "@test-scenarios/delete-blueprint";
@@ -68,6 +69,11 @@ export interface AircraftScenario {
     y: number;
     buildingType: string;
   }[];
+
+  buildingAlternativeRoadsTasks?: {
+    from: string;
+    to: string;
+  }[];
 }
 
 export interface UiElementsScenario {
@@ -101,6 +107,7 @@ const scenarios: Record<string, Scenario> = {
   "collision-blueprints": collisionBlueprints,
   "construction-menu": constructionMenu,
   "construction-of-buildings": constructionOfBuildings,
+  "construction-roads": constructionRoads,
   "crafting-resources-for-construction": craftingResourcesForConstruction,
   "crafting-resources": craftingResources,
   "delete-blueprint": deleteBlueprint,

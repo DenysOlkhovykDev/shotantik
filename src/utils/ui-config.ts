@@ -1,4 +1,4 @@
-import { gameScreen } from "../game-config";
+import { gameScreen } from "./game-config";
 
 export function getGameScreenCenter() {
   return {

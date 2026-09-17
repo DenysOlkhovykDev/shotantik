@@ -28,4 +28,22 @@ export class Road {
       e.stopPropagation();
     });
   }
+
+  static crateRoadImage() {
+    const root = new Graphics();
+    const startX = 15;
+    const startY = -15;
+    const finishX = -15;
+    const finishY = 15;
+
+    root
+      .moveTo(startX, startY)
+      .lineTo(finishX, finishY)
+      .stroke({ width: 4, color: "#000000" });
+
+    root.circle(startX, startY, 5).fill("#000000");
+    root.circle(finishX, finishY, 5).fill("#000000");
+
+    return root;
+  }
 }

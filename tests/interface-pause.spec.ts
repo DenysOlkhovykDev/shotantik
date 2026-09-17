@@ -5,7 +5,7 @@ import {
   clickCanvas,
   initGame,
 } from "./test-infra/test-infra";
-import { getPauseButtonPosition } from "../src/ui/ui-config";
+import { getPauseButtonPosition } from "@utils/ui-config";
 
 const testName = "interface-pause";
 

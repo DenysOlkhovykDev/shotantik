@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { speedManager } from "./manager";
-import { getSpeedButtonPosition } from "../ui-config";
+import { getSpeedButtonPosition } from "@utils/ui-config";
 
 class SpeedButton extends Container {
   private symbol = new Graphics();

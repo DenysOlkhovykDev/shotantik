@@ -26,8 +26,8 @@ export class Junkuard extends Building {
 
     baseGraphicalSize: 60,
 
-    minLinkLength: 120,
-    maxLinkLength: 200,
+    minRoadLength: 120,
+    maxRoadLength: 200,
   };
 
   static constructionRecipe = [

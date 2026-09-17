@@ -10,7 +10,7 @@ import {
   getConstructionButtonPosition,
   getGameScreenCenter,
   getMixerPositionInConstructionMenuPosition,
-} from "../src/ui/ui-config";
+} from "@utils/ui-config";
 
 const testName = "construction-menu";
 

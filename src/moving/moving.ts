@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { getGameScreenCenter } from "../ui/ui-config";
+import { getGameScreenCenter } from "@utils/ui-config";
 import { backgroundManager } from "../main";
 
 let centerX = getGameScreenCenter().x;

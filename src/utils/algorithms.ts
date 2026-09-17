@@ -30,7 +30,7 @@ export function dijkstra(start: Building) {
 
     visited.add(currentNode);
 
-    for (const road of currentNode.links) {
+    for (const road of currentNode.roads) {
       const neighbor = road.from === currentNode ? road.to : road.from;
       const newDistance =
         distances.get(currentNode)! +
@@ -73,7 +73,7 @@ export function aStar(start: Building, goal: Building) {
 
     openSet.splice(openSet.indexOf(currentNode), 1);
 
-    for (const road of currentNode.links) {
+    for (const road of currentNode.roads) {
       const neighbor = road.from === currentNode ? road.to : road.from;
       const newCost =
         costFromStart.get(currentNode)! +

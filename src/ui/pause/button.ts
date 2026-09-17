@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { pauseManager } from "./manager";
-import { getPauseButtonPosition } from "../ui-config";
+import { getPauseButtonPosition } from "@utils/ui-config";
 
 class PauseButton extends Container {
   private symbol = new Graphics();

@@ -19,8 +19,8 @@ export class Platform extends Building {
 
     baseGraphicalSize: 40,
 
-    minLinkLength: 120,
-    maxLinkLength: 200,
+    minRoadLength: 120,
+    maxRoadLength: 200,
   };
 
   static constructionRecipe = [
@@ -74,9 +74,32 @@ export class Platform extends Building {
   animation(delta: number) {}
 
   onClick(event: FederatedPointerEvent) {
-    aircraft.setConstuctionSource(this);
     super.onClick(event);
     constructionManager.showButton();
     aircraft.showCraftSigns();
+
+    const buildingType = constructionManager.getBuildingType();
+
+    if (buildingType === "Road") {
+      const from =
+        aircraft.buildings.length > 0 &&
+        aircraft.constructionSource !== undefined
+          ? aircraft.buildings[aircraft.constructionSource]
+          : undefined;
+
+      if (from && from !== this) {
+        const result = aircraft.addAlternativeBlueprintRoad(from, this);
+        if (result) {
+          constructionManager.setBuildingType(undefined);
+
+          aircraft.resetConstructionSource();
+          constructionManager.updateDisplayBuildingType();
+        }
+        constructionManager.hideButton();
+        constructionManager.hideMenu();
+      }
+    }
+
+    aircraft.setConstuctionSource(this);
   }
 }

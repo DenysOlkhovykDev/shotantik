@@ -4,7 +4,7 @@ import { aircraft } from "@aircraft/aircraft";
 import { constructionManager } from "@construction/manager";
 import { InfoButton } from "./info-button";
 import { DeleteButton } from "./delete-button";
-import { getHeaderPosition } from "../ui-config";
+import { getHeaderPosition } from "@utils/ui-config";
 
 class Header extends Container {
   display: Display;

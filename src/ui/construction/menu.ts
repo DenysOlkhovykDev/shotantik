@@ -2,8 +2,12 @@ import { buildingMap } from "@aircraft/aircraft";
 import { Container, Graphics, Text } from "pixi.js";
 import { Platform } from "@aircraft/modules/platform";
 import { Building } from "@aircraft/building";
-import { RecipeSign } from "@aircraft/building-parts/recipe-sign";
-import { getConstructionMenuPosition } from "../ui-config";
+import {
+  RecipeIngredient,
+  RecipeSign,
+} from "@aircraft/building-parts/recipe-sign";
+import { getConstructionMenuPosition } from "@utils/ui-config";
+import { Road } from "@roads/road";
 
 export interface MenuItem {
   label: string;
@@ -43,6 +47,10 @@ const menuItems: MenuItem[] = [
     label: "Engine",
     color: "#a8b1db",
   },
+  {
+    label: "Road",
+    color: "#dbcaa8",
+  },
 ];
 
 export class ConstructionMenu extends Container {
@@ -51,7 +59,7 @@ export class ConstructionMenu extends Container {
   private menuItemsContainers: Container[] = [];
 
   private columnWidth = 120;
-  private columnHeight = 120;
+  private rowHeight = 120;
   private gap = 10;
 
   private columns = 3;
@@ -64,8 +72,7 @@ export class ConstructionMenu extends Container {
 
   private menuWidth =
     this.columns * this.columnWidth + (this.columns - 1) * this.gap;
-  private menuHeight =
-    this.rows * this.columnHeight + (this.rows - 1) * this.gap;
+  private menuHeight = this.rows * this.rowHeight + (this.rows - 1) * this.gap;
 
   constructor(private setBuildingType: (type: string | undefined) => void) {
     super();
@@ -98,7 +105,7 @@ export class ConstructionMenu extends Container {
       const row = Math.floor(index / this.columns);
 
       const x = column * (this.columnWidth + this.gap);
-      const y = row * (this.columnHeight + this.gap);
+      const y = row * (this.rowHeight + this.gap);
 
       this.menuItemsContainers[index] = new Container();
 
@@ -115,7 +122,11 @@ export class ConstructionMenu extends Container {
 
     this.createBuildingLabel(item.label, container);
 
-    this.createBuildingImage(item.label, container);
+    if (item.label === "Road") {
+      this.createRoadImage(container);
+    } else {
+      this.createBuildingImage(item.label, container);
+    }
   }
 
   private createMenuItemBackground(
@@ -124,7 +135,7 @@ export class ConstructionMenu extends Container {
     buildingType: string,
   ) {
     const background = new Graphics()
-      .roundRect(0, 0, this.columnWidth, this.columnHeight, 8)
+      .roundRect(0, 0, this.columnWidth, this.rowHeight, 8)
       .fill(backgroundColor);
 
     background.eventMode = "static";
@@ -154,12 +165,24 @@ export class ConstructionMenu extends Container {
     container.addChild(text);
   }
 
+  private createRoadImage(container: Container) {
+    const root = Road.crateRoadImage();
+
+    root.eventMode = "none";
+
+    container.addChild(root);
+
+    const constructionRecipe = [{ resourceName: "Metal", amount: 1 }];
+
+    this.createBuildingRecipe(constructionRecipe, container);
+  }
+
   private createBuildingImage(buildingName: string, container: Container) {
     const BuildingClass = buildingMap[buildingName] || Platform;
 
     const building = new BuildingClass(
       this.columnWidth / 2,
-      this.columnHeight / 2,
+      this.rowHeight / 2,
     );
 
     building.root.scale = 0.5;
@@ -168,7 +191,7 @@ export class ConstructionMenu extends Container {
 
     container.addChild(building.root);
 
-    this.createBuildingRecipe(building, container);
+    this.createBuildingRecipe(building.constructionRecipe, container);
     this.createCraftRecipe(building, container);
   }
 
@@ -178,16 +201,17 @@ export class ConstructionMenu extends Container {
 
       building.recipeSign.position.set(
         this.columnWidth / 2,
-        this.columnHeight - 18,
+        this.rowHeight - 18,
       );
 
       container.addChild(building.recipeSign);
     }
   }
 
-  private createBuildingRecipe(building: Building, container: Container) {
-    const buildingRecipe = building.constructionRecipe;
-
+  private createBuildingRecipe(
+    buildingRecipe: RecipeIngredient[],
+    container: Container,
+  ) {
     const recipeSign = new RecipeSign();
     recipeSign.show(
       {
@@ -198,7 +222,7 @@ export class ConstructionMenu extends Container {
       },
       { layout: "vertical" },
     );
-    recipeSign.position.set(this.columnWidth - 31, this.columnHeight - 90);
+    recipeSign.position.set(this.columnWidth - 31, this.rowHeight - 90);
 
     container.addChild(recipeSign);
   }

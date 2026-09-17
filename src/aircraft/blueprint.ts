@@ -18,8 +18,8 @@ export class Blueprint extends Building {
     boundsCenter: { x: 0, y: 0 },
     boundsRadius: 0,
 
-    minLinkLength: 120,
-    maxLinkLength: 200,
+    minRoadLength: 120,
+    maxRoadLength: 200,
 
     baseGraphicalSize: 0,
   };
@@ -144,10 +144,10 @@ export class Blueprint extends Building {
     this.x += nx * speed * delta;
     this.y += ny * speed * delta;
     this.root.position.set(this.x, this.y);
-    this.orientByBuildDirection(this.links[0].from);
+    this.orientByBuildDirection(this.roads[0].from);
 
-    for (const link of this.links) {
-      link.draw(link.from, link.to);
+    for (const road of this.roads) {
+      road.draw(road.from, road.to);
     }
   }
 
@@ -163,10 +163,10 @@ export class Blueprint extends Building {
     this.x += nx * speed * delta;
     this.y += ny * speed * delta;
     this.root.position.set(this.x, this.y);
-    this.orientByBuildDirection(this.links[0].from);
+    this.orientByBuildDirection(this.roads[0].from);
 
-    for (const link of this.links) {
-      link.draw(link.from, link.to);
+    for (const road of this.roads) {
+      road.draw(road.from, road.to);
     }
   }
 
@@ -191,12 +191,12 @@ export class Blueprint extends Building {
 
     if (
       this.getDistanceToSource() <=
-      this.targetBuilding.buildingConfig.minLinkLength
+      this.targetBuilding.buildingConfig.minRoadLength
     ) {
       this.collisions += 1 * delta;
       this.moveAwayFrom(
-        this.links[0].from.getBaseCenterInWorld().x,
-        this.links[0].from.getBaseCenterInWorld().y,
+        this.roads[0].from.getBaseCenterInWorld().x,
+        this.roads[0].from.getBaseCenterInWorld().y,
         delta,
         0.5,
       );
@@ -204,18 +204,18 @@ export class Blueprint extends Building {
 
     if (
       this.getDistanceToSource() >=
-      this.targetBuilding.buildingConfig.maxLinkLength
+      this.targetBuilding.buildingConfig.maxRoadLength
     ) {
       this.collisions += 1 * delta;
       this.moveTowards(
-        this.links[0].from.getBaseCenterInWorld().x,
-        this.links[0].from.getBaseCenterInWorld().y,
+        this.roads[0].from.getBaseCenterInWorld().x,
+        this.roads[0].from.getBaseCenterInWorld().y,
         delta,
         0.5,
       );
     }
 
-    this.checkLinksCollision(building, delta);
+    this.checkRoadsCollision(building, delta);
 
     if (
       getDistance(
@@ -252,14 +252,14 @@ export class Blueprint extends Building {
   }
 
   private getDistanceToSource() {
-    return this.getDistanceToBuilding(this.links[0].from);
+    return this.getDistanceToBuilding(this.roads[0].from);
   }
 
-  private checkLinksCollision(building: Building, delta: number) {
+  private checkRoadsCollision(building: Building, delta: number) {
     const minDist = this.targetBuilding.buildingConfig.boundsRadius + 25;
-    for (const link of building.links) {
-      const fromCenter = link.from.getBaseCenterInWorld();
-      const toCenter = link.to.getBaseCenterInWorld();
+    for (const road of building.roads) {
+      const fromCenter = road.from.getBaseCenterInWorld();
+      const toCenter = road.to.getBaseCenterInWorld();
 
       const ax = fromCenter.x;
       const ay = fromCenter.y;
@@ -329,7 +329,7 @@ export class Blueprint extends Building {
   }
 
   public blueprinToBuilding() {
-    const source = this.links[0]?.from;
+    const source = this.roads[0]?.from;
     if (!source) return;
 
     const hasAllReservedResources =
@@ -358,7 +358,7 @@ export class Blueprint extends Building {
   }
 
   public cleanup() {
-    const source = this.links[0]?.from;
+    const source = this.roads[0]?.from;
 
     this.unsubscribe?.();
     this.unsubscribe = undefined;
