@@ -76,9 +76,9 @@ export class Grinder extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Grinder.buildingConfig.baseGraphicalSize,
-    );
+    // this.backgroundDisplay.createBasicShadow(
+    //   Grinder.buildingConfig.baseGraphicalSize,
+    // );
 
     this.createGearSatelites();
 
@@ -87,6 +87,8 @@ export class Grinder extends Building {
     const base = new Sprite(Grinder.baseTexture);
     this.buildingBase.addChild(base);
     this.contentContainer.addChild(this.buildingBase);
+
+    this.backgroundDisplay.createShadow(this.buildingBase);
   }
 
   private createGearSatelites() {

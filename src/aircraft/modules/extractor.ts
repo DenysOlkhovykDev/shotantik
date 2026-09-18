@@ -71,9 +71,9 @@ export class Extractor extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Extractor.buildingConfig.baseGraphicalSize,
-    );
+    // this.backgroundDisplay.createBasicShadow(
+    //   Extractor.buildingConfig.baseGraphicalSize,
+    // );
 
     this.makeAntennas();
 
@@ -81,6 +81,8 @@ export class Extractor extends Building {
 
     const base = new Sprite(Extractor.baseTexture);
     this.contentContainer.addChild(base);
+
+    this.backgroundDisplay.createShadow(base);
   }
 
   private makeAntennas() {

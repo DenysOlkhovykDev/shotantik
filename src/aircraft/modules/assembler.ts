@@ -88,9 +88,9 @@ export class Assembler extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Assembler.buildingConfig.baseGraphicalSize,
-    );
+    // this.backgroundDisplay.createBasicShadow(
+    //   Assembler.buildingConfig.baseGraphicalSize,
+    // );
 
     this.createManipulators();
 
@@ -98,6 +98,8 @@ export class Assembler extends Building {
 
     const base = new Sprite(Assembler.baseTexture);
     this.contentContainer.addChild(base);
+
+    this.backgroundDisplay.createShadow(base);
   }
 
   private createManipulators() {
