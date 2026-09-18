@@ -29,20 +29,20 @@ export class Road {
     });
   }
 
-  static crateRoadImage() {
+  static crateRoadImage(x: number, y: number) {
     const root = new Graphics();
-    const startX = 15;
-    const startY = -15;
-    const finishX = -15;
-    const finishY = 15;
+    const startX = x + 30;
+    const startY = y - 30;
+    const finishX = x - 30;
+    const finishY = y + 30;
 
     root
       .moveTo(startX, startY)
       .lineTo(finishX, finishY)
-      .stroke({ width: 4, color: "#000000" });
+      .stroke({ width: 8, color: "#000000" });
 
-    root.circle(startX, startY, 5).fill("#000000");
-    root.circle(finishX, finishY, 5).fill("#000000");
+    root.circle(startX, startY, 10).fill("#000000");
+    root.circle(finishX, finishY, 10).fill("#000000");
 
     return root;
   }

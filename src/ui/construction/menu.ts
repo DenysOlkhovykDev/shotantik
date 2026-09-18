@@ -14,7 +14,7 @@ export interface MenuItem {
   color: string;
 }
 
-const menuItems: MenuItem[] = [
+export const menuItems: MenuItem[] = [
   {
     label: "Collector",
     color: "#a8d0db",
@@ -166,8 +166,9 @@ export class ConstructionMenu extends Container {
   }
 
   private createRoadImage(container: Container) {
-    const root = Road.crateRoadImage();
+    const root = Road.crateRoadImage(this.columnWidth, this.rowHeight);
 
+    root.scale = 0.5;
     root.eventMode = "none";
 
     container.addChild(root);
@@ -186,7 +187,6 @@ export class ConstructionMenu extends Container {
     );
 
     building.root.scale = 0.5;
-
     building.root.eventMode = "none";
 
     container.addChild(building.root);
