@@ -323,7 +323,11 @@ export class Blueprint extends Building {
       (task) => task.resource === resource.resourceType,
     );
 
-    if (task && !resource.isReserved) {
+    if (
+      task &&
+      !resource.isReserved &&
+      task.target.resourceStorage.recources.includes(resource)
+    ) {
       this.onBlueprintResourceAdded(task, resource);
     }
   }

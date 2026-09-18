@@ -188,6 +188,7 @@ export class ConstructionMenu extends Container {
 
     building.root.scale = 0.5;
     building.root.eventMode = "none";
+    building.contentContainer.filters = [];
 
     container.addChild(building.root);
 

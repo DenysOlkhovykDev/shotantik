@@ -38,7 +38,7 @@ export class Assembler extends Building {
   static manipulatorsParams = {
     amount: 3,
     jointRadius: 5,
-    jointBorderWidth: 3,
+    jointBorderWidth: 2,
 
     headWidth: 2,
     handWidth: 4,
@@ -88,9 +88,7 @@ export class Assembler extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Assembler.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createManipulators();
 
@@ -160,7 +158,7 @@ export class Assembler extends Building {
         .circle(start.x, start.y, Assembler.manipulatorsParams.jointRadius)
         .fill(Assembler.manipulatorsParams.baseColor)
         .stroke({
-          width: 3,
+          width: Assembler.manipulatorsParams.jointBorderWidth,
           color: Assembler.manipulatorsParams.backgroundColor,
         });
 
@@ -168,7 +166,7 @@ export class Assembler extends Building {
         .circle(middle.x, middle.y, Assembler.manipulatorsParams.jointRadius)
         .fill(Assembler.manipulatorsParams.baseColor)
         .stroke({
-          width: 3,
+          width: Assembler.manipulatorsParams.jointBorderWidth,
           color: Assembler.manipulatorsParams.backgroundColor,
         });
 

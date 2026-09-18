@@ -41,7 +41,7 @@ export class GeometryCalulator {
   }
 
   public applyGeometryTransform() {
-    this.building.backgroundDisplay.position.set(
+    this.building.shadowFilter.position.set(
       this.building.buildingConfig.boundsCenter.x,
       this.building.buildingConfig.boundsCenter.y,
     );

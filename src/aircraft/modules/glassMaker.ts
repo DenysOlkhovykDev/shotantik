@@ -34,9 +34,7 @@ export class GlassMaker extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      GlassMaker.buildingConfig.boundsRadius,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();
 

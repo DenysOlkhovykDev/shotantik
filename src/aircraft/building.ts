@@ -15,7 +15,7 @@ import { getRadialPoint } from "@utils/basic-geometry";
 import { joystick } from "@joystick/joystick";
 import { CraftingProcessor } from "./building-parts/crafting-processor";
 import { GeometryCalulator } from "./building-parts/geometry-calculator";
-import { BackgroundDisplay } from "./building-parts/background-display";
+import { shadowFilter } from "./building-parts/shadow-filter";
 
 export interface BuildingConfig {
   storageCenter: {
@@ -45,7 +45,6 @@ export abstract class Building {
   // ├── recipeSign
   // ├── DEBUGTaskDisplay
   // └── buildingContainer
-  //     ├── backgroundDisplay
   //     ├── contentContainer
   //     └── resourceStorage
 
@@ -53,7 +52,7 @@ export abstract class Building {
 
   buildingContainer: Container;
 
-  backgroundDisplay = new BackgroundDisplay();
+  shadowFilter = new shadowFilter();
 
   contentContainer: Container;
   static readonly buildingConfig: BuildingConfig;
@@ -110,7 +109,7 @@ export abstract class Building {
 
     this.root.addChild(this.recipeSign);
     this.root.addChild(this.DEBUGTaskDisplay);
-    this.buildingContainer.addChild(this.backgroundDisplay);
+    this.buildingContainer.addChild(this.shadowFilter);
     this.buildingContainer.addChild(this.contentContainer);
     this.buildingContainer.addChild(this.resourceStorage);
     this.root.addChild(this.buildingContainer);
@@ -139,9 +138,7 @@ export abstract class Building {
     aircraft.deSelectAllBuildings();
 
     aircraft.selectBuilding(this);
-    this.backgroundDisplay.createSelectShadow(
-      this.buildingConfig.boundsRadius + 1,
-    );
+    this.shadowFilter.createSelectShadow(this.contentContainer);
     this.showRecipeState();
   }
 

@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/DenysOlkhovykDev/shotantik#readme",
   "dependencies": {
+    "pixi-filters": "^6.1.5",
     "pixi.js": "8.19.0"
   },
   "devDependencies": {

@@ -60,9 +60,7 @@ export class Collector extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Collector.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createSatelites();
 

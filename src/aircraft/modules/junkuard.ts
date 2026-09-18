@@ -53,9 +53,7 @@ export class Junkuard extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Junkuard.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();
 

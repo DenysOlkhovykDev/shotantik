@@ -41,6 +41,7 @@ export class Grinder extends Building {
     innerRadius: Grinder.buildingConfig.baseGraphicalSize,
     outerRadius: Grinder.buildingConfig.baseGraphicalSize + 8,
     baseColor: "#c5d7d4",
+    strokeWidth: 1.5,
     centerRadius: Grinder.buildingConfig.baseGraphicalSize - 3,
     centerColor: "#acc1bd",
     deepCenterColor: "#9eb0ac",
@@ -53,6 +54,7 @@ export class Grinder extends Building {
     innerRadius: 7,
     outerRadius: 14,
     baseColor: "#a3b0ae",
+    strokeWidth: 1.5,
     centerRadius: 3,
     centerColor: "#717877",
     rotationSpeed: -((Grinder.buildingParams.rotationSpeed * 16) / 6),
@@ -76,9 +78,7 @@ export class Grinder extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Grinder.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createGearSatelites();
 
@@ -99,7 +99,7 @@ export class Grinder extends Building {
         Grinder.gearSatelitesParams.innerRadius,
         Grinder.gearSatelitesParams.outerRadius,
         Grinder.gearSatelitesParams.baseColor,
-        2,
+        Grinder.gearSatelitesParams.strokeWidth,
         Grinder.gearSatelitesParams.centerRadius,
         Grinder.gearSatelitesParams.centerColor,
       );
@@ -127,7 +127,7 @@ export class Grinder extends Building {
       Grinder.buildingParams.innerRadius,
       Grinder.buildingParams.outerRadius,
       Grinder.buildingParams.baseColor,
-      2,
+      Grinder.buildingParams.strokeWidth,
       Grinder.buildingParams.centerRadius,
       "#414443",
     );

@@ -54,9 +54,7 @@ export class House extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      House.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.makeAntennas();
 
