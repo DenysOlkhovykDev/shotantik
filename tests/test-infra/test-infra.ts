@@ -8,18 +8,18 @@ export const testSettings = {
 
 export async function setGameReady(page: Page) {
   await page.evaluate(() => {
-    (window as any).setIsGameReady(true);
+    window.setIsGameReady(true);
   });
 }
 
 export async function skipFrames(page: Page, frames: number, step = 16.66) {
   await page.evaluate(
     ({ frames, step }) => {
-      const app = (window as any).app;
+      const app = window.app;
 
       app.ticker.stop();
 
-      (window as any).setIsGameReady(true);
+      window.setIsGameReady(true);
 
       let time = 0;
       const scale = 1;
@@ -40,7 +40,7 @@ export async function initGame(page: Page, query = "") {
 
   await canvas.waitFor({ state: "visible" });
 
-  await page.waitForFunction(() => (window as any).app !== undefined);
+  await page.waitForFunction(() => window.app !== undefined);
 }
 
 export async function takeCanvasSnapshot(page: Page) {

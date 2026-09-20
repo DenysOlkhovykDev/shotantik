@@ -73,17 +73,6 @@ class Joystick extends Container {
     this.inputX = dx / this.radius;
     this.inputY = dy / this.radius;
 
-    const absX = Math.abs(this.inputX);
-    const absY = Math.abs(this.inputY);
-
-    if (absX > absY * 2) {
-      this.inputY = 0;
-    }
-
-    if (absY > absX * 2) {
-      this.inputX = 0;
-    }
-
     event.stopPropagation();
   };
 

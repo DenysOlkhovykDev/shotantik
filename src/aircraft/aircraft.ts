@@ -41,6 +41,8 @@ export const buildingMap: Record<string, BuildingClass> = {
   GlassMaker,
 };
 
+export type BuildingType = keyof typeof buildingMap;
+
 interface SelectedBuilding {
   array: "buildings" | "blueprints";
   index?: number;
@@ -63,8 +65,8 @@ class Aircraft {
     stage.addChild(this.workersLayer);
   }
 
-  public addBuilding(x: number, y: number, buildingType: string) {
-    const BuildingClass = buildingMap[buildingType] || Platform;
+  public addBuilding(x: number, y: number, buildingType: BuildingType) {
+    const BuildingClass = buildingMap[buildingType];
     const building = new BuildingClass(x, y);
 
     this.buildings.push(building);
@@ -83,8 +85,8 @@ class Aircraft {
     return building;
   }
 
-  public addBlueprint(x: number, y: number, buildingType: string) {
-    const BuildingClass = buildingMap[buildingType] || Platform;
+  public addBlueprint(x: number, y: number, buildingType: BuildingType) {
+    const BuildingClass = buildingMap[buildingType];
     const blueprint = new Blueprint(x, y, BuildingClass, buildingType);
 
     this.blueprints.push(blueprint);
