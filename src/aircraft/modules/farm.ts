@@ -75,9 +75,7 @@ export class Farm extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Farm.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createKelpLeaves();
 

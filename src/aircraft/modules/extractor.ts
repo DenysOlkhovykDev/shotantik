@@ -71,9 +71,7 @@ export class Extractor extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Extractor.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.makeAntennas();
 

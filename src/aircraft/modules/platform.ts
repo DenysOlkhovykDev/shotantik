@@ -39,9 +39,7 @@ export class Platform extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Platform.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();
 

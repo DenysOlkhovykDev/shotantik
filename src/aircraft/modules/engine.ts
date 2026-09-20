@@ -84,9 +84,7 @@ export class Engine extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Engine.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createPropellerBlades();
 

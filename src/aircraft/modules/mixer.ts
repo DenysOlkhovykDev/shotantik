@@ -65,9 +65,7 @@ export class Mixer extends Building {
   }
 
   draw() {
-    this.backgroundDisplay.createBasicShadow(
-      Mixer.buildingConfig.baseGraphicalSize,
-    );
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createSatelites();
 

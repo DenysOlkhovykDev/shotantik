@@ -229,11 +229,11 @@ class Aircraft {
 
   public deSelectAllBuildings() {
     for (const building of this.buildings) {
-      building.backgroundDisplay.removeSelectShadow();
+      building.shadowFilter.removeSelectShadow(building.contentContainer);
     }
 
     for (const blueprint of this.blueprints) {
-      blueprint.backgroundDisplay.removeSelectShadow();
+      blueprint.shadowFilter.removeSelectShadow(blueprint.contentContainer);
     }
 
     this.selectedBuilding.index = undefined;
