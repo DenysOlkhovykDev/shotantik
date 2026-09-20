@@ -25,7 +25,10 @@ await app.init({
   antialias: false,
 });
 
-(window as any).app = app;
+window.app = app;
+app.canvas.setAttribute("aria-label", "Shotantik game world");
+app.canvas.setAttribute("role", "img");
+
 document.body.appendChild(app.canvas);
 app.stage.eventMode = "static";
 app.stage.hitArea = app.screen;
@@ -34,7 +37,7 @@ const isTest = import.meta.env.MODE === "test";
 
 if (isTest) {
   setTestRandom();
-  (window as any).setIsGameReady = setIsGameReady;
+  window.setIsGameReady = setIsGameReady;
 }
 
 const UIcontainer = new Container(); // Temp
