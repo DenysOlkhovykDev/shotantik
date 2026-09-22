@@ -10,7 +10,7 @@ export class BackgroundManager extends Container {
   constructor() {
     super();
 
-    this.seed = Math.trunc(Math.random() * 25);
+    this.seed = Math.trunc(Math.random() * 250);
 
     this.position.set(0, 0);
   }
