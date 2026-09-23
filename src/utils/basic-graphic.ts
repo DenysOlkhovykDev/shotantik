@@ -106,3 +106,25 @@ export function makeBrighterColor(color: string, variation: number): string {
     .toString(16)
     .padStart(6, "0")}`;
 }
+
+export function drawHex(
+  graphic: Graphics,
+  x: number,
+  y: number,
+  radius: number,
+) {
+  for (let i = 0; i < 6; i++) {
+    const angle = -Math.PI / 2 + (i * Math.PI) / 3;
+
+    const px = x + Math.cos(angle) * radius;
+    const py = y + Math.sin(angle) * radius;
+
+    if (i === 0) {
+      graphic.moveTo(px, py);
+    } else {
+      graphic.lineTo(px, py);
+    }
+  }
+
+  graphic.closePath();
+}

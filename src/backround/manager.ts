@@ -38,7 +38,7 @@ export class BackgroundManager extends Container {
         if (!this.backgroundTiles.has(key)) {
           const tile = new BackgroundTile(x, y, this.seed);
 
-          tile.position.set(512 * x + 1, 620 * y + 1);
+          tile.position.set(1280 * x, 1088 * y);
 
           this.backgroundTiles.set(key, tile);
           this.addChild(tile);
