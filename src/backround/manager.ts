@@ -7,6 +7,9 @@ export class BackgroundManager extends Container {
   renderDistance = 3;
   seed: number;
 
+  chunkWidth = 1280;
+  chunkHeight = 1280;
+
   constructor() {
     super();
 
@@ -16,8 +19,8 @@ export class BackgroundManager extends Container {
   }
 
   update(playerX: number, playerY: number) {
-    const playerChunkX = Math.floor(playerX / 512);
-    const playerChunkY = Math.floor(playerY / 620);
+    const playerChunkX = Math.floor(playerX / this.chunkWidth);
+    const playerChunkY = Math.floor(playerY / this.chunkHeight);
 
     const requiredChunks = new Set<string>();
 
@@ -38,7 +41,7 @@ export class BackgroundManager extends Container {
         if (!this.backgroundTiles.has(key)) {
           const tile = new BackgroundTile(x, y, this.seed);
 
-          tile.position.set(1280 * x, 1088 * y);
+          tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
 
           this.backgroundTiles.set(key, tile);
           this.addChild(tile);
