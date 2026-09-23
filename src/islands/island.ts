@@ -1,4 +1,4 @@
-import { makeBrighterColor } from "@utils/basic-graphic";
+import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 import { Container, Graphics } from "pixi.js";
 import { DropShadowFilter } from "pixi-filters";
 
@@ -10,7 +10,6 @@ export class Island extends Container {
 
   islandValues: number[][];
 
-  cellSize = 40;
   backgroundSize = 64;
 
   private basicShadowFilter = new DropShadowFilter({
@@ -47,27 +46,27 @@ export class Island extends Container {
         const value = this.islandValues[x][y];
         let newX = 0;
         if (y % 2 === 0) {
-          newX = x * this.cellSize + positionX;
+          newX = x * 34 + positionX;
         } else {
-          newX = x * this.cellSize + positionX + this.cellSize / 2;
+          newX = x * 34 + positionX + 17;
         }
-        const newY = y * (this.cellSize - this.cellSize / 4) + positionY;
+        const newY = y * 30 + positionY;
 
         const colorModifier = Math.trunc(Math.random() * 50);
 
         if (value < 1) {
           // skip
         } else if (value < 2) {
-          this.drawHex(this.beach, newX, newY);
+          drawHex(this.beach, newX, newY, 20);
           this.beach.fill(makeBrighterColor("#d6cc71", colorModifier));
         } else if (value < 3) {
-          this.drawHex(this.plains, newX, newY);
+          drawHex(this.plains, newX, newY, 20);
           this.plains.fill(makeBrighterColor("#1b9d1c", colorModifier));
         } else if (value < 4) {
-          this.drawHex(this.heels, newX, newY);
+          drawHex(this.heels, newX, newY, 20);
           this.heels.fill(makeBrighterColor("#504e4e", colorModifier));
         } else if (value < 5) {
-          this.drawHex(this.peaks, newX, newY);
+          drawHex(this.peaks, newX, newY, 20);
           this.peaks.fill(makeBrighterColor("#ffffff", colorModifier));
         }
       }
@@ -78,17 +77,6 @@ export class Island extends Container {
     this.addChild(this.heels);
     this.addChild(this.peaks);
     this.filters = this.basicShadowFilter;
-  }
-
-  drawHex(graphic: Graphics, x: number, y: number) {
-    graphic
-      .moveTo(x, y - this.cellSize / 2)
-      .lineTo(x + this.cellSize / 2, y - this.cellSize / 4)
-      .lineTo(x + this.cellSize / 2, y + this.cellSize / 4)
-      .lineTo(x, y + this.cellSize / 2)
-      .lineTo(x - this.cellSize / 2, y + this.cellSize / 4)
-      .lineTo(x - this.cellSize / 2, y - this.cellSize / 4)
-      .closePath();
   }
 
   generateNoise(

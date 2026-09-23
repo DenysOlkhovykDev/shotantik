@@ -1,11 +1,11 @@
-import { makeBrighterColor } from "@utils/basic-graphic";
+import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 import { Container, Graphics } from "pixi.js";
 
 export class BackgroundTile extends Container {
   fogParts: Graphics;
   fogValues: number[][];
 
-  cellSize = 32;
+  cellSize = 40;
   backgroundSize = 32;
 
   constructor(
@@ -16,7 +16,7 @@ export class BackgroundTile extends Container {
     super();
 
     this.fogParts = new Graphics();
-    this.fogValues = Array.from({ length: this.backgroundSize / 4 }, () =>
+    this.fogValues = Array.from({ length: this.backgroundSize }, () =>
       Array(this.backgroundSize).fill(0),
     );
 
@@ -28,38 +28,23 @@ export class BackgroundTile extends Container {
       seed,
     );
 
-    for (let x = 0; x < this.backgroundSize / 4; x++) {
+    for (let x = 0; x < this.backgroundSize; x++) {
       for (let y = 0; y < this.backgroundSize; y++) {
         if (this.fogValues[x][y] < 110) {
-          const newX = x * this.cellSize * 2;
-          const newY = (y * this.cellSize) / 1.65;
+          let newX = 0;
+          const newY = y * 34;
+
           if (y % 2 === 0) {
-            this.fogParts
-              .moveTo(newX - 10, newY - 18)
-              .lineTo(newX + 10, newY - 18)
-              .lineTo(newX + 20, newY)
-              .lineTo(newX + 10, newY + 18)
-              .lineTo(newX - 10, newY + 18)
-              .lineTo(newX - 20, newY)
-              .closePath()
-              .fill({
-                color: makeBrighterColor("#777a79", this.fogValues[x][y]),
-                alpha: 0.35,
-              });
+            newX = x * this.cellSize;
           } else {
-            this.fogParts
-              .moveTo(newX + this.cellSize - 10, newY - 18)
-              .lineTo(newX + this.cellSize + 10, newY - 18)
-              .lineTo(newX + this.cellSize + 20, newY)
-              .lineTo(newX + this.cellSize + 10, newY + 18)
-              .lineTo(newX + this.cellSize - 10, newY + 18)
-              .lineTo(newX + this.cellSize - 20, newY)
-              .closePath()
-              .fill({
-                color: makeBrighterColor("#777a79", this.fogValues[x][y]),
-                alpha: 0.35,
-              });
+            newX = x * this.cellSize + this.cellSize / 2;
           }
+
+          drawHex(this.fogParts, newX, newY, 20);
+          this.fogParts.fill({
+            color: makeBrighterColor("#777a79", this.fogValues[x][y]),
+            alpha: 0.35,
+          });
         }
       }
     }
@@ -77,9 +62,9 @@ export class BackgroundTile extends Container {
     const step = 18;
     const sharpness = 1;
 
-    for (let x = 0; x < size / 4; x++) {
+    for (let x = 0; x < size; x++) {
       for (let y = 0; y < size; y++) {
-        const globalX = (chunkX * size) / 4 + x;
+        const globalX = chunkX * size + x;
         const globalY = chunkY * size + y;
 
         const gx = Math.floor(globalX / step);
@@ -105,7 +90,7 @@ export class BackgroundTile extends Container {
             ? value * sharpness
             : sharpness + (value - sharpness) * 2;
 
-        array[x][y] = 20 + sharpValue * 150;
+        array[x][y] = 10 + sharpValue * 150;
       }
     }
   }
