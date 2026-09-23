@@ -8,7 +8,7 @@ export class BackgroundManager extends Container {
   seed: number;
 
   chunkWidth = 1280;
-  chunkHeight = 1280;
+  chunkHeight = 1088;
 
   constructor() {
     super();
