@@ -1,5 +1,5 @@
 import { makeBrighterColor } from "@utils/basic-graphic";
-import { Container, Graphics, BlurFilter } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 
 export class BackgroundTile extends Container {
   fogParts: Graphics;
@@ -16,7 +16,9 @@ export class BackgroundTile extends Container {
     super();
 
     this.fogParts = new Graphics();
-    this.fogValues = Array.from({ length: this.backgroundSize }, () => []);
+    this.fogValues = Array.from({ length: this.backgroundSize / 4 }, () =>
+      Array(this.backgroundSize).fill(0),
+    );
 
     this.generateNoise(
       this.fogValues,

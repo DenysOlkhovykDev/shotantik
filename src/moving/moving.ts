@@ -58,7 +58,7 @@ export function moveWorld(
 function thrustWorld(delta: number, thrustInput: number) {
   const thrust = Math.max(-1, Math.min(1, thrustInput));
 
-  const targetVelocity = thrust * 2;
+  const targetVelocity = thrust * 3;
 
   const thrustResponse = 1 - Math.exp(-0.02 * delta);
 
