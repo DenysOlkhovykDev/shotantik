@@ -8,22 +8,23 @@ export class CraftingProcessor {
     if (!this.canProduce()) {
       return false;
     }
+    if (this.building.craftRecipe) {
+      const craftRecipe = this.building.craftRecipe;
 
-    const craftRecipe = this.building.craftRecipe!;
-
-    for (const ingredient of craftRecipe.ingredients) {
-      for (let i = 0; i < ingredient.amount; i++) {
-        this.building.resourceStorage.takeReservedResourceByName(
-          ingredient.resourceName,
-        );
+      for (const ingredient of craftRecipe.ingredients) {
+        for (let i = 0; i < ingredient.amount; i++) {
+          this.building.resourceStorage.takeReservedResourceByName(
+            ingredient.resourceName,
+          );
+        }
       }
+
+      const result = craftRecipe.result !== undefined ? craftRecipe.result : "";
+      const newResource = createResource(result);
+      const wasAdded = this.building.tryToAddResource(newResource, undefined);
+
+      return wasAdded;
     }
-
-    const result = craftRecipe.result !== undefined ? craftRecipe.result : "";
-    const newResource = createResource(result);
-    const wasAdded = this.building.tryToAddResource(newResource, undefined);
-
-    return wasAdded;
   }
 
   public getRequiredResourceCounts() {

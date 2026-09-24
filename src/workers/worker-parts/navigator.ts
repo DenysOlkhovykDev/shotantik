@@ -1,6 +1,6 @@
-import { Building } from "@aircraft/building";
-import { Task } from "@dashboard/task";
-import { Worker } from "@workers/worker";
+import { type Building } from "@aircraft/building";
+import { type Task } from "@dashboard/task";
+import { type Worker } from "@workers/worker";
 
 const isTest = import.meta.env.MODE === "test";
 

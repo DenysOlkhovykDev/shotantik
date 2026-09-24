@@ -1,7 +1,7 @@
 import { Graphics } from "pixi.js";
-import { Building } from "@aircraft/building";
-import { Resource } from "@resources/resource";
-import { Task, TaskStatus } from "@dashboard/task";
+import { type Building } from "@aircraft/building";
+import { type Resource } from "@resources/resource";
+import { type Task, TaskStatus } from "@dashboard/task";
 import { aircraft } from "@aircraft/aircraft";
 
 export class BlueprintRoad {

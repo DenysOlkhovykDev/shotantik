@@ -1,4 +1,4 @@
-import { Building } from "@aircraft/building";
+import { type Building } from "@aircraft/building";
 
 import { aircraft } from "@aircraft/aircraft";
 
@@ -18,9 +18,14 @@ export function dijkstra(start: Building) {
     let currentNode: Building | undefined;
 
     for (const [building, distance] of distances) {
+      const currentDistance = currentNode
+        ? distances.get(currentNode)
+        : undefined;
+
       if (
         !visited.has(building) &&
-        (currentNode === undefined || distance < distances.get(currentNode)!)
+        (currentNode === undefined ||
+          (currentDistance !== undefined && distance < currentDistance))
       ) {
         currentNode = building;
       }
@@ -30,13 +35,21 @@ export function dijkstra(start: Building) {
 
     visited.add(currentNode);
 
+    const currentDistance = distances.get(currentNode);
+
+    if (currentDistance === undefined) continue;
+
     for (const road of currentNode.roads) {
       const neighbor = road.from === currentNode ? road.to : road.from;
-      const newDistance =
-        distances.get(currentNode)! +
-        getDistanceBetweenBuildings(currentNode, neighbor);
 
-      if (newDistance < distances.get(neighbor)!) {
+      const neighborDistance = distances.get(neighbor);
+
+      if (neighborDistance === undefined) continue;
+
+      const newDistance =
+        currentDistance + getDistanceBetweenBuildings(currentNode, neighbor);
+
+      if (newDistance < neighborDistance) {
         distances.set(neighbor, newDistance);
         previous.set(neighbor, currentNode);
       }
@@ -63,9 +76,15 @@ export function aStar(start: Building, goal: Building) {
   estimatedTotalCost.set(start, getDistanceBetweenBuildings(start, goal));
 
   while (openSet.length) {
-    const currentNode = openSet.reduce((a, b) =>
-      estimatedTotalCost.get(a)! < estimatedTotalCost.get(b)! ? a : b,
-    );
+    const currentNode = openSet.reduce((a, b) => {
+      const aCost = estimatedTotalCost.get(a);
+      const bCost = estimatedTotalCost.get(b);
+
+      if (aCost === undefined) return b;
+      if (bCost === undefined) return a;
+
+      return aCost < bCost ? a : b;
+    });
 
     if (currentNode === goal) {
       return buildPath(cameFrom, currentNode);
@@ -73,13 +92,20 @@ export function aStar(start: Building, goal: Building) {
 
     openSet.splice(openSet.indexOf(currentNode), 1);
 
+    const currentCost = costFromStart.get(currentNode);
+
+    if (currentCost === undefined) continue;
+
     for (const road of currentNode.roads) {
       const neighbor = road.from === currentNode ? road.to : road.from;
-      const newCost =
-        costFromStart.get(currentNode)! +
-        getDistanceBetweenBuildings(currentNode, neighbor);
+      const neighborCost = costFromStart.get(neighbor);
 
-      if (newCost < costFromStart.get(neighbor)!) {
+      if (neighborCost === undefined) continue;
+
+      const newCost =
+        currentCost + getDistanceBetweenBuildings(currentNode, neighbor);
+
+      if (newCost < neighborCost) {
         cameFrom.set(neighbor, currentNode);
         costFromStart.set(neighbor, newCost);
 
@@ -109,7 +135,11 @@ export function buildPath(previous: Map<Building, Building>, target: Building) {
   let current = target;
 
   while (previous.has(current)) {
-    current = previous.get(current)!;
+    const previousBuilding = previous.get(current);
+
+    if (previousBuilding === undefined) break;
+
+    current = previousBuilding;
     path.push(current);
   }
 

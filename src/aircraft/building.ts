@@ -1,12 +1,17 @@
-import { FederatedPointerEvent, Container, Texture, Graphics } from "pixi.js";
-import { Resource } from "@resources/resource";
+import {
+  type FederatedPointerEvent,
+  Container,
+  type Texture,
+  Graphics,
+} from "pixi.js";
+import { type Resource } from "@resources/resource";
 import { aircraft } from "@aircraft/aircraft";
-import { Road } from "@roads/road";
-import { Task } from "@dashboard/task";
+import { type Road } from "@roads/road";
+import { type Task } from "@dashboard/task";
 import { constructionManager } from "@construction/manager";
 import {
-  Recipe,
-  RecipeIngredient,
+  type Recipe,
+  type RecipeIngredient,
   RecipeSign,
 } from "@aircraft/building-parts/recipe-sign";
 import { ResourceStorage } from "@aircraft/building-parts/resource-storage";

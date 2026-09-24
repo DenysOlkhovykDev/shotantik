@@ -56,6 +56,7 @@ export class ConstructionManager extends Container {
     if (this.menu) {
       return this.menu.visible;
     }
+    return false;
   }
 
   public showButton() {
@@ -82,6 +83,7 @@ export class ConstructionManager extends Container {
     if (this.button) {
       return this.button.visible;
     }
+    return false;
   }
 
   public setBuildingType = (type: string | undefined) => {

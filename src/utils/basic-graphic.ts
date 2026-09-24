@@ -1,4 +1,4 @@
-import { Graphics, Container, Rectangle } from "pixi.js";
+import { type Graphics, type Container, Rectangle } from "pixi.js";
 import { app } from "../main";
 
 export function generateTextureFromOrigin(target: Container) {

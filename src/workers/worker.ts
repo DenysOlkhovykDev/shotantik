@@ -1,5 +1,5 @@
 import { Graphics, Container } from "pixi.js";
-import { Building } from "@aircraft/building";
+import { type Building } from "@aircraft/building";
 
 import { Inventory } from "./worker-parts/inventory";
 import { LegCoordinator } from "./worker-parts/leg-coordinator";
@@ -66,12 +66,10 @@ export class Worker extends Container {
   public moveWorker(delta: number) {
     if (!this.tasks.task) {
       this.pickTaskAndPath();
-    } else {
-      if (this.navigator.state === "moving") {
-        this.handleMoving(delta);
-      } else if (this.navigator.state === "stay") {
-        this.handleStaying(delta);
-      }
+    } else if (this.navigator.state === "moving") {
+      this.handleMoving(delta);
+    } else if (this.navigator.state === "stay") {
+      this.handleStaying(delta);
     }
   }
 

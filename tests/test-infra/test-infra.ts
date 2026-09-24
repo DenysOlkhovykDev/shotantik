@@ -12,7 +12,7 @@ export async function setGameReady(page: Page) {
   });
 }
 
-export async function skipFrames(page: Page, frames: number, step = 16.66) {
+export async function skipFrames(page: Page, framesToSkip: number) {
   await page.evaluate(
     ({ frames, step }) => {
       const app = window.app;
@@ -29,7 +29,7 @@ export async function skipFrames(page: Page, frames: number, step = 16.66) {
         app.ticker.update(time);
       }
     },
-    { frames, step },
+    { frames: framesToSkip, step: 16.66 },
   );
 }
 

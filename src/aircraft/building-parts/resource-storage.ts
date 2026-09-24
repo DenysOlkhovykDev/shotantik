@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
-import { Resource } from "@resources/resource";
-import { Task } from "@dashboard/task";
+import { type Resource } from "@resources/resource";
+import { type Task } from "@dashboard/task";
 import { aircraft } from "@aircraft/aircraft";
 
 type ResourceListener = (task: Task, resource: Resource) => void;

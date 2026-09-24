@@ -1,9 +1,9 @@
-import { Container, Texture } from "pixi.js";
-import { Building, BuildingConfig } from "@aircraft/building";
+import { Container, type Texture } from "pixi.js";
+import { type Building, type BuildingConfig } from "@aircraft/building";
 import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
-import { JobType, Task, TaskStatus } from "@dashboard/task";
-import { Resource } from "@resources/resource";
+import { JobType, type Task, TaskStatus } from "@dashboard/task";
+import { type Resource } from "@resources/resource";
 
 import { Platform } from "@aircraft/modules/platform";
 import { Collector } from "@aircraft/modules/collector";
@@ -18,7 +18,7 @@ import { Engine } from "@aircraft/modules/engine";
 import { Blueprint } from "@aircraft/blueprint";
 import { GlassMaker } from "@aircraft/modules/glassMaker";
 import { Workers } from "@workers/_workers";
-import { RecipeIngredient } from "./building-parts/recipe-sign";
+import { type RecipeIngredient } from "./building-parts/recipe-sign";
 
 export type BuildingClass = {
   new (x: number, y: number): Building;

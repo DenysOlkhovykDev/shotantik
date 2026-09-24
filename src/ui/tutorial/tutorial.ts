@@ -224,7 +224,7 @@ export class Tutorial extends Container {
 
   public updateTutorial() {
     if (this.findTarget !== undefined && this.isActive) {
-      const { x: x, y: y } = this.findTarget();
+      const { x, y } = this.findTarget();
 
       this.pointerX = x;
       this.pointerY = y;

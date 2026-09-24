@@ -1,10 +1,10 @@
 import { Graphics, Text } from "pixi.js";
-import { Building, BuildingConfig } from "@aircraft/building";
-import { BuildingClass, aircraft } from "@aircraft/aircraft";
+import { Building, type BuildingConfig } from "@aircraft/building";
+import { type BuildingClass, aircraft } from "@aircraft/aircraft";
 import { getDistance } from "@utils/basic-geometry";
-import { Resource } from "@resources/resource";
-import { Task, TaskStatus } from "@dashboard/task";
-import { RecipeIngredient } from "./building-parts/recipe-sign";
+import { type Resource } from "@resources/resource";
+import { type Task, TaskStatus } from "@dashboard/task";
+import { type RecipeIngredient } from "./building-parts/recipe-sign";
 
 export class Blueprint extends Building {
   static readonly blueprintConfig: BuildingConfig = {
@@ -236,10 +236,8 @@ export class Blueprint extends Building {
       if (this.collisions < 1 && this.contentContainer.tint !== 0x000000) {
         this.contentContainer.tint = "#000000";
       }
-    } else {
-      if (this.contentContainer.tint !== 0xff0000) {
-        this.contentContainer.tint = "#ff0000";
-      }
+    } else if (this.contentContainer.tint !== 0xff0000) {
+      this.contentContainer.tint = "#ff0000";
     }
 
     if (import.meta.env.VITE_IS_DEBUG === "true") {
@@ -324,16 +322,16 @@ export class Blueprint extends Building {
   }
 
   public reuseUselessResource(resource: Resource) {
-    const task = this.tasks.find(
+    const taskWithNeededResource = this.tasks.find(
       (task) => task.resource === resource.resourceType,
     );
 
     if (
-      task &&
+      taskWithNeededResource &&
       !resource.isReserved &&
-      task.target.resourceStorage.recources.includes(resource)
+      taskWithNeededResource.target.resourceStorage.recources.includes(resource)
     ) {
-      this.onBlueprintResourceAdded(task, resource);
+      this.onBlueprintResourceAdded(taskWithNeededResource, resource);
     }
   }
 
