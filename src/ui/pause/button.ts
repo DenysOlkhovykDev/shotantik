@@ -1,10 +1,10 @@
 import { Container, Graphics } from "pixi.js";
-import { pauseManager } from "./manager";
 import { getPauseButtonPosition } from "@utils/ui-config";
 
 class PauseButton extends Container {
   private symbol = new Graphics();
   private background = new Graphics();
+  private paused = false;
 
   constructor() {
     super();
@@ -42,12 +42,12 @@ class PauseButton extends Container {
   }
 
   private togglePause() {
-    pauseManager.toggle();
+    this.toggle();
     this.updateSymbol();
   }
 
   private updateSymbol() {
-    if (pauseManager.isPaused()) {
+    if (this.isPaused()) {
       this.drawStopSymbol();
     } else {
       this.drawPlaySymbol();
@@ -77,6 +77,22 @@ class PauseButton extends Container {
         width: 10,
         color: "#000000",
       });
+  }
+
+  public isPaused() {
+    return this.paused;
+  }
+
+  public pause() {
+    this.paused = true;
+  }
+
+  public resume() {
+    this.paused = false;
+  }
+
+  public toggle() {
+    this.paused = !this.paused;
   }
 }
 

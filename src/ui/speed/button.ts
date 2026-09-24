@@ -1,10 +1,10 @@
 import { Container, Graphics } from "pixi.js";
-import { speedManager } from "./manager";
 import { getSpeedButtonPosition } from "@utils/ui-config";
 
 class SpeedButton extends Container {
   private symbol = new Graphics();
   private background = new Graphics();
+  private speedModifier = 1;
 
   constructor() {
     super();
@@ -42,12 +42,12 @@ class SpeedButton extends Container {
   }
 
   private toggleSpeed(): void {
-    speedManager.toggle();
+    this.toggleSpeedModifier();
     this.updateSymbol();
   }
 
   private updateSymbol(): void {
-    if (speedManager.getSpeed() === 1) {
+    if (this.getSpeedModifier() === 1) {
       this.drawStandartSymbol();
     } else {
       this.drawDoubleSymbol();
@@ -80,6 +80,26 @@ class SpeedButton extends Container {
       .lineTo(100, 40)
       .lineTo(70, 60)
       .fill({ color: "#ff0000" });
+  }
+
+  public getSpeedModifier() {
+    return this.speedModifier;
+  }
+
+  public doubleSpeedModifier() {
+    this.speedModifier = 2;
+  }
+
+  public standartSpeedModifier() {
+    this.speedModifier = 1;
+  }
+
+  public toggleSpeedModifier() {
+    if (this.getSpeedModifier() === 1) {
+      this.doubleSpeedModifier();
+    } else {
+      this.standartSpeedModifier();
+    }
   }
 }
 

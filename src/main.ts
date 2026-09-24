@@ -5,9 +5,7 @@ import { joystick } from "@joystick/joystick";
 import { setTestRandom } from "@utils/initializers";
 import { createTestSituation } from "@test-situations/test-situation";
 import { pauseButton } from "@pause/button";
-import { pauseManager } from "@pause/manager";
 import { speedButton } from "@speed/button";
-import { speedManager } from "@speed/manager";
 import { constructionManager } from "@construction/manager";
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import { compasses } from "./ui/compass/manager";
@@ -89,10 +87,10 @@ app.stage.on("pointerdown", (event) => {
 });
 
 app.ticker.add((delta) => {
-  if (!pauseManager.isPaused() && (!isTest || getIsGameReady())) {
+  if (!pauseButton.isPaused() && (!isTest || getIsGameReady())) {
     const deltaTime = isTest
-      ? 1 * speedManager.getSpeed()
-      : delta.deltaTime * speedManager.getSpeed();
+      ? 1 * speedButton.getSpeedModifier()
+      : delta.deltaTime * speedButton.getSpeedModifier();
 
     const angle = moveWorld(
       deltaTime,
