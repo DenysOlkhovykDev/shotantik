@@ -106,22 +106,29 @@ export class Blueprint extends Building {
     dash = 8,
     gap = 6,
   ) {
-    const step = dash + gap;
     const circumference = 2 * Math.PI * radius;
-    const amount = Math.floor(circumference / step) + 1;
+    const desiredStep = dash + gap;
+    const dashRatio = dash / (dash + gap);
+
+    const amount = Math.round(circumference / desiredStep);
+
+    const step = circumference / amount;
+
+    const dashLength = step * dashRatio;
+
+    const stepAngle = step / radius;
+    const dashAngle = dashLength / radius;
 
     for (let i = 0; i < amount; i++) {
-      const startAngle = (i * step) / radius;
-      const endAngle = (i * step + dash) / radius;
+      const startAngle = i * stepAngle;
+      const endAngle = startAngle + dashAngle;
 
-      const x1 = centerX + Math.cos(startAngle) * radius;
-      const y1 = centerY + Math.sin(startAngle) * radius;
+      const startX = centerX + Math.cos(startAngle) * radius;
+      const startY = centerY + Math.sin(startAngle) * radius;
 
-      const x2 = centerX + Math.cos(endAngle) * radius;
-      const y2 = centerY + Math.sin(endAngle) * radius;
+      graphics.moveTo(startX, startY);
 
-      graphics.moveTo(x1, y1);
-      graphics.lineTo(x2, y2);
+      graphics.arc(centerX, centerY, radius, startAngle, endAngle);
     }
 
     graphics.stroke({ width: 3 });
