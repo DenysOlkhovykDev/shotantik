@@ -1,6 +1,6 @@
-import { Building } from "@aircraft/building";
+import { type Building } from "@aircraft/building";
 import { aStar, dijkstra, buildPath } from "@utils/algorithms";
-import { Resource } from "@resources/resource";
+import { type Resource } from "@resources/resource";
 
 import { aircraft } from "@aircraft/aircraft";
 

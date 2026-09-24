@@ -1,4 +1,4 @@
-import { Building } from "@aircraft/building";
+import { type Building } from "@aircraft/building";
 
 export class GeometryCalulator {
   orientation = 0;

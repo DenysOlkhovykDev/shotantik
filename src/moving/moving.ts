@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { type Container } from "pixi.js";
 import { getGameScreenCenter } from "@utils/ui-config";
 import { backgroundManager } from "../main";
 

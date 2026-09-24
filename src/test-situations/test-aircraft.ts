@@ -3,7 +3,7 @@ import { aircraft } from "@aircraft/aircraft";
 import { JobType } from "@dashboard/task";
 
 import { createResource } from "@resources/_resources";
-import { AircraftScenario } from "./test-situation";
+import { type AircraftScenario } from "./test-situation";
 
 export function createAirCraftByScenario(scenario: AircraftScenario) {
   const buildingsMap = new Map();

@@ -27,10 +27,7 @@ test(testName, async ({ page }) => {
 
   let screenshot = await page.locator("canvas").screenshot();
 
-  expect(screenshot).toMatchSnapshot(
-    testName + "-1-button" + ".png",
-    testSettings,
-  );
+  expect(screenshot).toMatchSnapshot(testName + "-1-button.png", testSettings);
 
   await skipFrames(page, 0);
 
@@ -44,10 +41,7 @@ test(testName, async ({ page }) => {
 
   screenshot = await page.locator("canvas").screenshot();
 
-  expect(screenshot).toMatchSnapshot(
-    testName + "-2-menu" + ".png",
-    testSettings,
-  );
+  expect(screenshot).toMatchSnapshot(testName + "-2-menu.png", testSettings);
 
   await skipFrames(page, 0);
 
@@ -62,7 +56,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-3-select-mixer" + ".png",
+    testName + "-3-select-mixer.png",
     testSettings,
   );
 
@@ -79,7 +73,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-4-place-mixer" + ".png",
+    testName + "-4-place-mixer.png",
     testSettings,
   );
 
@@ -110,7 +104,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-5-place-mixer-blueprint" + ".png",
+    testName + "-5-place-mixer-blueprint.png",
     testSettings,
   );
 
@@ -147,7 +141,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-6-change-construction-position" + ".png",
+    testName + "-6-change-construction-position.png",
     testSettings,
   );
 
@@ -166,7 +160,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-7-hide-construction-button" + ".png",
+    testName + "-7-hide-construction-button.png",
     testSettings,
   );
 
@@ -191,7 +185,7 @@ test(testName, async ({ page }) => {
   screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(
-    testName + "-8-hide-construction-menu" + ".png",
+    testName + "-8-hide-construction-menu.png",
     testSettings,
   );
 });

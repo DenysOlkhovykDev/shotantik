@@ -1,4 +1,4 @@
-import { Task, JobType } from "@dashboard/task";
+import { type Task, JobType } from "@dashboard/task";
 import type { Building } from "@aircraft/building";
 import { dijkstra } from "@utils/algorithms";
 

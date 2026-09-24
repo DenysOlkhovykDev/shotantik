@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { type Container, Graphics } from "pixi.js";
 import { allIslands } from "../islands/_islands";
 
 export function createTestWorld(worldLayer: Container) {

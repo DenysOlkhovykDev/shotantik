@@ -21,6 +21,24 @@ export default tseslint.config(
       "prefer-const": "error",
       eqeqeq: ["error", "always"],
       curly: ["error", "multi-line"],
+
+      // TypeScript
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/no-non-null-assertion": "error",
+
+      // JavaScript
+      "no-unreachable-loop": "error",
+      "no-self-assign": "error",
+      "no-self-compare": "error",
+      "no-constant-condition": "error",
+
+      // Code
+      "no-shadow": "error",
+      "no-lonely-if": "error",
+      "no-useless-return": "error",
+      "no-useless-concat": "error",
+      "no-useless-rename": "error",
     },
   },
 );

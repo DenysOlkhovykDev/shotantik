@@ -1,4 +1,4 @@
-import { Graphics, Texture, Container } from "pixi.js";
+import { Graphics, type Texture, Container } from "pixi.js";
 
 export abstract class Resource {
   root: Container;
