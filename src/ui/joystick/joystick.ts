@@ -27,8 +27,10 @@ class Joystick extends Container {
 
     this.thumb = new Graphics()
       .circle(0, 0, this.thumbRadius)
-      .fill({ color: "#444444", alpha: 0.8 })
+      .fill({ color: "#444444", alpha: 1 })
       .stroke({ width: 3, color: "#000000" });
+
+    this.thumb.alpha = 0.8;
 
     this.addChild(this.base, this.thumb);
 
@@ -48,11 +50,15 @@ class Joystick extends Container {
   private onDown = (event: FederatedPointerEvent) => {
     this.dragging = true;
 
+    this.thumb.alpha = 1;
+
     event.stopPropagation();
   };
 
   private onMove = (event: FederatedPointerEvent) => {
     if (!this.dragging) return;
+
+    this.thumb.alpha = 1;
 
     const pos = event.getLocalPosition(this);
 
@@ -78,6 +84,8 @@ class Joystick extends Container {
 
   private onUp = () => {
     this.dragging = false;
+
+    this.thumb.alpha = 0.8;
 
     this.thumb.position.set(0, 0);
 
