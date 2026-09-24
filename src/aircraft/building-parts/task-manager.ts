@@ -48,8 +48,9 @@ export class TaskManager {
   public refreshTasks() {
     this.removeCompletedTasks();
 
-    if (!this.building.craftRecipe || this.building.priorityForTasks < 0)
+    if (!this.building.craftRecipe || this.building.priorityForTasks < 0) {
       return;
+    }
 
     this.syncDeliveryTasks();
     this.syncProductionTask();

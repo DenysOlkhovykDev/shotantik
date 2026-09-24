@@ -66,5 +66,5 @@ export class GlassMaker extends Building {
     GlassMaker.baseTexture = generateTextureFromOrigin(base);
   }
 
-  animation(delta: number) {}
+  animation() {}
 }

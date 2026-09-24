@@ -61,7 +61,7 @@ export abstract class Building {
 
   roads: Road[] = [];
 
-  priorityForTasks: number = -1;
+  priorityForTasks = -1;
   taskManager: TaskManager;
 
   craftingProcessor: CraftingProcessor;

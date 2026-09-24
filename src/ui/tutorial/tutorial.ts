@@ -35,12 +35,12 @@ export class Tutorial extends Container {
 
   constructor(
     public text: string,
-    public showCondition: Function,
-    public hideCondition: Function,
+    public showCondition: () => boolean,
+    public hideCondition: () => boolean,
     public needOkButton: boolean,
     public pointerX?: number,
     public pointerY?: number,
-    public findTarget?: Function,
+    public findTarget?: () => { x: number; y: number },
   ) {
     super();
 

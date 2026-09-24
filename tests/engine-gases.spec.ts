@@ -36,7 +36,7 @@ test(testName, async ({ page }) => {
 
   await skipFrames(page, 38);
 
-  let screenshot = await page.locator("canvas").screenshot();
+  const screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(testName + ".png", testSettings);
 });

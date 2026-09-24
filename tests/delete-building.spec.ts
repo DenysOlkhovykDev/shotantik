@@ -29,7 +29,7 @@ test(testName, async ({ page }) => {
     getHeaderDeleteButtonPosition().y,
   );
 
-  let screenshot = await page.locator("canvas").screenshot();
+  const screenshot = await page.locator("canvas").screenshot();
 
   expect(screenshot).toMatchSnapshot(testName + ".png", testSettings);
 });

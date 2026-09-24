@@ -69,7 +69,7 @@ export class Platform extends Building {
     Platform.baseTexture = generateTextureFromOrigin(baseGraphics);
   }
 
-  animation(delta: number) {}
+  animation() {}
 
   onClick(event: FederatedPointerEvent) {
     super.onClick(event);

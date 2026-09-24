@@ -238,10 +238,12 @@ export class Extractor extends Building {
     this.antennasPosition.offsetFromCenter +=
       0.1 * delta * this.antennasPosition.movingDirection;
 
-    if (this.antennasPosition.offsetFromCenter > -2)
+    if (this.antennasPosition.offsetFromCenter > -2) {
       this.antennasPosition.movingDirection = -1;
-    if (this.antennasPosition.offsetFromCenter < -12)
+    }
+    if (this.antennasPosition.offsetFromCenter < -12) {
       this.antennasPosition.movingDirection = 1;
+    }
 
     for (let i = 0; i < Extractor.antennasParams.amount; i++) {
       const { angle } = getRadialPoint(i, Extractor.antennasParams.amount, 1);

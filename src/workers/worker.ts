@@ -9,7 +9,7 @@ import { Navigator } from "./worker-parts/navigator";
 export class Worker extends Container {
   body: Graphics = new Graphics();
 
-  mainColor: string = "#000000";
+  mainColor = "#000000";
 
   inventory: Inventory = new Inventory();
   legs: LegCoordinator = new LegCoordinator();

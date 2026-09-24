@@ -9,7 +9,7 @@ export class Display extends Container {
     }),
   });
 
-  constructor(text: string) {
+  constructor() {
     super();
 
     this.addChild(this.text);

@@ -21,7 +21,7 @@ export class ConstructionDisplay extends Container {
       this.createDisplayBackround(buildingName);
       this.createCancelButton();
 
-      if (buildingName == "Road") {
+      if (buildingName === "Road") {
         const root = Road.crateRoadImage(0, 0);
 
         root.scale = 0.8;
