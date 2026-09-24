@@ -5,7 +5,7 @@ import { Worker } from "@workers/worker";
 const isTest = import.meta.env.MODE === "test";
 
 export class Navigator {
-  speed: number = 2;
+  speed = 2;
 
   path: Building[] = [];
   state: string;

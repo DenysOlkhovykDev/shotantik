@@ -1,4 +1,4 @@
-import { Graphics, Container } from "pixi.js";
+import { Container } from "pixi.js";
 import { Resource } from "@resources/resource";
 
 export class Inventory extends Container {

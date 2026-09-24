@@ -4,7 +4,7 @@ import { Compass } from "./compass";
 export class Compasses extends Container {
   compasses: Compass[] = [];
 
-  public addCompass(x: number, y: number, condition: Function) {
+  public addCompass(x: number, y: number, condition: () => boolean) {
     const compass = new Compass(x, y, condition);
     this.compasses.push(compass);
     this.addChild(compass.graphics);

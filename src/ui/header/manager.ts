@@ -14,7 +14,7 @@ class Header extends Container {
   constructor() {
     super();
 
-    this.display = new Display("");
+    this.display = new Display();
     this.infoButton = new InfoButton();
     this.deleteButton = new DeleteButton();
 

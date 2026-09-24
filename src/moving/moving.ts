@@ -19,8 +19,8 @@ export function moveWorld(
   turnInput: number,
   thrustInput: number,
 ) {
-  let absTurn = Math.abs(turnInput);
-  let absThrust = Math.abs(thrustInput);
+  const absTurn = Math.abs(turnInput);
+  const absThrust = Math.abs(thrustInput);
 
   if (absTurn > absThrust * 4) {
     thrustInput = 0;

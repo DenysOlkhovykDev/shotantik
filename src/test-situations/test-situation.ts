@@ -79,16 +79,16 @@ export interface AircraftScenario {
 export interface UiElementsScenario {
   tutorials?: {
     text: string;
-    showCondition: Function;
-    hideCondition: Function;
+    showCondition: () => boolean;
+    hideCondition: () => boolean;
     needOkButton: boolean;
     x?: number;
     y?: number;
-    findTarget?: Function;
+    findTarget?: () => { x: number; y: number };
   }[];
 
   compasses?: {
-    condition: Function;
+    condition: () => boolean;
     x: number;
     y: number;
   }[];

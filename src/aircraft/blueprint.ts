@@ -1,11 +1,9 @@
-import { Container, Text } from "pixi.js";
+import { Graphics, Text } from "pixi.js";
 import { Building, BuildingConfig } from "@aircraft/building";
 import { BuildingClass, aircraft } from "@aircraft/aircraft";
 import { getDistance } from "@utils/basic-geometry";
 import { Resource } from "@resources/resource";
 import { Task, TaskStatus } from "@dashboard/task";
-import { constructionManager } from "@construction/manager";
-import { Graphics } from "pixi.js";
 import { RecipeIngredient } from "./building-parts/recipe-sign";
 
 export class Blueprint extends Building {
@@ -27,7 +25,7 @@ export class Blueprint extends Building {
   static constructionRecipe = [];
 
   private targetBuilding: BuildingClass;
-  collisions: number = 0;
+  collisions = 0;
 
   tasks: Task[] = [];
   buildResources: string[] = [];
@@ -96,7 +94,7 @@ export class Blueprint extends Building {
     this.contentContainer.addChild(baseGraphics);
   }
 
-  animation(delta: number) {}
+  animation() {}
 
   private drawDashedCircle(
     graphics: Graphics,

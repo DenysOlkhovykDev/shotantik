@@ -45,7 +45,7 @@ export class Junkuard extends Building {
 
   particles: Particle[] = [];
   particlesColor = "#000000";
-  amountOfParticles: number = 4;
+  amountOfParticles = 4;
 
   constructor(x: number, y: number) {
     super(x, y, "Junkuard");

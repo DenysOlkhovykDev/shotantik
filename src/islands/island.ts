@@ -44,7 +44,7 @@ export class Island extends Container {
     for (let x = 0; x < this.backgroundSize; x++) {
       for (let y = 0; y < this.backgroundSize; y++) {
         const value = this.islandValues[x][y];
-        let newX = 0;
+        let newX;
         if (y % 2 === 0) {
           newX = x * 34 + positionX;
         } else {

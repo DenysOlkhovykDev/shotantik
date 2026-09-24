@@ -25,8 +25,13 @@ export function getAvailableTaskWithHighestPriority(
         false,
       );
 
-      if (path.length === 0 || resource === undefined || distance === undefined)
+      if (
+        path.length === 0 ||
+        resource === undefined ||
+        distance === undefined
+      ) {
         continue;
+      }
 
       totalDistance = distance;
     } else {

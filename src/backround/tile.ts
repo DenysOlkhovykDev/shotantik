@@ -31,7 +31,7 @@ export class BackgroundTile extends Container {
     for (let x = 0; x < this.backgroundSize; x++) {
       for (let y = 0; y < this.backgroundSize; y++) {
         if (this.fogValues[x][y] < 110) {
-          let newX = 0;
+          let newX;
           const newY = y * 34;
 
           if (y % 2 === 0) {

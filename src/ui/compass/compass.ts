@@ -9,7 +9,7 @@ export class Compass extends Container {
   constructor(
     public compassTargetX: number,
     public compassTargetY: number,
-    public condition: Function,
+    public condition: () => boolean,
   ) {
     super();
     this.graphics.eventMode = "none";
