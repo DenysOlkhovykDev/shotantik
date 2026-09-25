@@ -1,6 +1,7 @@
 import { type Container } from "pixi.js";
 import { getGameScreenCenter } from "@utils/ui-config";
 import { backgroundManager } from "../main";
+import { aircraft } from "@aircraft/aircraft";
 
 const ship = {
   x: 0,
@@ -58,7 +59,10 @@ export function moveWorld(
 function thrustWorld(delta: number, thrustInput: number) {
   const thrust = Math.max(-1, Math.min(1, thrustInput));
 
-  const targetVelocity = thrust * 3;
+  const engines = aircraft.buildings.filter((b) => b.buildingType === "Engine");
+
+  const targetVelocity =
+    thrust * ((30 * engines.length) / aircraft.buildings.length);
 
   const thrustResponse = 1 - Math.exp(-0.02 * delta);
 
@@ -75,7 +79,10 @@ function thrustWorld(delta: number, thrustInput: number) {
 function turnWorld(delta: number, turnInput: number) {
   const turn = Math.max(-1, Math.min(1, turnInput));
 
-  const targetTurn = turn * 0.01;
+  const engines = aircraft.buildings.filter((b) => b.buildingType === "Engine");
+
+  const targetTurn =
+    turn * ((0.1 * engines.length) / aircraft.buildings.length);
 
   const turnResponse = 1 - Math.exp(-0.08 * delta);
 
