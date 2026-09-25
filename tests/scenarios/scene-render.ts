@@ -29,6 +29,9 @@ export const sceneRender: Scenario = {
 
       { from: "p7", id: "p8", type: "Platform", x: 360, y: 1000 },
       { from: "p8", id: "grinder", type: "Grinder", x: 260, y: 1000 },
+
+      { from: "p8", id: "p9", type: "Platform", x: 360, y: 1100 },
+      { from: "p9", id: "researcher", type: "Researcher", x: 460, y: 1100 },
     ],
     resources: [
       { buildingId: "collector", resourceName: "Water", amount: 5 },

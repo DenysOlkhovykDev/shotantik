@@ -17,6 +17,8 @@ import { Grinder } from "@aircraft/modules/grinder";
 import { Engine } from "@aircraft/modules/engine";
 import { Blueprint } from "@aircraft/blueprint";
 import { GlassMaker } from "@aircraft/modules/glassMaker";
+import { Researcher } from "./modules/researcher";
+
 import { Workers } from "@workers/_workers";
 import { type RecipeIngredient } from "./building-parts/recipe-sign";
 
@@ -39,6 +41,7 @@ export const buildingMap: Record<string, BuildingClass> = {
   Grinder,
   Engine,
   GlassMaker,
+  Researcher,
 };
 
 export type BuildingType = keyof typeof buildingMap;
