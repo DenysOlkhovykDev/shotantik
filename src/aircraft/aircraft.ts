@@ -17,6 +17,7 @@ import { Grinder } from "@aircraft/modules/grinder";
 import { Engine } from "@aircraft/modules/engine";
 import { Blueprint } from "@aircraft/blueprint";
 import { GlassMaker } from "@aircraft/modules/glassMaker";
+import { Portal } from "./modules/portal";
 import { Researcher } from "./modules/researcher";
 
 import { Workers } from "@workers/_workers";
@@ -41,6 +42,7 @@ export const buildingMap: Record<string, BuildingClass> = {
   Grinder,
   Engine,
   GlassMaker,
+  Portal,
   Researcher,
 };
 
