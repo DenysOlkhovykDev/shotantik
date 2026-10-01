@@ -9,6 +9,7 @@ export interface RecipeIngredient {
 export interface Recipe {
   ingredients: RecipeIngredient[];
   result?: string;
+  duration?: number;
 }
 
 export interface RecipeSignOptions {

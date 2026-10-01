@@ -21,6 +21,7 @@ import { joystick } from "@joystick/joystick";
 import { CraftingProcessor } from "./building-parts/crafting-processor";
 import { GeometryCalulator } from "./building-parts/geometry-calculator";
 import { shadowFilter } from "./building-parts/shadow-filter";
+import { researchManager } from "../ui/research/manager";
 
 export interface BuildingConfig {
   storageCenter: {
@@ -133,14 +134,25 @@ export abstract class Building {
     );
   }
 
-  onClick(event: FederatedPointerEvent) {
+  onClick(event: FederatedPointerEvent, needResetCinstructionSettings = true) {
     event.stopPropagation();
 
     joystick.hide();
-    constructionManager.hideButton();
 
     aircraft.hideCraftSigns();
     aircraft.deSelectAllBuildings();
+
+    constructionManager.hideButton();
+    constructionManager.hideMenu();
+
+    researchManager.hideMenu();
+
+    if (needResetCinstructionSettings) {
+      aircraft.resetConstructionSource();
+
+      constructionManager.setBuildingType(undefined);
+      constructionManager.updateDisplayBuildingType();
+    }
 
     aircraft.selectBuilding(this);
     this.shadowFilter.createSelectShadow(this.contentContainer);

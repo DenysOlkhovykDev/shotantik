@@ -21,13 +21,19 @@ import { Portal } from "./modules/portal";
 import { Researcher } from "./modules/researcher";
 
 import { Workers } from "@workers/_workers";
-import { type RecipeIngredient } from "./building-parts/recipe-sign";
+import {
+  type Recipe,
+  type RecipeIngredient,
+} from "./building-parts/recipe-sign";
+import { researchManager } from "../ui/research/manager";
 
 export type BuildingClass = {
   new (x: number, y: number): Building;
   buildingConfig: BuildingConfig;
   baseTexture: Texture;
   constructionRecipe: RecipeIngredient[];
+  craftRecipe?: Recipe;
+  speedModifier?: number;
 };
 
 export const buildingMap: Record<string, BuildingClass> = {
@@ -73,6 +79,10 @@ class Aircraft {
   public addBuilding(x: number, y: number, buildingType: BuildingType) {
     const BuildingClass = buildingMap[buildingType];
     const building = new BuildingClass(x, y);
+
+    if (buildingType === "Researcher") {
+      researchManager.researchProgress.amountOfResearchers++;
+    }
 
     this.buildings.push(building);
     this.airCraftLayer.addChild(building.root);

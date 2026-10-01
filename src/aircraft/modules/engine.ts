@@ -39,6 +39,8 @@ export class Engine extends Building {
     { resourceName: "Truss", amount: 1 },
   ];
 
+  static speedModifier = 1;
+
   static propellerParams = {
     amount: 3,
     size: 7,

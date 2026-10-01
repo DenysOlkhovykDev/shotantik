@@ -12,6 +12,7 @@ import { compasses } from "./ui/compass/manager";
 import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
 import { BackgroundManager } from "./backround/manager";
+import { researchManager } from "./ui/research/manager";
 
 export const app = new Application();
 
@@ -48,6 +49,8 @@ UIcontainer.addChild(constructionManager);
 UIcontainer.addChild(header);
 UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
+researchManager.initialize();
+UIcontainer.addChild(researchManager);
 
 const worldLayer = new Container(); // Temp
 export const backgroundManager = new BackgroundManager();
@@ -76,12 +79,14 @@ app.stage.on("pointerdown", (event) => {
 
     aircraft.resetConstructionSource();
     aircraft.deSelectAllBuildings();
+    aircraft.hideCraftSigns();
 
     constructionManager.hideButton();
     constructionManager.hideMenu();
     constructionManager.updateDisplayBuildingType();
 
-    aircraft.hideCraftSigns();
+    researchManager.hideMenu();
+
     joystick.hide();
   }
 });
@@ -112,6 +117,8 @@ app.ticker.add((delta) => {
     compasses.updateCompasses();
 
     tutorials.updateTutorials();
+
+    researchManager.updateReserachProgress(deltaTime);
   }
 });
 

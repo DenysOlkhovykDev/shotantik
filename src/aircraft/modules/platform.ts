@@ -72,7 +72,7 @@ export class Platform extends Building {
   animation() {}
 
   onClick(event: FederatedPointerEvent) {
-    super.onClick(event);
+    super.onClick(event, false);
     constructionManager.showButton();
     aircraft.showCraftSigns();
 

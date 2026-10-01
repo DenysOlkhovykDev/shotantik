@@ -54,13 +54,13 @@ export const menuItems: MenuItem[] = [
 ];
 
 export class ConstructionMenu extends Container {
-  private menuContainer = new Container();
   private menuBackground = new Graphics();
   private menuItemsContainers: Container[] = [];
 
   private columnWidth = 120;
   private rowHeight = 120;
   private gap = 10;
+  private borderRadius = 26;
 
   private columns = 3;
   private rows = Math.ceil(menuItems.length / this.columns);
@@ -71,18 +71,19 @@ export class ConstructionMenu extends Container {
   };
 
   private menuWidth =
-    this.columns * this.columnWidth + (this.columns - 1) * this.gap;
-  private menuHeight = this.rows * this.rowHeight + (this.rows - 1) * this.gap;
+    this.columns * this.columnWidth +
+    (this.columns - 1) * this.gap +
+    2 * this.gap;
+  private menuHeight =
+    this.rows * this.rowHeight + (this.rows - 1) * this.gap + 2 * this.gap;
 
   constructor(private setBuildingType: (type: string | undefined) => void) {
     super();
 
     this.draw();
 
-    this.menuContainer.x = this.centerBottom.x - this.menuWidth / 2;
-    this.menuContainer.y = this.centerBottom.y - this.menuHeight;
-
-    this.addChild(this.menuContainer);
+    this.x = this.centerBottom.x - this.menuWidth / 2;
+    this.y = this.centerBottom.y - this.menuHeight;
   }
 
   private draw() {
@@ -93,10 +94,16 @@ export class ConstructionMenu extends Container {
 
   private makeMenuBackground() {
     this.menuBackground
-      .roundRect(-10, -10, this.menuWidth + 20, this.menuHeight + 20, 10)
+      .roundRect(
+        -this.gap,
+        -this.gap,
+        this.menuWidth,
+        this.menuHeight,
+        this.borderRadius,
+      )
       .fill("#cfcbc8");
 
-    this.menuContainer.addChild(this.menuBackground);
+    this.addChild(this.menuBackground);
   }
 
   private makeMenuItems() {
@@ -113,7 +120,7 @@ export class ConstructionMenu extends Container {
 
       this.createMenuItem(item, this.menuItemsContainers[index]);
 
-      this.menuContainer.addChild(this.menuItemsContainers[index]);
+      this.addChild(this.menuItemsContainers[index]);
     });
   }
 
@@ -135,7 +142,13 @@ export class ConstructionMenu extends Container {
     buildingType: string,
   ) {
     const background = new Graphics()
-      .roundRect(0, 0, this.columnWidth, this.rowHeight, 8)
+      .roundRect(
+        0,
+        0,
+        this.columnWidth,
+        this.rowHeight,
+        this.borderRadius - this.gap,
+      )
       .fill(backgroundColor);
 
     background.eventMode = "static";

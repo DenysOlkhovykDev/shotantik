@@ -7,7 +7,7 @@ const isTest = import.meta.env.MODE === "test";
 
 export class TaskManager {
   task: Task | undefined;
-  productionProgress = 60;
+  productionProgress = 0;
 
   constructor(public profession: string) {}
 
@@ -37,9 +37,14 @@ export class TaskManager {
   public handleProductionLogic(delta: number) {
     if (this.task) {
       if (!isTest) {
-        this.productionProgress -= delta;
+        this.productionProgress += delta;
 
-        if (this.productionProgress < 0) {
+        const duration =
+          this.task.target.craftRecipe?.duration === undefined
+            ? 60
+            : this.task.target.craftRecipe?.duration;
+
+        if (this.productionProgress > duration) {
           this.tryToDoProduction();
         }
       } else {
@@ -65,7 +70,7 @@ export class TaskManager {
   }
 
   private resetProductionProgress() {
-    this.productionProgress = 60;
+    this.productionProgress = 0;
   }
 
   public handleResourceLogic(

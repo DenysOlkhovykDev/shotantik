@@ -30,6 +30,7 @@ export class Collector extends Building {
   static craftRecipe = {
     ingredients: [],
     result: "Water",
+    duration: 60,
   };
 
   static gridsParams = {
