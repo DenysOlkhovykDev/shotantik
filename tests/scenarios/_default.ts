@@ -133,8 +133,9 @@ upgrades`,
         findTarget: () => findFirstBuilding(),
       },
       {
-        text: `Click the Researcher
-to open the research
+        text: `Click
+to open the
+research
 menu`,
         showCondition: () => hasResearcherBuilded(),
         hideCondition: () => hasClickedOnResearcher(),
