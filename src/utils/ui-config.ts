@@ -28,10 +28,10 @@ export function getConstructionMenuPosition() {
   };
 }
 
-export function getMixerPositionInConstructionMenuPosition() {
+export function getMixerPositionInConstructionMenu() {
   return {
     x: 360,
-    y: 1070,
+    y: 1050,
   };
 }
 

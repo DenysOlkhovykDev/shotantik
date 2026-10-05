@@ -87,7 +87,7 @@ export class ResearchMenu extends Container {
 
     this.eventMode = "static";
 
-    this.x = this.centerBottom.x - this.menuWidth / 2;
+    this.x = this.centerBottom.x - this.menuWidth / 2 + this.gap;
     this.y = this.centerBottom.y - this.menuHeight;
   }
 
