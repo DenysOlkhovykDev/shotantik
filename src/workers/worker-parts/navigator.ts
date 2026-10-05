@@ -5,7 +5,7 @@ import { type Worker } from "@workers/worker";
 const isTest = import.meta.env.MODE === "test";
 
 export class Navigator {
-  speed = 2;
+  static speed = 2;
 
   path: Building[] = [];
   state: string;
@@ -37,8 +37,8 @@ export class Navigator {
           const vx = dx / distance;
           const vy = dy / distance;
 
-          x += vx * this.speed * delta;
-          y += vy * this.speed * delta;
+          x += vx * Navigator.speed * delta;
+          y += vy * Navigator.speed * delta;
         } else {
           this.onReachTargetBuilding();
         }

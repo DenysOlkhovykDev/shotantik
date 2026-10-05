@@ -19,6 +19,13 @@ export class ConstructionButton extends Container {
       .fill({ color: "#000000", alpha: 0 });
 
     this.graphic
+      .moveTo(this.buttonPosition.x - 27, this.buttonPosition.y)
+      .lineTo(this.buttonPosition.x + 27, this.buttonPosition.y)
+      .moveTo(this.buttonPosition.x, this.buttonPosition.y - 27)
+      .lineTo(this.buttonPosition.x, this.buttonPosition.y + 27)
+      .stroke({ width: 20, color: "#000000" });
+
+    this.graphic
       .moveTo(this.buttonPosition.x - 25, this.buttonPosition.y)
       .lineTo(this.buttonPosition.x + 25, this.buttonPosition.y)
       .moveTo(this.buttonPosition.x, this.buttonPosition.y - 25)

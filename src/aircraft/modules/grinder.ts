@@ -34,6 +34,7 @@ export class Grinder extends Building {
       { resourceName: "Organic", amount: 2 },
     ],
     result: "Gear",
+    duration: 60,
   };
 
   static buildingParams = {

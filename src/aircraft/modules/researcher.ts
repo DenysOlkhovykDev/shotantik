@@ -1,10 +1,11 @@
-import { Graphics, Sprite } from "pixi.js";
+import { type FederatedPointerEvent, Graphics, Sprite } from "pixi.js";
 import { Building, type BuildingConfig } from "@aircraft/building";
 import {
   generateTextureFromOrigin,
   makeBasicCircle,
 } from "@utils/basic-graphic";
 import { getRadialPoint, getRadialLine } from "@utils/basic-geometry";
+import { researchManager } from "../../ui/research/manager";
 
 type RotationSide = "R" | "L" | "U" | "D" | "F" | "B";
 
@@ -46,61 +47,55 @@ export class Researcher extends Building {
   };
 
   static cubesParams = {
-    size: 10,
-    strokeWidth: 2,
+    size: 8,
+    strokeWidth: 4,
     strokeColor: "#000000",
   };
 
   static rotationParams: RotationParams = {
     segments: {
       R: [
-        { x: 20, y: 23 },
-        { x: -15, y: 22 },
-        { x: -1, y: -3 },
-        { x: 26, y: -3 },
-        { x: 20, y: 10 },
-        { x: 4, y: 10 },
+        { x: 18, y: 23 },
+        { x: -17, y: 23 },
+        { x: -3, y: -3 },
+        { x: 28, y: -3 },
+        { x: 22, y: 10 },
+        { x: 0, y: 10 },
       ],
       L: [
-        { x: -26, y: 2 },
-        { x: -19, y: -10 },
-        { x: -12, y: -22 },
-        { x: 3, y: -22 },
-        { x: 18, y: -22 },
+        { x: -30, y: 2 },
+        { x: -16, y: -26 },
+        { x: 18, y: -26 },
       ],
       U: [
-        { x: 12, y: -22 },
-        { x: 24, y: 2 },
+        { x: 14, y: -26 },
+        { x: 28, y: 2 },
         { x: -2, y: 2 },
-        { x: -13, y: -22 },
-        { x: 4, y: -22 },
-        { x: 8, y: -12 },
+        { x: -17, y: -26 },
+        { x: 2, y: -26 },
+        { x: 7, y: -12 },
       ],
       D: [
-        { x: 18, y: 22 },
-        { x: 3, y: 22 },
-        { x: -12, y: 22 },
-        { x: -20, y: 10 },
-        { x: -28, y: -2 },
+        { x: 18, y: 24 },
+        { x: -14, y: 26 },
+        { x: -30, y: 0 },
       ],
       F: [
-        { x: -24, y: 2 },
-        { x: -10, y: -22 },
+        { x: -30, y: 2 },
+        { x: -14, y: -25 },
         { x: 2, y: 0 },
-        { x: -10, y: 22 },
-        { x: -20, y: 12 },
-        { x: -16, y: 2 },
+        { x: -14, y: 24 },
+        { x: -24, y: 12 },
+        { x: -14, y: -3 },
       ],
       B: [
-        { x: 12, y: -22 },
-        { x: 18, y: -10 },
-        { x: 24, y: 2 },
-        { x: 18, y: 12.5 },
-        { x: 12, y: 23 },
+        { x: 14, y: -26 },
+        { x: 28, y: 2 },
+        { x: 14, y: 25 },
       ],
     },
     schedule: ["R", "R", "L", "L", "U", "U", "D", "D", "F", "F", "B", "B"],
-    speed: 0.6,
+    speed: 0.4,
   };
 
   // contentContainer
@@ -202,14 +197,35 @@ export class Researcher extends Building {
     column: number,
     size: number,
   ) {
-    const { startX, startY, endX, endY } = getRadialLine(type, 3, 0, size);
+    const { startX, startY, endX, endY } = getRadialLine(
+      type,
+      3,
+      0,
+      size + Researcher.cubesParams.strokeWidth,
+    );
 
-    const { x, y } = getRadialPoint(type * 3 + 3, 9, size);
+    const { x, y } = getRadialPoint(
+      type * 3 + 3,
+      3 * 3,
+      size + Researcher.cubesParams.strokeWidth,
+    );
 
-    return {
-      x: column * (endX - startX) + row * (x - startX),
-      y: column * (endY - startY) + row * (y - startY),
-    };
+    if (type === 0) {
+      return {
+        x: column * (endX - startX) + row * (x - startX),
+        y: column * (endY - startY) + row * (y - startY),
+      };
+    } else if (type === 1) {
+      return {
+        x: column * (endX - startX) + row * (x - startX) - 2,
+        y: column * (endY - startY) + row * (y - startY),
+      };
+    } else {
+      return {
+        x: column * (endX - startX) + row * (x - startX),
+        y: column * (endY - startY) + row * (y - startY) - 2,
+      };
+    }
   }
 
   private makeCubeTile(
@@ -250,7 +266,7 @@ export class Researcher extends Building {
       Researcher.rotationParams.segments[this.getCurrnetSide()].length;
 
     this.rotationState.rotationSparklePosition +=
-      Researcher.rotationParams.speed * delta;
+      Researcher.rotationParams.speed * delta * (maxPosition / 6);
     this.rotationSparkle.clear();
 
     if (this.rotationState.rotationSparklePosition <= maxPosition) {
@@ -263,9 +279,12 @@ export class Researcher extends Building {
       this.rotationState.isSideRotated = true;
     }
 
-    this.hideSegmentPart(maxPosition);
+    this.hideSegmentPart();
 
-    if (this.rotationState.rotationSparklePosition > 50) {
+    if (
+      this.rotationState.rotationSparklePosition >
+      75 * Researcher.rotationParams.speed * delta * (maxPosition / 6)
+    ) {
       this.rotationState.rotationSparklePosition = 0;
       this.rotationState.isSideRotated = false;
 
@@ -281,15 +300,22 @@ export class Researcher extends Building {
 
   private showSegmentPart() {
     const segments = Researcher.rotationParams.segments[this.getCurrnetSide()];
-    const completedSegments = Math.floor(
-      this.rotationState.rotationSparklePosition,
+
+    const segmentCount = segments.length - 1;
+
+    const position = Math.max(
+      0,
+      Math.min(this.rotationState.rotationSparklePosition, segmentCount),
     );
-    const partialProgress = this.rotationState.rotationSparklePosition % 1;
+
+    const completedSegments = Math.floor(position);
+    const partialProgress = position % 1;
 
     for (let i = 0; i < completedSegments; i++) {
       this.drawSegment(segments[i], segments[i + 1], 0, 1);
     }
-    if (completedSegments < segments.length - 1) {
+
+    if (completedSegments < segmentCount) {
       this.drawSegment(
         segments[completedSegments],
         segments[completedSegments + 1],
@@ -298,18 +324,30 @@ export class Researcher extends Building {
       );
     }
   }
+  private hideSegmentPart() {
+    const maxPosition =
+      Researcher.rotationParams.segments[this.getCurrnetSide()].length - 1;
 
-  private hideSegmentPart(maxPosition: number) {
     const segments = Researcher.rotationParams.segments[this.getCurrnetSide()];
-    const hidePosition =
-      this.rotationState.rotationSparklePosition - maxPosition;
+
+    const segmentCount = segments.length - 1;
+
+    const hidePosition = Math.max(
+      0,
+      Math.min(
+        this.rotationState.rotationSparklePosition - maxPosition,
+        segmentCount,
+      ),
+    );
+
     const completedHiddenSegments = Math.floor(hidePosition);
     const partialProgress = hidePosition % 1;
 
-    for (let i = completedHiddenSegments + 1; i < segments.length - 1; i++) {
+    for (let i = completedHiddenSegments + 1; i < segmentCount; i++) {
       this.drawSegment(segments[i], segments[i + 1], 0, 1);
     }
-    if (completedHiddenSegments < segments.length - 1) {
+
+    if (completedHiddenSegments < segmentCount) {
       this.drawSegment(
         segments[completedHiddenSegments],
         segments[completedHiddenSegments + 1],
@@ -485,6 +523,11 @@ export class Researcher extends Building {
         }
       }
     }
+  }
+
+  onClick(event: FederatedPointerEvent) {
+    super.onClick(event);
+    researchManager.showMenu();
   }
 }
 

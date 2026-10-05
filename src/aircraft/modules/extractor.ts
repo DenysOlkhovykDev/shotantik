@@ -30,6 +30,7 @@ export class Extractor extends Building {
   static craftRecipe = {
     ingredients: [],
     result: "Metal",
+    duration: 60,
   };
 
   static antennasParams = {
