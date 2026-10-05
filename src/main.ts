@@ -13,6 +13,8 @@ import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
 import { BackgroundManager } from "./backround/manager";
 import { researchManager } from "./ui/research/manager";
+import { isNearTarget } from "@utils/tutorial-conditions";
+import { researchTargets } from "@test-situations/test-world";
 
 export const app = new Application();
 
@@ -119,6 +121,18 @@ app.ticker.add((delta) => {
     tutorials.updateTutorials();
 
     researchManager.updateReserachProgress(deltaTime);
+
+    if (isNearTarget()) {
+      if (researchTargets.length > 0) {
+        worldLayer.removeChild(researchTargets[0].root);
+        researchTargets.shift();
+
+        constructionManager.addMenuElement({
+          label: "Researcher",
+          color: "#ca9cf3",
+        });
+      }
+    }
   }
 });
 

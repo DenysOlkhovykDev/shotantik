@@ -28,7 +28,7 @@ export class Researcher extends Building {
     inventorySize: 1,
 
     boundsCenter: { x: 0, y: 0 },
-    boundsRadius: 46,
+    boundsRadius: 38,
 
     baseGraphicalSize: 38,
 

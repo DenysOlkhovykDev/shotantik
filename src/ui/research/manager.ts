@@ -10,8 +10,8 @@ export class ResearchManager extends Container {
 
   researchProgress = {
     goal: this.defaultTimer,
-    amountOfResearchers: 1,
-    current: 37,
+    amountOfResearchers: 0,
+    current: 0,
     usedPoints: 0,
     unusedPoints: 0,
   };

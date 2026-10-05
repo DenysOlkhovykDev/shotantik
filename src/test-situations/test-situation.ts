@@ -7,6 +7,7 @@ import { createTestWorld } from "./test-world";
 import { createUiElementsByScenario } from "./test-ui-elements";
 
 import { defaultScenario } from "@test-scenarios/_default";
+import { defaultPlusAllBuildings } from "@test-scenarios/_default+all-buildings";
 import { autoConstructionOfBuildings } from "@test-scenarios/auto-construction-of-buildings";
 import { collisionBlueprints } from "@test-scenarios/collision-blueprints";
 import { constructionOfBuildings } from "@test-scenarios/construction-of-buildings";
@@ -102,6 +103,7 @@ export interface Scenario {
 
 const scenarios: Record<string, Scenario> = {
   default: defaultScenario,
+  "default all-buildings": defaultPlusAllBuildings,
   // tests
   "auto-construction-of-buildings": autoConstructionOfBuildings,
   "collision-blueprints": collisionBlueprints,

@@ -8,6 +8,7 @@ import {
   findFirstBlueprint,
   findFirstBuilding,
   findFirstBuildingByName,
+  hasAtleastOneBlueprint,
   hasClickedOnConstructionMenuButton,
   hasClickedOnEngine,
   hasClickedOnFirstBlueprint,
@@ -51,7 +52,7 @@ export const defaultScenario: Scenario = {
         text: `This is the
 blueprint 
 of Engine`,
-        showCondition: () => true,
+        showCondition: () => hasAtleastOneBlueprint() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnFirstBlueprint(),
         needOkButton: false,
         findTarget: () => findFirstBlueprint(),
@@ -61,7 +62,8 @@ of Engine`,
 Platform.
 You can build
 from it`,
-        showCondition: () => hasClickedOnFirstBlueprint(),
+        showCondition: () =>
+          hasClickedOnFirstBlueprint() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnPlatform(),
         needOkButton: false,
         findTarget: () => findFirstBuilding(),
@@ -69,7 +71,7 @@ from it`,
       {
         text: `Click to open
 building menu`,
-        showCondition: () => hasClickedOnPlatform(),
+        showCondition: () => hasClickedOnPlatform() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnConstructionMenuButton(),
         needOkButton: false,
         x: getConstructionButtonPosition().x,
@@ -77,7 +79,8 @@ building menu`,
       },
       {
         text: "Select the Mixer",
-        showCondition: () => hasClickedOnConstructionMenuButton(),
+        showCondition: () =>
+          hasClickedOnConstructionMenuButton() && !hasEngineBuilded(),
         hideCondition: () => hasSelectedBuildingFromConstructionMenu(),
         needOkButton: false,
         x: getMixerPositionInConstructionMenu().x,
@@ -86,7 +89,8 @@ building menu`,
       {
         text: `Place it 
 here`,
-        showCondition: () => hasSelectedBuildingFromConstructionMenu(),
+        showCondition: () =>
+          hasSelectedBuildingFromConstructionMenu() && !hasEngineBuilded(),
         hideCondition: () => hasPlacedSecondBlueprint(),
         needOkButton: false,
         x: 475,
@@ -96,7 +100,7 @@ here`,
         text: `Also build
 Assembler  
 and Grinder`,
-        showCondition: () => hasPlacedSecondBlueprint(),
+        showCondition: () => hasPlacedSecondBlueprint() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnPlatformAfterPlacingBlueprint(),
         needOkButton: true,
         findTarget: () => findFirstBuilding(),
