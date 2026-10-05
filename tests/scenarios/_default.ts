@@ -1,5 +1,8 @@
 import { type Scenario } from "@test-situations/test-situation";
-import { getConstructionButtonPosition } from "@utils/ui-config";
+import {
+  getConstructionButtonPosition,
+  getMixerPositionInConstructionMenu,
+} from "@utils/ui-config";
 
 import {
   findFirstBlueprint,
@@ -77,8 +80,8 @@ building menu`,
         showCondition: () => hasClickedOnConstructionMenuButton(),
         hideCondition: () => hasSelectedBuildingFromConstructionMenu(),
         needOkButton: false,
-        x: 360,
-        y: 1070,
+        x: getMixerPositionInConstructionMenu().x,
+        y: getMixerPositionInConstructionMenu().y,
       },
       {
         text: `Place it 
