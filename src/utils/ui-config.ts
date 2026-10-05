@@ -62,6 +62,7 @@ export function getPauseButtonPosition() {
     y: 20,
   };
 }
+
 export function getSpeedButtonPosition() {
   return {
     x: 60,

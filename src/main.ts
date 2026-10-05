@@ -48,11 +48,11 @@ UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
 constructionManager.initialize();
 UIcontainer.addChild(constructionManager);
+researchManager.initialize();
+UIcontainer.addChild(researchManager);
 UIcontainer.addChild(header);
 UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
-researchManager.initialize();
-UIcontainer.addChild(researchManager);
 
 const worldLayer = new Container(); // Temp
 export const backgroundManager = new BackgroundManager();
