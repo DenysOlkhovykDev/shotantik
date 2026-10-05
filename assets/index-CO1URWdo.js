@@ -295,8 +295,9 @@ arrow`,showCondition:()=>X(),hideCondition:()=>Dr(),needOkButton:!1,findTarget:(
 new module: 
 Researcher.
 Build it to unlock
-upgrades`,showCondition:()=>Or(),hideCondition:()=>kr(),needOkButton:!0,findTarget:()=>Rr()},{text:`Click the Researcher
-to open the research
+upgrades`,showCondition:()=>Or(),hideCondition:()=>kr(),needOkButton:!0,findTarget:()=>Rr()},{text:`Click
+to open the
+research
 menu`,showCondition:()=>jr(),hideCondition:()=>Mr(),needOkButton:!1,findTarget:()=>zr(`Researcher`)},{text:`Use points
 to upgrade
 modules`,showCondition:()=>Mr(),hideCondition:()=>Ar(),needOkButton:!1,findTarget:()=>Pr()},{text:`The bar
