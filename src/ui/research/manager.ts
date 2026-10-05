@@ -13,7 +13,7 @@ export class ResearchManager extends Container {
     amountOfResearchers: 0,
     current: 0,
     usedPoints: 0,
-    unusedPoints: 0,
+    unusedPoints: 1,
   };
 
   public initialize() {

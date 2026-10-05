@@ -8,6 +8,8 @@ import {
   findFirstBlueprint,
   findFirstBuilding,
   findFirstBuildingByName,
+  getPositionOfEngineUpgradeButton,
+  getPositionOfResearchingProgressBar,
   hasAtleastOneBlueprint,
   hasClickedOnConstructionMenuButton,
   hasClickedOnEngine,
@@ -15,9 +17,13 @@ import {
   hasClickedOnPlatform,
   hasClickedOnPlatformAfterPlacingBlueprint,
   hasClickedOnPlatformNearTarget,
+  hasClickedOnResearcher,
+  hasClickedOnUpgradeEngineButton,
+  hasClosedResearchMenu,
   hasDestroyedOneOfImportantBuildings,
   hasEngineBuilded,
   hasPlacedSecondBlueprint,
+  hasResearcherBuilded,
   hasSelectedBuildingFromConstructionMenu,
   isNearTarget,
 } from "@utils/tutorial-conditions";
@@ -116,11 +122,42 @@ arrow`,
         findTarget: () => findFirstBuildingByName("Engine"),
       },
       {
-        text: `You Win`,
+        text: `You found a
+new module: 
+Researcher.
+Build it to unlock
+upgrades`,
         showCondition: () => isNearTarget(),
         hideCondition: () => hasClickedOnPlatformNearTarget(),
         needOkButton: true,
         findTarget: () => findFirstBuilding(),
+      },
+      {
+        text: `Click the Researcher
+to open the research
+menu`,
+        showCondition: () => hasResearcherBuilded(),
+        hideCondition: () => hasClickedOnResearcher(),
+        needOkButton: false,
+        findTarget: () => findFirstBuildingByName("Researcher"),
+      },
+      {
+        text: `Use points
+to upgrade
+modules`,
+        showCondition: () => hasClickedOnResearcher(),
+        hideCondition: () => hasClickedOnUpgradeEngineButton(),
+        needOkButton: false,
+        findTarget: () => getPositionOfEngineUpgradeButton(),
+      },
+      {
+        text: `The bar
+shows progress
+to the next point`,
+        showCondition: () => hasClickedOnUpgradeEngineButton(),
+        hideCondition: () => hasClosedResearchMenu(),
+        needOkButton: true,
+        findTarget: () => getPositionOfResearchingProgressBar(),
       },
       {
         text: `You can't

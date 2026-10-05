@@ -3,6 +3,8 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { getDistance } from "@utils/basic-geometry";
 import { getWorldCoordinates } from "../../src/main";
+import { researchManager } from "../ui/research/manager";
+import { getGameScreenCenter } from "./ui-config";
 
 export function hasAtleastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -60,6 +62,40 @@ export function isNearTarget() {
 
 export function hasClickedOnPlatformNearTarget() {
   return isNearTarget() && hasClickedOnPlatform();
+}
+
+export function hasClickedOnUpgradeEngineButton() {
+  return researchManager.researchProgress.usedPoints > 0;
+}
+
+export function hasResearcherBuilded() {
+  const researchers = aircraft.buildings.filter(
+    (b) => b.buildingType === "Researcher",
+  );
+
+  return researchers.length > 0;
+}
+
+export function hasClickedOnResearcher() {
+  return researchManager.isMenuVisible();
+}
+
+export function hasClosedResearchMenu() {
+  return hasClickedOnUpgradeEngineButton() && !researchManager.isMenuVisible();
+}
+
+export function getPositionOfEngineUpgradeButton() {
+  return {
+    x: 480,
+    y: 995,
+  };
+}
+
+export function getPositionOfResearchingProgressBar() {
+  return {
+    x: getGameScreenCenter().x,
+    y: 1200,
+  };
 }
 
 export function hasDestroyedOneOfImportantBuildings() {
