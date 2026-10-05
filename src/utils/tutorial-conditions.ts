@@ -4,6 +4,10 @@ import { joystick } from "@joystick/joystick";
 import { getDistance } from "@utils/basic-geometry";
 import { getWorldCoordinates } from "../../src/main";
 
+export function hasAtleastOneBlueprint() {
+  return aircraft.blueprints.length > 0;
+}
+
 export function hasClickedOnFirstBlueprint() {
   return (
     aircraft.blueprints.length > 0 &&

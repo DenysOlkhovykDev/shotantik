@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { ConstructionButton } from "./button";
-import { ConstructionMenu } from "./menu";
+import { ConstructionMenu, type MenuItem, menuItems } from "./menu";
 import { ConstructionDisplay } from "./display";
 
 export class ConstructionManager extends Container {
@@ -57,6 +57,25 @@ export class ConstructionManager extends Container {
       return this.menu.visible;
     }
     return false;
+  }
+
+  public addMenuElement(newItem: MenuItem) {
+    menuItems.push(newItem);
+
+    if (this.menu) {
+      this.menu = new ConstructionMenu(this.setBuildingType);
+      this.hideMenu();
+
+      this.menu.eventMode = "static";
+
+      this.menu.on("pointerdown", (e) => {
+        this.hideMenu();
+        this.updateDisplayBuildingType();
+        e.stopPropagation();
+      });
+
+      this.addChild(this.menu);
+    }
   }
 
   public showButton() {
