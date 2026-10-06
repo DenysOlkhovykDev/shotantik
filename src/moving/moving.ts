@@ -97,7 +97,7 @@ function turnWorld(delta: number, turnInput: number) {
     turnResponse,
   );
 
-  ship.angle -= 0 * delta;
+  ship.angle -= ship.angularVelocity * delta;
 }
 
 function approach(current: number, target: number, response: number) {
