@@ -99,13 +99,15 @@ class Joystick extends Container {
 
   hide() {
     this.visible = false;
+    this.reset();
+  }
 
+  reset() {
     this.dragging = false;
-
+    this.thumb.alpha = 0.8;
+    this.thumb.position.set(0, 0);
     this.inputX = 0;
     this.inputY = 0;
-
-    this.thumb.position.set(0, 0);
   }
 
   isVisible() {

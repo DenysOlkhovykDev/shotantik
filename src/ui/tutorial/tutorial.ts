@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 
 import { gameScreen } from "@utils/game-config";
+import { joystick } from "@joystick/joystick";
 
 export class Tutorial extends Container {
   isActive = true;
@@ -238,6 +239,10 @@ export class Tutorial extends Container {
 
     this.visible =
       this.isActive && this.showCondition() && !this.hideCondition();
+
+    if (this.visible) {
+      joystick.reset();
+    }
 
     return this.visible;
   }
