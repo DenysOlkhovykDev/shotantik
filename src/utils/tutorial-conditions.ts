@@ -2,9 +2,10 @@ import { aircraft } from "@aircraft/aircraft";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { getDistance } from "@utils/basic-geometry";
-import { getWorldCoordinates } from "../../src/main";
+import { getWorldCoordinates, getWorldRotation } from "../../src/main";
 import { researchManager } from "../ui/research/manager";
 import { getGameScreenCenter } from "./ui-config";
+import { Researcher } from "@aircraft/modules/researcher";
 
 export function hasAtleastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -56,21 +57,35 @@ export function hasClickedOnEngine() {
 let wasNearTarget = false;
 
 export function isNearTarget() {
-  const distance = getDistance(
-    getWorldCoordinates().x,
-    getWorldCoordinates().y,
-    1000,
-    100,
-  );
+  const { x: worldX, y: worldY } = getWorldCoordinates();
 
-  if (!wasNearTarget) {
-    if (distance < 50) {
+  const cos = Math.cos(-getWorldRotation());
+  const sin = Math.sin(-getWorldRotation());
+
+  for (const building of aircraft.buildings) {
+    const localX =
+      building.root.x + building.buildingConfig.boundsCenter.x - 360;
+
+    const localY =
+      building.root.y + building.buildingConfig.boundsCenter.y - 640;
+
+    const buildingX = worldX + localX * cos - localY * sin;
+
+    const buildingY = worldY + localX * sin + localY * cos;
+
+    const distance = getDistance(buildingX, buildingY, 1000, 100);
+
+    if (
+      distance <
+      building.buildingConfig.boundsRadius +
+        Researcher.buildingConfig.boundsRadius
+    ) {
       wasNearTarget = true;
+      return true;
     }
-    return distance < 50;
-  } else {
-    return distance < 100;
   }
+
+  return wasNearTarget;
 }
 
 export function hasClickedOnPlatformNearTarget() {

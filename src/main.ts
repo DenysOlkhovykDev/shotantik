@@ -142,6 +142,10 @@ export function getWorldCoordinates() {
   return { x: worldLayer.pivot.x, y: worldLayer.pivot.y }; // Temp
 }
 
+export function getWorldRotation() {
+  return worldLayer.rotation;
+}
+
 export function getGlobalWorldCoordinates(x: number, y: number) {
   const global = worldLayer.toGlobal({
     x: x,
