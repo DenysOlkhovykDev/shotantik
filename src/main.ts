@@ -108,6 +108,8 @@ app.ticker.add((delta) => {
       joystick.inputY,
     );
 
+    backgroundManager.createNextChunk();
+
     aircraft.workers.moveWorkers(deltaTime);
 
     aircraft.buildingAnimations(deltaTime, angle);

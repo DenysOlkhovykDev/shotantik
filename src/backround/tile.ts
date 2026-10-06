@@ -40,9 +40,22 @@ export class BackgroundTile extends Container {
             newX = x * this.cellSize + this.cellSize / 2;
           }
 
+          let color = "#777a79";
+
+          if (import.meta.env.VITE_IS_DEBUG === "true") {
+            if (
+              x === 0 ||
+              y === 0 ||
+              x === this.backgroundSize - 1 ||
+              y === this.backgroundSize - 1
+            ) {
+              color = "#ff0000";
+            }
+          }
+
           drawHex(this.fogParts, newX, newY, 20);
           this.fogParts.fill({
-            color: makeBrighterColor("#777a79", this.fogValues[x][y]),
+            color: makeBrighterColor(color, this.fogValues[x][y]),
             alpha: 0.35,
           });
         }

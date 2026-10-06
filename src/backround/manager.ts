@@ -5,17 +5,20 @@ export class BackgroundManager extends Container {
   backgroundTiles = new Map<string, BackgroundTile>();
 
   renderDistance = 3;
+
   seed: number;
 
   chunkWidth = 1280;
   chunkHeight = 1088;
 
+  chunksToCreate: [number, number, string][] = [];
+  pendingChunks = new Set<string>();
+
   constructor() {
     super();
 
     this.seed = Math.trunc(Math.random() * 250);
-
-    this.position.set(0, 0);
+    this.position.set(-this.chunkWidth / 2, -this.chunkHeight / 2);
   }
 
   update(playerX: number, playerY: number) {
@@ -23,6 +26,8 @@ export class BackgroundManager extends Container {
     const playerChunkY = Math.floor(playerY / this.chunkHeight);
 
     const requiredChunks = new Set<string>();
+
+    const newChunks: [number, number, string][] = [];
 
     for (
       let x = playerChunkX - this.renderDistance;
@@ -38,16 +43,25 @@ export class BackgroundManager extends Container {
 
         requiredChunks.add(key);
 
-        if (!this.backgroundTiles.has(key)) {
-          const tile = new BackgroundTile(x, y, this.seed);
+        if (!this.backgroundTiles.has(key) && !this.pendingChunks.has(key)) {
+          this.pendingChunks.add(key);
 
-          tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
-
-          this.backgroundTiles.set(key, tile);
-          this.addChild(tile);
+          newChunks.push([x, y, key]);
         }
       }
     }
+
+    newChunks.sort((a, b) => {
+      const distanceA =
+        Math.abs(a[0] - playerChunkX) + Math.abs(a[1] - playerChunkY);
+
+      const distanceB =
+        Math.abs(b[0] - playerChunkX) + Math.abs(b[1] - playerChunkY);
+
+      return distanceA - distanceB;
+    });
+
+    this.chunksToCreate.push(...newChunks);
 
     for (const [key, tile] of this.backgroundTiles) {
       if (!requiredChunks.has(key)) {
@@ -56,5 +70,29 @@ export class BackgroundManager extends Container {
         this.backgroundTiles.delete(key);
       }
     }
+  }
+
+  createNextChunk() {
+    const chunk = this.chunksToCreate.shift();
+
+    if (!chunk) {
+      return;
+    }
+
+    const [x, y, key] = chunk;
+
+    if (this.backgroundTiles.has(key)) {
+      this.pendingChunks.delete(key);
+      return;
+    }
+
+    const tile = new BackgroundTile(x, y, this.seed);
+
+    tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
+
+    this.backgroundTiles.set(key, tile);
+    this.addChild(tile);
+
+    this.pendingChunks.delete(key);
   }
 }
