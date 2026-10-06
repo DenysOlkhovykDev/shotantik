@@ -53,11 +53,24 @@ export function hasClickedOnEngine() {
   return joystick.isVisible();
 }
 
+let wasNearTarget = false;
+
 export function isNearTarget() {
-  return (
-    getDistance(getWorldCoordinates().x, getWorldCoordinates().y, 1000, 100) <
-    50
+  const distance = getDistance(
+    getWorldCoordinates().x,
+    getWorldCoordinates().y,
+    1000,
+    100,
   );
+
+  if (!wasNearTarget) {
+    if (distance < 50) {
+      wasNearTarget = true;
+    }
+    return distance < 50;
+  } else {
+    return distance < 100;
+  }
 }
 
 export function hasClickedOnPlatformNearTarget() {

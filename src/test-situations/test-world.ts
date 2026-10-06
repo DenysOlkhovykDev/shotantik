@@ -12,6 +12,7 @@ export function createTestWorld(worldLayer: Container) {
   }
 
   researchTargets.push(researcher);
+  researcher.root.eventMode = "none";
 
   worldLayer.addChild(researcher.root);
 }
