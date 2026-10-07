@@ -6,7 +6,7 @@ export class BackgroundTile extends Container {
   fogValues: number[][];
 
   cellSize = 40;
-  backgroundSize = 32;
+  backgroundSize = 16;
 
   constructor(
     public chunkX: number,

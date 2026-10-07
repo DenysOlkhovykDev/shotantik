@@ -1,4 +1,4 @@
-import { Application, Container } from "pixi.js";
+import { Application, Container, Text } from "pixi.js";
 import { aircraft } from "@aircraft/aircraft";
 import { moveWorld } from "./moving/moving";
 import { joystick } from "@joystick/joystick";
@@ -43,6 +43,14 @@ if (isTest) {
 
 const UIcontainer = new Container(); // Temp
 
+const DEBUG_INFO = new Text({
+  text: ``,
+  style: {
+    fill: "#000000",
+    fontSize: 28,
+  },
+});
+
 UIcontainer.addChild(joystick);
 UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
@@ -53,6 +61,7 @@ UIcontainer.addChild(researchManager);
 UIcontainer.addChild(header);
 UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
+UIcontainer.addChild(DEBUG_INFO);
 
 const worldLayer = new Container(); // Temp
 export const backgroundManager = new BackgroundManager();
@@ -93,50 +102,69 @@ app.stage.on("pointerdown", (event) => {
   }
 });
 
+let previousFrameTime = performance.now();
+
 app.ticker.add((delta) => {
   if (!pauseButton.isPaused() && (!isTest || getIsGameReady())) {
+    const now = performance.now();
+
+    const frameTime = now - previousFrameTime;
+    previousFrameTime = now;
+
     const deltaTime = isTest
       ? 1 * speedButton.getSpeedModifier()
       : delta.deltaTime * speedButton.getSpeedModifier();
 
-    const angle = moveWorld(
-      deltaTime,
-      worldLayer,
-      aircraft.airCraftLayer,
-      aircraft.workersLayer,
-      joystick.inputX,
-      joystick.inputY,
-    );
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
+      everyTickActivity(deltaTime);
 
-    backgroundManager.createNextChunk();
+      DEBUG_INFO.position.set(100, 100);
 
-    aircraft.workers.moveWorkers(deltaTime);
-
-    aircraft.buildingAnimations(deltaTime, angle);
-
-    aircraft.movingBlueprints(deltaTime);
-
-    header.updateHeader();
-
-    compasses.updateCompasses();
-
-    tutorials.updateTutorials();
-
-    researchManager.updateReserachProgress(deltaTime);
-
-    if (isNearTarget()) {
-      if (researchTargets.length > 0) {
-        worldLayer.removeChild(researchTargets[0].root);
-        researchTargets.shift();
-
-        constructionManager.addMenuElement({
-          label: "Researcher",
-          color: "#ca9cf3",
-        });
-      }
+      DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS}, \ndeltaMC: ${delta.deltaMS}`;
+    } else {
+      everyTickActivity(deltaTime);
     }
   }
 });
+
+function everyTickActivity(deltaTime: number) {
+  const angle = moveWorld(
+    deltaTime,
+    worldLayer,
+    aircraft.airCraftLayer,
+    aircraft.workersLayer,
+    joystick.inputX,
+    joystick.inputY,
+  );
+
+  backgroundManager.createNextChunk();
+
+  aircraft.workers.moveWorkers(deltaTime);
+
+  aircraft.buildingAnimations(deltaTime, angle);
+
+  aircraft.movingBlueprints(deltaTime);
+
+  header.updateHeader();
+
+  compasses.updateCompasses();
+
+  tutorials.updateTutorials();
+
+  researchManager.updateReserachProgress(deltaTime);
+
+  if (isNearTarget()) {
+    if (researchTargets.length > 0) {
+      worldLayer.removeChild(researchTargets[0].root);
+      researchTargets.shift();
+
+      constructionManager.addMenuElement({
+        label: "Researcher",
+        color: "#ca9cf3",
+      });
+    }
+  }
+}
 
 export function getWorldCoordinates() {
   return { x: worldLayer.pivot.x, y: worldLayer.pivot.y }; // Temp
