@@ -23,7 +23,6 @@ export class BlueprintRoad {
 
     this.drawDashedLine(from, to);
 
-    this.graphic.alpha = 0.75;
     this.graphic.eventMode = "static";
 
     this.graphic.on("pointerdown", (e) => {
@@ -83,7 +82,7 @@ export class BlueprintRoad {
       this.graphic.lineTo(x2, y2);
     }
 
-    this.graphic.stroke({ width: 6, color: "#000000" });
+    this.graphic.stroke({ width: 6, color: "#737675" });
   }
 
   public reserveBuildResource(resource: Resource) {

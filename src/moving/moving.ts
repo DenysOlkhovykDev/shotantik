@@ -3,6 +3,7 @@ import { getGameScreenCenter } from "@utils/ui-config";
 import { backgroundManager } from "../main";
 import { aircraft } from "@aircraft/aircraft";
 import { Engine } from "@aircraft/modules/engine";
+import { onGroundObjects } from "../on-ground/objects";
 
 const ship = {
   x: 0,
@@ -30,6 +31,10 @@ export function moveWorld(
 
   if (absThrust > absTurn * 4) {
     turnInput = 0;
+  }
+
+  if (ship.thrustVelocity !== 0 || ship.angularVelocity !== 0) {
+    onGroundObjects.checkColision();
   }
 
   thrustWorld(delta, thrustInput);
@@ -69,10 +74,9 @@ function thrustWorld(delta: number, thrustInput: number) {
 
   const thrustResponse = 1 - Math.exp(-0.02 * delta);
 
-  ship.thrustVelocity = approach(
-    ship.thrustVelocity,
-    targetVelocity,
-    thrustResponse,
+  ship.thrustVelocity = zeroIfTiny(
+    approach(ship.thrustVelocity, targetVelocity, thrustResponse),
+    1e-2,
   );
 
   ship.x += -ship.thrustVelocity * Math.sin(-ship.angle) * delta;
@@ -91,10 +95,9 @@ function turnWorld(delta: number, turnInput: number) {
 
   const turnResponse = 1 - Math.exp(-0.08 * delta);
 
-  ship.angularVelocity = approach(
-    ship.angularVelocity,
-    targetTurn,
-    turnResponse,
+  ship.angularVelocity = zeroIfTiny(
+    approach(ship.angularVelocity, targetTurn, turnResponse),
+    1e-6,
   );
 
   ship.angle -= ship.angularVelocity * delta;
@@ -102,4 +105,8 @@ function turnWorld(delta: number, turnInput: number) {
 
 function approach(current: number, target: number, response: number) {
   return current + (target - current) * response;
+}
+
+function zeroIfTiny(value: number, threshold = 1e-8) {
+  return Math.abs(value) < threshold ? 0 : value;
 }

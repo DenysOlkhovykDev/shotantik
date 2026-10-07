@@ -25,18 +25,18 @@ import {
   hasPlacedSecondBlueprint,
   hasResearcherBuilded,
   hasSelectedBuildingFromConstructionMenu,
-  isNearTarget,
+  isFirstTargetReached,
 } from "@utils/tutorial-conditions";
 
 export const defaultScenario: Scenario = {
   aircraft: {
     buildings: [
-      { from: "", id: "p0", type: "Platform", x: 360, y: 600 },
-      { from: "p0", id: "collector", type: "Collector", x: 260, y: 550 },
-      { from: "p0", id: "extractor", type: "Extractor", x: 460, y: 550 },
-      { from: "p0", id: "farm", type: "Farm", x: 360, y: 500 },
-      { from: "p0", id: "p1", type: "Platform", x: 360, y: 700 },
-      { from: "p1", id: "p2", type: "Platform", x: 360, y: 800 },
+      { from: "", id: "p0", type: "Platform", x: 360, y: 640 },
+      { from: "p0", id: "collector", type: "Collector", x: 260, y: 590 },
+      { from: "p0", id: "extractor", type: "Extractor", x: 460, y: 590 },
+      { from: "p0", id: "farm", type: "Farm", x: 360, y: 540 },
+      { from: "p0", id: "p1", type: "Platform", x: 360, y: 740 },
+      { from: "p1", id: "p2", type: "Platform", x: 360, y: 840 },
     ],
     workers: [
       { buildingId: "p0", profession: "building" },
@@ -47,7 +47,7 @@ export const defaultScenario: Scenario = {
       {
         from: "p2",
         x: 360,
-        y: 900,
+        y: 940,
         buildingType: "Engine",
       },
     ],
@@ -100,7 +100,7 @@ here`,
         hideCondition: () => hasPlacedSecondBlueprint(),
         needOkButton: false,
         x: 475,
-        y: 675,
+        y: 715,
       },
       {
         text: `Also build
@@ -127,7 +127,7 @@ new module:
 Researcher.
 Build it to unlock
 upgrades`,
-        showCondition: () => isNearTarget(),
+        showCondition: () => isFirstTargetReached(),
         hideCondition: () => hasClickedOnPlatformNearTarget(),
         needOkButton: true,
         findTarget: () => findFirstBuilding(),
@@ -161,6 +161,21 @@ to the next point`,
         findTarget: () => getPositionOfResearchingProgressBar(),
       },
       {
+        text: `You are free now!
+Build more
+Researchers
+to upgrade
+your ship,
+or find 
+research points
+while exploring 
+the world`,
+        showCondition: () => hasClosedResearchMenu(),
+        hideCondition: () => false,
+        needOkButton: true,
+        findTarget: () => findFirstBuilding(),
+      },
+      {
         text: `You can't
 complete tutorial.
 Try again`,
@@ -173,7 +188,7 @@ Try again`,
 
     compasses: [
       {
-        condition: () => hasEngineBuilded(),
+        condition: () => hasEngineBuilded() && !isFirstTargetReached(),
         x: 1000,
         y: 100,
       },

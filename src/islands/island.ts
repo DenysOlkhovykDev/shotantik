@@ -111,21 +111,15 @@ export class Island extends Container {
         const bottomRight = this.getValueFromCoordinates(gx + 1, gy + 1, seed);
 
         const top = topLeft + (topRight - topLeft) * tx;
-
         const bottom = bottomLeft + (bottomRight - bottomLeft) * tx;
 
         const noise = top + (bottom - top) * ty;
-
-        // Відстань від центру chunk
         const distance = Math.hypot(x - centerX, y - centerY);
 
-        // Маска острова
         const islandMask = Math.max(0, 1 - distance / radius);
 
-        // Робимо край острова плавним
         const smoothMask = islandMask * islandMask * (3 - 2 * islandMask);
 
-        // Noise + форма острова
         const value = noise * smoothMask;
 
         array[x][y] = value * 5;

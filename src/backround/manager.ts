@@ -4,7 +4,7 @@ import { BackgroundTile } from "./tile";
 export class BackgroundManager extends Container {
   backgroundTiles = new Map<string, BackgroundTile>();
 
-  renderDistance = 3;
+  renderDistance = 2;
 
   seed: number;
 

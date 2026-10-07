@@ -19,9 +19,8 @@ export class Road {
     this.graphic
       .moveTo(fromCenter.x, fromCenter.y)
       .lineTo(toCenter.x, toCenter.y)
-      .stroke({ width: 8, color: "#000000" });
+      .stroke({ width: 8, color: "#737675" });
 
-    this.graphic.alpha = 0.5;
     this.graphic.eventMode = "static";
 
     this.graphic.on("pointerdown", (e) => {

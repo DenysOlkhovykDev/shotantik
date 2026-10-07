@@ -1,4 +1,4 @@
-import { Container, type Texture } from "pixi.js";
+import { Container, Graphics, type Texture } from "pixi.js";
 import { type Building, type BuildingConfig } from "@aircraft/building";
 import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
@@ -70,8 +70,14 @@ class Aircraft {
 
   public airCraftLayer = new Container();
   public workersLayer = new Container();
+  private DEBUGBoundsRadius = new Graphics();
+
+  public boundsRadius = 0;
 
   public initilaizeAircraft(stage: Container) {
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
+      this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
+    }
     stage.addChild(this.airCraftLayer);
     stage.addChild(this.workersLayer);
   }
@@ -95,6 +101,30 @@ class Aircraft {
     if (from) {
       building.orientByBuildDirection(from);
       this.addRoad(from, building);
+    }
+
+    for (let i = 0; i < this.buildings.length; i++) {
+      const radiusByX =
+        Math.abs(this.buildings[i].x - 360) +
+        this.buildings[i].buildingConfig.boundsRadius;
+      const radiusByY =
+        Math.abs(this.buildings[i].y - 640) +
+        this.buildings[i].buildingConfig.boundsRadius;
+
+      const maxDistanceFromCenter =
+        radiusByX > radiusByY ? radiusByX : radiusByY;
+
+      if (maxDistanceFromCenter > this.boundsRadius) {
+        this.boundsRadius = maxDistanceFromCenter;
+        if (import.meta.env.VITE_IS_DEBUG === "true") {
+          this.DEBUGBoundsRadius.clear();
+
+          this.DEBUGBoundsRadius.circle(360, 640, this.boundsRadius).stroke({
+            width: 4,
+            color: "#ff0000",
+          });
+        }
+      }
     }
 
     return building;

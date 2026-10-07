@@ -10,6 +10,19 @@ export class Compasses extends Container {
     this.addChild(compass.graphics);
   }
 
+  public deleteCompass(x: number, y: number) {
+    for (let i = 0; i < this.compasses.length; i++) {
+      if (
+        this.compasses[i].compassTargetX === x &&
+        this.compasses[i].compassTargetY === y
+      ) {
+        this.compasses[i].destroy();
+        this.compasses.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
   public updateCompasses() {
     for (let i = 0; i < this.compasses.length; i++) {
       const result = this.compasses[i].condition();

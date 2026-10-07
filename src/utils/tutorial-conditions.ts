@@ -1,11 +1,9 @@
 import { aircraft } from "@aircraft/aircraft";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
-import { getDistance } from "@utils/basic-geometry";
-import { getWorldCoordinates, getWorldRotation } from "../../src/main";
 import { researchManager } from "../ui/research/manager";
 import { getGameScreenCenter } from "./ui-config";
-import { Researcher } from "@aircraft/modules/researcher";
+import { onGroundObjects } from "../on-ground/objects";
 
 export function hasAtleastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -54,44 +52,31 @@ export function hasClickedOnEngine() {
   return joystick.isVisible();
 }
 
-let wasNearTarget = false;
+let firstTargetReached = false;
 
-export function isNearTarget() {
-  const { x: worldX, y: worldY } = getWorldCoordinates();
+export function isFirstTargetReached() {
+  return firstTargetReached;
+}
 
-  const cos = Math.cos(-getWorldRotation());
-  const sin = Math.sin(-getWorldRotation());
-
-  if (!wasNearTarget) {
-    for (const building of aircraft.buildings) {
-      const localX =
-        building.root.x + building.buildingConfig.boundsCenter.x - 360;
-
-      const localY =
-        building.root.y + building.buildingConfig.boundsCenter.y - 640;
-
-      const buildingX = worldX + localX * cos - localY * sin;
-
-      const buildingY = worldY + localX * sin + localY * cos;
-
-      const distance = getDistance(buildingX, buildingY, 1000, 100);
-
-      if (
-        distance <
-        building.buildingConfig.boundsRadius +
-          Researcher.buildingConfig.boundsRadius
-      ) {
-        wasNearTarget = true;
-        return true;
-      }
-    }
+export function checkFirstTargetReached() {
+  if (firstTargetReached || !isCurrentTargetReached()) {
+    return;
   }
 
-  return wasNearTarget;
+  firstTargetReached = true;
+
+  constructionManager.addMenuElement({
+    label: "Researcher",
+    color: "#ca9cf3",
+  });
+}
+
+export function isCurrentTargetReached() {
+  return onGroundObjects.objectsOnGround[0]?.isColide ?? false;
 }
 
 export function hasClickedOnPlatformNearTarget() {
-  return isNearTarget() && hasClickedOnPlatform();
+  return isFirstTargetReached() && hasClickedOnPlatform();
 }
 
 export function hasClickedOnUpgradeEngineButton() {

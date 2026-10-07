@@ -13,8 +13,11 @@ import { tutorials } from "./ui/tutorial/manager";
 import { header } from "./ui/header/manager";
 import { BackgroundManager } from "./backround/manager";
 import { researchManager } from "./ui/research/manager";
-import { isNearTarget } from "@utils/tutorial-conditions";
-import { researchTargets } from "@test-situations/test-world";
+import { onGroundObjects } from "./on-ground/objects";
+import {
+  isCurrentTargetReached,
+  checkFirstTargetReached,
+} from "@utils/tutorial-conditions";
 
 export const app = new Application();
 
@@ -120,7 +123,7 @@ app.ticker.add((delta) => {
 
       DEBUG_INFO.position.set(100, 100);
 
-      DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS}, \ndeltaMC: ${delta.deltaMS}`;
+      DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS.toFixed(1)}, \ndeltaMC: ${delta.deltaMS.toFixed(1)}`;
     } else {
       everyTickActivity(deltaTime);
     }
@@ -147,23 +150,17 @@ function everyTickActivity(deltaTime: number) {
 
   header.updateHeader();
 
+  if (isCurrentTargetReached()) {
+    checkFirstTargetReached();
+
+    onGroundObjects.deleteAndCreateNewTarget();
+  }
+
   compasses.updateCompasses();
 
   tutorials.updateTutorials();
 
   researchManager.updateReserachProgress(deltaTime);
-
-  if (isNearTarget()) {
-    if (researchTargets.length > 0) {
-      worldLayer.removeChild(researchTargets[0].root);
-      researchTargets.shift();
-
-      constructionManager.addMenuElement({
-        label: "Researcher",
-        color: "#ca9cf3",
-      });
-    }
-  }
 }
 
 export function getWorldCoordinates() {
