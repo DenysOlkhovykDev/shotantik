@@ -8,8 +8,8 @@ export class BackgroundManager extends Container {
 
   seed: number;
 
-  chunkWidth = 1280;
-  chunkHeight = 1088;
+  chunkWidth = 640;
+  chunkHeight = 544;
 
   chunksToCreate: [number, number, string][] = [];
   pendingChunks = new Set<string>();

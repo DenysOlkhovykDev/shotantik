@@ -62,26 +62,28 @@ export function isNearTarget() {
   const cos = Math.cos(-getWorldRotation());
   const sin = Math.sin(-getWorldRotation());
 
-  for (const building of aircraft.buildings) {
-    const localX =
-      building.root.x + building.buildingConfig.boundsCenter.x - 360;
+  if (!wasNearTarget) {
+    for (const building of aircraft.buildings) {
+      const localX =
+        building.root.x + building.buildingConfig.boundsCenter.x - 360;
 
-    const localY =
-      building.root.y + building.buildingConfig.boundsCenter.y - 640;
+      const localY =
+        building.root.y + building.buildingConfig.boundsCenter.y - 640;
 
-    const buildingX = worldX + localX * cos - localY * sin;
+      const buildingX = worldX + localX * cos - localY * sin;
 
-    const buildingY = worldY + localX * sin + localY * cos;
+      const buildingY = worldY + localX * sin + localY * cos;
 
-    const distance = getDistance(buildingX, buildingY, 1000, 100);
+      const distance = getDistance(buildingX, buildingY, 1000, 100);
 
-    if (
-      distance <
-      building.buildingConfig.boundsRadius +
-        Researcher.buildingConfig.boundsRadius
-    ) {
-      wasNearTarget = true;
-      return true;
+      if (
+        distance <
+        building.buildingConfig.boundsRadius +
+          Researcher.buildingConfig.boundsRadius
+      ) {
+        wasNearTarget = true;
+        return true;
+      }
     }
   }
 
