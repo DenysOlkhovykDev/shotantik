@@ -10,10 +10,11 @@ export class ResearchManager extends Container {
 
   researchProgress = {
     goal: this.defaultTimer,
+    minDistanceToNextResearcher: 700,
     amountOfResearchers: 0,
     current: 0,
     usedPoints: 0,
-    unusedPoints: 1,
+    unusedPoints: 0,
   };
 
   public initialize() {
