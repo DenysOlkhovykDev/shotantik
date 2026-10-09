@@ -22,7 +22,7 @@ export const defaultPlusAllBuildings: Scenario = {
     workers: [...(defaultScenario.aircraft.workers ?? [])],
   },
   uiElements: {
-    // tutorials: [...(defaultScenario.uiElements?.tutorials ?? [])],
+    tutorials: [...(defaultScenario.uiElements?.tutorials ?? [])],
 
     compasses: [...(defaultScenario.uiElements?.compasses ?? [])],
   },
