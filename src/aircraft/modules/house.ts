@@ -48,8 +48,8 @@ export class House extends Building {
 
   buildingState = { growingDirection: 1, size: 1, changeSizeDelay: 300 };
 
-  constructor(x: number, y: number) {
-    super(x, y, "House");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "House", isDecorative);
     this.draw();
   }
 

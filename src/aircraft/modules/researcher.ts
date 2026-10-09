@@ -121,11 +121,10 @@ export class Researcher extends Building {
     rotationSparklePosition: 0,
   };
 
-  constructor(x: number, y: number) {
-    super(x, y, "Researcher");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Researcher", isDecorative);
     this.draw();
     this.priorityForTasks = 5;
-    this.refreshTasks();
   }
 
   draw() {

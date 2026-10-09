@@ -57,8 +57,8 @@ export class Mixer extends Building {
 
   satelitesGraphics: Graphics[] = [];
 
-  constructor(x: number, y: number) {
-    super(x, y, "Mixer");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Mixer", isDecorative);
     this.draw();
 
     this.priorityForTasks = 5;

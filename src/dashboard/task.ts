@@ -3,6 +3,7 @@ import { aStar, dijkstra, buildPath } from "@utils/algorithms";
 import { type Resource } from "@resources/resource";
 
 import { aircraft } from "@aircraft/aircraft";
+import { type Blueprint } from "@aircraft/blueprint";
 
 export const JobType = {
   delivering: "delivering",
@@ -31,6 +32,7 @@ export class Task {
     public jobType: JobType,
     public priority: number,
     public resource?: string,
+    public blueprint?: Blueprint,
   ) {}
 
   public getEffectivePriority() {

@@ -25,10 +25,16 @@ export function getAvailableTaskWithHighestPriority(
         false,
       );
 
+      const freeSpace =
+        task.target.buildingConfig.inventorySize -
+        task.target.resourceStorage.recources.length;
+      const notCompletedTasks = task.blueprint?.tasks.length ?? 0;
+
       if (
         path.length === 0 ||
         resource === undefined ||
-        distance === undefined
+        distance === undefined ||
+        freeSpace < notCompletedTasks
       ) {
         continue;
       }

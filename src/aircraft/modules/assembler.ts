@@ -80,8 +80,8 @@ export class Assembler extends Building {
     direction: [1, 1, 1],
   };
 
-  constructor(x: number, y: number) {
-    super(x, y, "Assembler");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Assembler", isDecorative);
     this.draw();
 
     this.priorityForTasks = 5;

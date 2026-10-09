@@ -33,8 +33,8 @@ export class Platform extends Building {
     centerColor: "#a9a9a9",
   };
 
-  constructor(x: number, y: number) {
-    super(x, y, "Platform");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Platform", isDecorative);
     this.draw();
   }
 

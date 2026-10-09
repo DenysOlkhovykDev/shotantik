@@ -1,6 +1,7 @@
 import type { Building } from "@aircraft/building";
 import { Task, JobType, TaskStatus } from "@dashboard/task";
 import { dashboard } from "@dashboard/_dashboard";
+import { type Blueprint } from "@aircraft/blueprint";
 
 export class TaskManager {
   readonly deliveringTasks: Task[] = [];
@@ -14,6 +15,7 @@ export class TaskManager {
     priority: number,
     resource?: string,
     amount = 1,
+    blueprint?: Blueprint,
   ) {
     const taskCount = resource ? amount : 1;
     const tasks: Task[] = [];
@@ -28,7 +30,13 @@ export class TaskManager {
     const taskList = this.getTaskList(jobType);
 
     for (let i = 0; i < taskCount; i++) {
-      const task = new Task(this.building, jobType, priority, resource);
+      const task = new Task(
+        this.building,
+        jobType,
+        priority,
+        resource,
+        blueprint,
+      );
 
       taskList.push(task);
       dashboard.push(task);
@@ -46,14 +54,16 @@ export class TaskManager {
   }
 
   public refreshTasks() {
-    this.removeCompletedTasks();
+    if (!this.building.isDecorative) {
+      this.removeCompletedTasks();
 
-    if (!this.building.craftRecipe || this.building.priorityForTasks < 0) {
-      return;
+      if (!this.building.craftRecipe || this.building.priorityForTasks < 0) {
+        return;
+      }
+
+      this.syncDeliveryTasks();
+      this.syncProductionTask();
     }
-
-    this.syncDeliveryTasks();
-    this.syncProductionTask();
   }
 
   private removeCompletedTasks() {

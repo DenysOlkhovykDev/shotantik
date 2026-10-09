@@ -30,7 +30,7 @@ export class ConstructionDisplay extends Container {
       } else {
         const BuildingClass = buildingMap[buildingName] || Platform;
 
-        const building = new BuildingClass(0, 0);
+        const building = new BuildingClass(0, 0, true);
 
         building.root.scale = 0.8;
         building.root.eventMode = "none";

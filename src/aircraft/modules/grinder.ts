@@ -70,8 +70,8 @@ export class Grinder extends Building {
 
   gearSatelites: Graphics[] = [];
 
-  constructor(x: number, y: number) {
-    super(x, y, "Grinder");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Grinder", isDecorative);
     this.draw();
 
     this.priorityForTasks = 5;

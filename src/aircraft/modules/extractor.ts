@@ -63,8 +63,8 @@ export class Extractor extends Building {
     movingDirection: 1,
   };
 
-  constructor(x: number, y: number) {
-    super(x, y, "Extractor");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Extractor", isDecorative);
     this.draw();
 
     this.priorityForTasks = 5;

@@ -75,8 +75,8 @@ export class Engine extends Building {
   particlesColor = "#000000";
   amountOfParticles = 4;
 
-  constructor(x: number, y: number) {
-    super(x, y, "Engine");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Engine", isDecorative);
     this.draw();
   }
 
@@ -152,11 +152,13 @@ export class Engine extends Building {
 
     this.makeDecorativePropellerBlades(baseGraphics);
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
-      baseGraphics
-        .moveTo(0, 0)
-        .lineTo(0, 30)
-        .stroke({ width: 4, color: "#ff0000" });
+    if (!this.isDecorative) {
+      if (import.meta.env.VITE_IS_DEBUG === "true") {
+        baseGraphics
+          .moveTo(0, 0)
+          .lineTo(0, 30)
+          .stroke({ width: 4, color: "#ff0000" });
+      }
     }
 
     Engine.baseTexture = generateTextureFromOrigin(baseGraphics);
