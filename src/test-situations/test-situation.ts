@@ -10,6 +10,7 @@ import { defaultScenario } from "@test-scenarios/_default";
 import { defaultPlusAllBuildings } from "@test-scenarios/_default+all-buildings";
 import { autoConstructionOfBuildings } from "@test-scenarios/auto-construction-of-buildings";
 import { collisionBlueprints } from "@test-scenarios/collision-blueprints";
+import { constructionMenu } from "@test-scenarios/construction-menu";
 import { constructionOfBuildings } from "@test-scenarios/construction-of-buildings";
 import { constructionRoads } from "@test-scenarios/construction-roads";
 import { craftingResourcesForConstruction } from "@test-scenarios/crafting-resources-for-construction";
@@ -26,11 +27,11 @@ import { movingResources } from "@test-scenarios/moving-resources";
 import { multipleConstructionOfBuildings } from "@test-scenarios/multiple-construction-of-buildings";
 import { multipleConstructionOfDifferentBuildings } from "@test-scenarios/multiple-construction-of-different-buildings";
 import { multipleDelivering } from "@test-scenarios/multiple-delivering";
-import { sceneRender } from "@test-scenarios/scene-render";
-import { showingPointers } from "@test-scenarios/showing-pointers";
 import { productionPriorities } from "@test-scenarios/production-priorities";
 import { reuseResources } from "@test-scenarios/reuse-resources";
-import { constructionMenu } from "@test-scenarios/construction-menu";
+import { sceneRender } from "@test-scenarios/scene-render";
+import { showingPointers } from "@test-scenarios/showing-pointers";
+import { tooMuchBlueprints } from "@test-scenarios/too-much-bluerints";
 
 function getScenarioName() {
   const params = new URLSearchParams(window.location.search);
@@ -129,6 +130,7 @@ const scenarios: Record<string, Scenario> = {
   "reuse-resources": reuseResources,
   "scene-render": sceneRender,
   "showing-pointers": showingPointers,
+  "too-much-blueprints": tooMuchBlueprints,
 };
 
 export function createTestSituation(worldLayer: Container) {

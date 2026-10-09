@@ -67,8 +67,8 @@ export class Farm extends Building {
     yLeft: number;
   }[] = [];
 
-  constructor(x: number, y: number) {
-    super(x, y, "Farm");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Farm", isDecorative);
     this.draw();
 
     this.priorityForTasks = 5;

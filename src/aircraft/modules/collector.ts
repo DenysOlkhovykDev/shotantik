@@ -53,8 +53,8 @@ export class Collector extends Building {
 
   gridsGraphics: Graphics = new Graphics();
 
-  constructor(x: number, y: number) {
-    super(x, y, "Collector");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Collector", isDecorative);
     this.draw();
     this.priorityForTasks = 5;
     this.refreshTasks();

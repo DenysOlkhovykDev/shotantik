@@ -47,8 +47,8 @@ export class Junkuard extends Building {
   particlesColor = "#000000";
   amountOfParticles = 4;
 
-  constructor(x: number, y: number) {
-    super(x, y, "Junkuard");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Junkuard", isDecorative);
     this.draw();
   }
 

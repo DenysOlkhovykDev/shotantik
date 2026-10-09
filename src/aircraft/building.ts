@@ -96,6 +96,7 @@ export abstract class Building {
     public x: number,
     public y: number,
     public buildingType: string,
+    public isDecorative: boolean,
   ) {
     this.initEvents();
 
@@ -180,10 +181,12 @@ export abstract class Building {
   // TaskManager
 
   public refreshTasks() {
-    this.taskManager.refreshTasks();
+    if (!this.isDecorative) {
+      this.taskManager.refreshTasks();
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
-      this.updateTaskDisplay();
+      if (import.meta.env.VITE_IS_DEBUG === "true") {
+        this.updateTaskDisplay();
+      }
     }
   }
 
@@ -229,7 +232,9 @@ export abstract class Building {
   // ResourceProduction
 
   public tryToDoProduction() {
-    return this.craftingProcessor.tryToDoProduction();
+    if (!this.isDecorative) {
+      return this.craftingProcessor.tryToDoProduction();
+    }
   }
 
   // ResourceStorage

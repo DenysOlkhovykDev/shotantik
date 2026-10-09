@@ -28,8 +28,8 @@ export class GlassMaker extends Building {
     { resourceName: "Metal", amount: 3 },
   ];
 
-  constructor(x: number, y: number) {
-    super(x, y, "GlassMaker");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "GlassMaker", isDecorative);
     this.draw();
   }
 

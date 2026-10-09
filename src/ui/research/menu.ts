@@ -248,7 +248,11 @@ export class ResearchMenu extends Container {
   private createBuildingImage(buildingName: string, container: Container) {
     const BuildingClass = buildingMap[buildingName] || Platform;
 
-    const building = new BuildingClass(this.rowHeight / 2, this.rowHeight / 2);
+    const building = new BuildingClass(
+      this.rowHeight / 2,
+      this.rowHeight / 2,
+      true,
+    );
 
     building.root.scale = 0.5;
     building.root.eventMode = "none";

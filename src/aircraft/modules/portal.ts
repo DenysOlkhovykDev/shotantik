@@ -71,11 +71,10 @@ export class Portal extends Building {
   cubesMovingDirection = 1;
   cubesOffsetFromCenter = 4;
 
-  constructor(x: number, y: number) {
-    super(x, y, "Portal");
+  constructor(x: number, y: number, isDecorative = false) {
+    super(x, y, "Portal", isDecorative);
     this.draw();
     this.priorityForTasks = 5;
-    this.refreshTasks();
   }
 
   draw() {

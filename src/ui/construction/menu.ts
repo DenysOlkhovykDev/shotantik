@@ -197,6 +197,7 @@ export class ConstructionMenu extends Container {
     const building = new BuildingClass(
       this.columnWidth / 2,
       this.rowHeight / 2,
+      true,
     );
 
     building.root.scale = 0.5;

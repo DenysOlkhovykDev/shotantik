@@ -28,7 +28,8 @@ import {
 import { researchManager } from "../ui/research/manager";
 
 export type BuildingClass = {
-  new (x: number, y: number): Building;
+  new (x: number, y: number, isDecorative: boolean): Building;
+
   buildingConfig: BuildingConfig;
   baseTexture: Texture;
   constructionRecipe: RecipeIngredient[];
@@ -84,7 +85,7 @@ class Aircraft {
 
   public addBuilding(x: number, y: number, buildingType: BuildingType) {
     const BuildingClass = buildingMap[buildingType];
-    const building = new BuildingClass(x, y);
+    const building = new BuildingClass(x, y, false);
 
     if (buildingType === "Researcher") {
       researchManager.researchProgress.amountOfResearchers++;
@@ -163,6 +164,8 @@ class Aircraft {
               JobType.building,
               5,
               constructionRecipe[i].resourceName,
+              1,
+              blueprint,
             );
             from.refreshTasks();
             if (task) {
