@@ -432,6 +432,11 @@ class Aircraft {
         (connectedBuildingRoad) => connectedBuildingRoad !== road,
       );
     }
+
+    if (building.buildingType === "Researcher") {
+      researchManager.hideMenu();
+    }
+
     building.root.destroy();
     this.buildings.splice(index, 1);
 
