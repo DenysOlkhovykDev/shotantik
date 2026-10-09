@@ -63,7 +63,7 @@ export class Collector extends Building {
   draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
-    this.createSatelites();
+    this.createGrids();
 
     this.createBaseTexture();
 
@@ -71,7 +71,7 @@ export class Collector extends Building {
     this.contentContainer.addChild(base);
   }
 
-  private createSatelites() {
+  private createGrids() {
     for (let i = 0; i < Collector.gridsParams.amount; i++) {
       const small = getRadialLine(
         i * 4 + 2,
