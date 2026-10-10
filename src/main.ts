@@ -18,6 +18,7 @@ import {
   isCurrentTargetReached,
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
+import { BackgroundTile } from "./backround/tile";
 
 export const app = new Application();
 
@@ -68,6 +69,9 @@ UIcontainer.addChild(DEBUG_INFO);
 
 const worldLayer = new Container(); // Temp
 export const backgroundManager = new BackgroundManager();
+
+BackgroundTile.initialize(app.renderer);
+
 if (import.meta.env.MODE !== "test") {
   worldLayer.addChild(backgroundManager);
 }
