@@ -19,7 +19,7 @@ test(testName, async ({ page }) => {
 
   await setGameReady(page);
 
-  await skipFrames(page, 0);
+  await skipFrames(page, 15);
 
   await clickCanvas(page, getGameScreenCenter().x, getGameScreenCenter().y);
 

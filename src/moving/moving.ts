@@ -51,9 +51,7 @@ export function moveWorld(
   buildingsLayer.scale.set(ship.m);
   workersLayer.scale.set(ship.m);
 
-  if (import.meta.env.MODE !== "test") {
-    backgroundManager.update(ship.x, ship.y);
-  }
+  backgroundManager.update(ship.x, ship.y);
 
   if (thrustInput === 0) {
     return undefined;

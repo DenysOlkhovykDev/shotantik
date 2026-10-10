@@ -68,13 +68,12 @@ UIcontainer.addChild(tutorials);
 UIcontainer.addChild(DEBUG_INFO);
 
 const worldLayer = new Container(); // Temp
-export const backgroundManager = new BackgroundManager();
 
 BackgroundTile.initialize(app.renderer);
 
-if (import.meta.env.MODE !== "test") {
-  worldLayer.addChild(backgroundManager);
-}
+export const backgroundManager = new BackgroundManager();
+
+worldLayer.addChild(backgroundManager);
 
 createTestSituation(worldLayer);
 
@@ -112,7 +111,7 @@ app.stage.on("pointerdown", (event) => {
 let previousFrameTime = performance.now();
 
 app.ticker.add((delta) => {
-  if (!pauseButton.isPaused() && (!isTest || getIsGameReady())) {
+  if (!isTest || getIsGameReady()) {
     const now = performance.now();
 
     const frameTime = now - previousFrameTime;
@@ -122,19 +121,27 @@ app.ticker.add((delta) => {
       ? 1 * speedButton.getSpeedModifier()
       : delta.deltaTime * speedButton.getSpeedModifier();
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
-      everyTickActivity(deltaTime);
+    updateAlways();
 
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
       DEBUG_INFO.position.set(100, 100);
 
       DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS.toFixed(1)}, \ndeltaMC: ${delta.deltaMS.toFixed(1)}`;
-    } else {
-      everyTickActivity(deltaTime);
+    }
+
+    if (!pauseButton.isPaused()) {
+      updateGame(deltaTime);
     }
   }
 });
 
-function everyTickActivity(deltaTime: number) {
+function updateAlways() {
+  backgroundManager.createNextChunk();
+
+  header.updateHeader();
+}
+
+function updateGame(deltaTime: number) {
   const angle = moveWorld(
     deltaTime,
     worldLayer,
@@ -144,15 +151,11 @@ function everyTickActivity(deltaTime: number) {
     joystick.inputY,
   );
 
-  backgroundManager.createNextChunk();
-
   aircraft.workers.moveWorkers(deltaTime);
 
   aircraft.buildingAnimations(deltaTime, angle);
 
   aircraft.movingBlueprints(deltaTime);
-
-  header.updateHeader();
 
   if (isCurrentTargetReached()) {
     checkFirstTargetReached();

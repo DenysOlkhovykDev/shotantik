@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import {
   testSettings,
   skipFrames,
+  setGameReady,
   clickCanvas,
   initGame,
 } from "./test-infra/test-infra";
@@ -12,6 +13,8 @@ const testName = "interface-pause";
 test(testName, async ({ page }) => {
   await initGame(page, testName);
 
+  await setGameReady(page);
+
   await skipFrames(page, 0);
 
   await clickCanvas(
@@ -20,7 +23,7 @@ test(testName, async ({ page }) => {
     getPauseButtonPosition().y,
   );
 
-  await skipFrames(page, 5);
+  await skipFrames(page, 25);
 
   const screenshot = await page.locator("canvas").screenshot();
 
