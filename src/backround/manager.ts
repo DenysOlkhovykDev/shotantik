@@ -19,6 +19,19 @@ export class BackgroundManager extends Container {
 
     this.seed = Math.trunc(Math.random() * 250);
     this.position.set(-this.chunkWidth / 2, -this.chunkHeight / 2);
+
+    for (let x = -1; x <= 1; x++) {
+      for (let y = -1; y <= 1; y++) {
+        const key = `${x}:${y}`;
+
+        const tile = new BackgroundTile(x, y, this.seed);
+
+        tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
+
+        this.backgroundTiles.set(key, tile);
+        this.addChild(tile);
+      }
+    }
   }
 
   update(playerX: number, playerY: number) {
