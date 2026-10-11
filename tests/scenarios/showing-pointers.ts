@@ -32,7 +32,7 @@ export const showingPointers: Scenario = {
         condition: () => {
           return true;
         },
-        x: 1000,
+        x: 1500,
         y: 100,
       },
     ],
