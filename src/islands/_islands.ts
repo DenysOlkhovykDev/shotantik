@@ -7,8 +7,11 @@ class Islands extends Container {
 
   addIsland(x: number, y: number) {
     const seed = Math.trunc(Math.random() * 250);
-    const isla = new Island(x, y, seed);
-
+    const isla = new Island(
+      x - (64 * 34 + 17) / 2,
+      y - ((64 - 1) * 30) / 2,
+      seed,
+    );
     this.islands.push(isla);
 
     this.addChild(isla);
@@ -34,4 +37,4 @@ class Islands extends Container {
 
 export const allIslands = new Islands();
 
-allIslands.addIsland(300, -500);
+allIslands.addIsland(1500, 100);

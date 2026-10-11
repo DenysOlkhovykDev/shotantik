@@ -189,7 +189,7 @@ Try again`,
     compasses: [
       {
         condition: () => hasEngineBuilded() && !isFirstTargetReached(),
-        x: 1000,
+        x: 1500,
         y: 100,
       },
     ],
