@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig(({ mode }) => ({
-  base: mode === "gh-pages" ? "/shotantik/" : "/",
+  base: mode === "gh-pages" ? "/shotantik/" : mode === "itch" ? "./" : "/",
 
   resolve: {
     alias: {
