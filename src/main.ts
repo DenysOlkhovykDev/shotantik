@@ -137,8 +137,6 @@ app.ticker.add((delta) => {
 
 function updateAlways() {
   backgroundManager.createNextChunk();
-
-  header.updateHeader();
 }
 
 function updateGame(deltaTime: number) {

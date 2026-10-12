@@ -33,6 +33,7 @@ import { reuseResources } from "@test-scenarios/reuse-resources";
 import { sceneRender } from "@test-scenarios/scene-render";
 import { showingTutorials } from "@test-scenarios/showing-tutorials";
 import { tooMuchBlueprints } from "@test-scenarios/too-much-bluerints";
+import { header } from "../ui/header/manager";
 
 function getScenarioName() {
   const params = new URLSearchParams(window.location.search);
@@ -161,4 +162,6 @@ export function createTestSituation(worldLayer: Container) {
   aircraft.hideCraftSigns();
   aircraft.resetConstructionSource();
   constructionManager.hideButton();
+
+  header.updateHeader();
 }
