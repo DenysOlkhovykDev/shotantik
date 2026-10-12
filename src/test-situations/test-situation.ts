@@ -30,7 +30,7 @@ import { multipleDelivering } from "@test-scenarios/multiple-delivering";
 import { productionPriorities } from "@test-scenarios/production-priorities";
 import { reuseResources } from "@test-scenarios/reuse-resources";
 import { sceneRender } from "@test-scenarios/scene-render";
-import { showingPointers } from "@test-scenarios/showing-pointers";
+import { showingTutorials } from "@test-scenarios/showing-tutorials";
 import { tooMuchBlueprints } from "@test-scenarios/too-much-bluerints";
 
 function getScenarioName() {
@@ -129,7 +129,7 @@ const scenarios: Record<string, Scenario> = {
   "production-priorities": productionPriorities,
   "reuse-resources": reuseResources,
   "scene-render": sceneRender,
-  "showing-pointers": showingPointers,
+  "showing-tutorials": showingTutorials,
   "too-much-blueprints": tooMuchBlueprints,
 };
 
