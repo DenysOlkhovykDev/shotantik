@@ -2,14 +2,14 @@ import { type Scenario } from "@test-situations/test-situation";
 import {
   getConstructionButtonPosition,
   getMixerPositionInConstructionMenu,
+  getPositionOfEngineUpgradeButton,
+  getPositionOfResearchingProgressBar,
 } from "@utils/ui-config";
 
 import {
   findFirstBlueprint,
   findFirstBuilding,
   findFirstBuildingByName,
-  getPositionOfEngineUpgradeButton,
-  getPositionOfResearchingProgressBar,
   hasAtleastOneBlueprint,
   hasClickedOnConstructionMenuButton,
   hasClickedOnEngine,
@@ -194,4 +194,6 @@ Try again`,
       },
     ],
   },
+
+  worldObjects: { researchPoints: [{ x: 1500, y: 100 }] },
 };

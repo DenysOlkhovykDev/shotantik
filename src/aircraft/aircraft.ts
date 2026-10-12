@@ -28,6 +28,7 @@ import {
 import { researchManager } from "../ui/research/manager";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
+import { onGroundObjects } from "../on-ground/objects";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -129,6 +130,8 @@ class Aircraft {
         }
       }
     }
+
+    onGroundObjects.checkColision();
 
     return building;
   }
