@@ -26,6 +26,8 @@ import {
   type RecipeIngredient,
 } from "./building-parts/recipe-sign";
 import { researchManager } from "../ui/research/manager";
+import { constructionManager } from "@construction/manager";
+import { joystick } from "@joystick/joystick";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -436,9 +438,16 @@ class Aircraft {
       );
     }
 
-    if (building.buildingType === "Researcher") {
-      researchManager.hideMenu();
-    }
+    aircraft.resetConstructionSource();
+    aircraft.deSelectAllBuildings();
+    aircraft.hideCraftSigns();
+
+    constructionManager.hideButton();
+    constructionManager.hideMenu();
+
+    researchManager.hideMenu();
+
+    joystick.hide();
 
     building.root.destroy();
     this.buildings.splice(index, 1);
