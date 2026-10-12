@@ -79,7 +79,10 @@ export class Tutorial extends Container {
 
       if (import.meta.env.VITE_IS_DEBUG === "true") {
         this.overlay
-          .moveTo(this.pointerX, this.pointerY - this.tutorialParam.holeRadius)
+          .moveTo(
+            this.pointerX - 100,
+            this.pointerY - this.tutorialParam.holeRadius,
+          )
           .lineTo(
             this.pointerX + 100,
             this.pointerY - this.tutorialParam.holeRadius,
@@ -90,7 +93,7 @@ export class Tutorial extends Container {
           });
 
         this.overlay
-          .moveTo(this.pointerX, this.pointerY)
+          .moveTo(this.pointerX - 100, this.pointerY)
           .lineTo(this.pointerX + 100, this.pointerY)
           .stroke({
             width: 4,
@@ -98,7 +101,10 @@ export class Tutorial extends Container {
           });
 
         this.overlay
-          .moveTo(this.pointerX, this.pointerY + this.tutorialParam.holeRadius)
+          .moveTo(
+            this.pointerX - 100,
+            this.pointerY + this.tutorialParam.holeRadius,
+          )
           .lineTo(
             this.pointerX + 100,
             this.pointerY + this.tutorialParam.holeRadius,
@@ -112,105 +118,101 @@ export class Tutorial extends Container {
   }
 
   private drawMessage() {
-    this.drawMessageBackGround();
-
-    this.drawMessageText();
-
-    this.drawMessageButton();
-  }
-
-  private drawMessageBackGround() {
-    this.messageBackground.clear();
-
     if (this.pointerX !== undefined && this.pointerY !== undefined) {
-      const backgroundX =
+      const initialX =
         this.pointerX +
         this.tutorialParam.holeRadius +
         this.tutorialParam.holeMessageSpacing;
-      const backgroundY =
-        this.pointerY -
-        this.messageText.height / 2 -
-        this.tutorialParam.messagePadding -
-        (this.needOkButton ? this.tutorialParam.okButtonHeight / 2 : 0);
+      const initialY = this.pointerY - this.messageText.height / 2;
 
-      const backgroundWidth =
+      const buttonOffset = this.needOkButton
+        ? this.tutorialParam.okButtonHeight / 2
+        : 0;
+
+      const messageWidth =
         this.messageText.width + this.tutorialParam.messagePadding * 2;
-      const backgroundHeight =
+      const messageHeight =
         this.messageText.height +
         this.tutorialParam.messagePadding * 2 +
         (this.needOkButton ? this.tutorialParam.okButtonHeight : 0);
 
-      this.messageBackground
-        .roundRect(
-          backgroundX,
-          backgroundY,
-          backgroundWidth,
-          backgroundHeight,
-          20,
-        )
-        .fill("#cfcbc8")
-        .stroke({
-          width: 4,
-          color: "#000000",
-        });
+      const messageRightSide = initialX + messageWidth;
+      const messageBottomSide = initialY + messageHeight;
 
-      this.messageBackground.eventMode = "none";
-      this.messageContainer.addChild(this.messageBackground);
+      const messageX =
+        messageRightSide < gameScreen.width - 10
+          ? initialX
+          : this.pointerX -
+            this.tutorialParam.holeRadius -
+            this.tutorialParam.holeMessageSpacing -
+            messageWidth;
+
+      const messageY =
+        messageBottomSide > gameScreen.height - 10
+          ? initialY + gameScreen.height - 10 - messageBottomSide
+          : initialY;
+
+      this.drawMessageBackGround(
+        messageX,
+        messageY - this.tutorialParam.messagePadding - buttonOffset,
+        messageWidth,
+        messageHeight,
+      );
+
+      this.drawMessageText(
+        messageX + this.tutorialParam.messagePadding,
+        messageY - buttonOffset,
+      );
+
+      this.drawMessageButton(
+        messageX + this.tutorialParam.messagePadding,
+        messageY +
+          this.messageText.height +
+          this.tutorialParam.messagePadding * 2 -
+          this.tutorialParam.okButtonHeight,
+      );
     }
   }
 
-  private drawMessageText() {
-    if (this.pointerX !== undefined && this.pointerY !== undefined) {
-      const textX =
-        this.pointerX +
-        this.tutorialParam.holeRadius +
-        this.tutorialParam.holeMessageSpacing +
-        this.tutorialParam.messagePadding;
-      const textY =
-        this.pointerY -
-        this.messageText.height / 2 -
-        (this.needOkButton ? this.tutorialParam.okButtonHeight / 2 : 0);
+  private drawMessageBackGround(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ) {
+    this.messageBackground.clear();
 
-      this.messageText.position.set(textX, textY);
-      this.messageText.eventMode = "none";
-      this.messageContainer.addChild(this.messageText);
-    }
+    this.messageBackground
+      .roundRect(x, y, width, height, 20)
+      .fill("#cfcbc8")
+      .stroke({ width: 4, color: "#000000" });
+
+    this.messageBackground.eventMode = "none";
+    this.messageContainer.addChild(this.messageBackground);
   }
 
-  private drawMessageButton() {
+  private drawMessageText(x: number, y: number) {
+    this.messageText.position.set(x, y);
+    this.messageText.eventMode = "none";
+    this.messageContainer.addChild(this.messageText);
+  }
+
+  private drawMessageButton(x: number, y: number) {
     this.okButton.clear();
 
-    if (
-      this.pointerX !== undefined &&
-      this.pointerY !== undefined &&
-      this.needOkButton
-    ) {
-      const buttonX =
-        this.pointerX +
-        this.tutorialParam.holeRadius +
-        this.tutorialParam.holeMessageSpacing +
-        this.tutorialParam.messagePadding;
-      const buttonY =
-        this.pointerY +
-        this.messageText.height / 2 +
-        this.tutorialParam.messagePadding * 2 -
-        this.tutorialParam.okButtonHeight;
-
+    if (this.needOkButton) {
       const buttonWidth = this.messageText.width;
       const buttonHeight = this.tutorialParam.okButtonHeight - 5;
 
       this.okButton
-        .roundRect(buttonX, buttonY, buttonWidth, buttonHeight, 10)
+        .roundRect(x, y, buttonWidth, buttonHeight, 10)
         .fill("#a6a4a3")
         .stroke({
           width: 4,
           color: "#000000",
         });
 
-      this.okText.position.set(
-        buttonX + buttonWidth / 2 - this.okText.width / 2,
-        buttonY,
-      );
+      this.okText.position.set(x + buttonWidth / 2 - this.okText.width / 2, y);
 
       this.okButton.eventMode = "static";
       this.okText.eventMode = "none";

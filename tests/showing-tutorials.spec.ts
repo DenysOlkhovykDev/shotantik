@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { testSettings, skipFrames, initGame } from "./test-infra/test-infra";
 
-const testName = "showing-pointers";
+const testName = "showing-tutorials";
 
 test(testName, async ({ page }) => {
   await initGame(page, testName);

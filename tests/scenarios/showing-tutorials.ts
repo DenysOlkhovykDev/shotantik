@@ -4,7 +4,7 @@ import {
   hasPlacedFirstBlueprint,
 } from "@utils/tutorial-conditions";
 
-export const showingPointers: Scenario = {
+export const showingTutorials: Scenario = {
   aircraft: {
     buildings: [{ from: "", id: "p0", type: "Platform", x: 360, y: 600 }],
     buildingTasks: [
