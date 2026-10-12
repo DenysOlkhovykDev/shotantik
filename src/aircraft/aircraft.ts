@@ -29,6 +29,7 @@ import { researchManager } from "../ui/research/manager";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { onGroundObjects } from "../on-ground/objects";
+import { header } from "../ui/header/manager";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -269,6 +270,7 @@ class Aircraft {
         array: "buildings",
         index: buildingIndex,
       };
+      header.updateHeader();
       return;
     }
 
@@ -280,6 +282,8 @@ class Aircraft {
         index: blueprintIndex,
       };
     }
+
+    header.updateHeader();
   }
 
   public deSelectAllBuildings() {
@@ -292,6 +296,8 @@ class Aircraft {
     }
 
     this.selectedBuilding.index = undefined;
+
+    header.updateHeader();
   }
 
   public getSelectedNodeType() {
@@ -407,6 +413,8 @@ class Aircraft {
     ) {
       this.selectedBuilding.index--;
     }
+
+    header.updateHeader();
   }
 
   public deleteBuilding(building: Building) {
@@ -476,6 +484,8 @@ class Aircraft {
     ) {
       this.selectedBuilding.index--;
     }
+
+    header.updateHeader();
   }
 
   public deleteSelectedNode() {

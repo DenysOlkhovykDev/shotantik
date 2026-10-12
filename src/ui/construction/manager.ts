@@ -2,6 +2,7 @@ import { Container } from "pixi.js";
 import { ConstructionButton } from "./button";
 import { ConstructionMenu, type MenuItem, menuItems } from "./menu";
 import { ConstructionDisplay } from "./display";
+import { header } from "../header/manager";
 
 export class ConstructionManager extends Container {
   button: ConstructionButton | undefined = undefined;
@@ -107,6 +108,8 @@ export class ConstructionManager extends Container {
 
   public setBuildingType = (type: string | undefined) => {
     this.buildingType = type;
+
+    header.updateHeader();
   };
 
   public getBuildingType() {
