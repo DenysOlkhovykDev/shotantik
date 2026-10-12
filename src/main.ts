@@ -160,7 +160,7 @@ function updateGame(deltaTime: number) {
   if (isCurrentTargetReached()) {
     checkFirstTargetReached();
 
-    onGroundObjects.deleteAndCreateNewTarget();
+    onGroundObjects.deleteOldAndCreateNewTarget();
   }
 
   compasses.updateCompasses();

@@ -2,7 +2,6 @@ import { aircraft } from "@aircraft/aircraft";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "../ui/research/manager";
-import { getGameScreenCenter } from "./ui-config";
 import { onGroundObjects } from "../on-ground/objects";
 
 export function hasAtleastOneBlueprint() {
@@ -97,20 +96,6 @@ export function hasClickedOnResearcher() {
 
 export function hasClosedResearchMenu() {
   return hasClickedOnUpgradeEngineButton() && !researchManager.isMenuVisible();
-}
-
-export function getPositionOfEngineUpgradeButton() {
-  return {
-    x: 480,
-    y: 995,
-  };
-}
-
-export function getPositionOfResearchingProgressBar() {
-  return {
-    x: getGameScreenCenter().x,
-    y: 1200,
-  };
 }
 
 export function hasDestroyedOneOfImportantBuildings() {

@@ -28,6 +28,7 @@ import { multipleConstructionOfBuildings } from "@test-scenarios/multiple-constr
 import { multipleConstructionOfDifferentBuildings } from "@test-scenarios/multiple-construction-of-different-buildings";
 import { multipleDelivering } from "@test-scenarios/multiple-delivering";
 import { productionPriorities } from "@test-scenarios/production-priorities";
+import { researchingTechnologies } from "@test-scenarios/researching-technologies";
 import { reuseResources } from "@test-scenarios/reuse-resources";
 import { sceneRender } from "@test-scenarios/scene-render";
 import { showingTutorials } from "@test-scenarios/showing-tutorials";
@@ -96,10 +97,19 @@ export interface UiElementsScenario {
   }[];
 }
 
+export interface WorldObjects {
+  researchPoints: {
+    x: number;
+    y: number;
+  }[];
+}
+
 export interface Scenario {
   aircraft: AircraftScenario;
 
   uiElements?: UiElementsScenario;
+
+  worldObjects?: WorldObjects;
 }
 
 const scenarios: Record<string, Scenario> = {
@@ -127,6 +137,7 @@ const scenarios: Record<string, Scenario> = {
     multipleConstructionOfDifferentBuildings,
   "multiple-delivering": multipleDelivering,
   "production-priorities": productionPriorities,
+  "researching-technologies": researchingTechnologies,
   "reuse-resources": reuseResources,
   "scene-render": sceneRender,
   "showing-tutorials": showingTutorials,
@@ -145,7 +156,7 @@ export function createTestSituation(worldLayer: Container) {
   if (scenario.uiElements) {
     createUiElementsByScenario(scenario.uiElements);
   }
-  createTestWorld(worldLayer);
+  createTestWorld(worldLayer, scenario.worldObjects);
 
   aircraft.hideCraftSigns();
   aircraft.resetConstructionSource();

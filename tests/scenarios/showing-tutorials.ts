@@ -37,4 +37,6 @@ export const showingTutorials: Scenario = {
       },
     ],
   },
+
+  worldObjects: { researchPoints: [{ x: 1500, y: 100 }] },
 };

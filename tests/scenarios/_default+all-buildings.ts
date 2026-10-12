@@ -26,4 +26,8 @@ export const defaultPlusAllBuildings: Scenario = {
 
     compasses: [...(defaultScenario.uiElements?.compasses ?? [])],
   },
+
+  worldObjects: {
+    researchPoints: [...(defaultScenario.worldObjects?.researchPoints ?? [])],
+  },
 };

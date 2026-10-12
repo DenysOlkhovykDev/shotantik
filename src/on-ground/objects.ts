@@ -101,19 +101,8 @@ class OnGroundObjects extends Container {
     );
   }
 
-  public deleteAndCreateNewTarget() {
-    for (let i = 0; i < this.objectsOnGround.length; i++) {
-      if (this.objectsOnGround[i].isColide) {
-        compasses.deleteCompass(
-          this.objectsOnGround[i].root.x,
-          this.objectsOnGround[i].root.y,
-        );
-
-        this.objectsOnGround[i].root.destroy();
-        this.objectsOnGround.splice(i, 1);
-        i--;
-      }
-    }
+  public deleteOldAndCreateNewTarget() {
+    this.deleteOldTarget();
 
     researchManager.researchProgress.unusedPoints++;
 
@@ -127,6 +116,25 @@ class OnGroundObjects extends Container {
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
 
+    this.createNewTarget(x, y);
+  }
+
+  private deleteOldTarget() {
+    for (let i = 0; i < this.objectsOnGround.length; i++) {
+      if (this.objectsOnGround[i].isColide) {
+        compasses.deleteCompass(
+          this.objectsOnGround[i].root.x,
+          this.objectsOnGround[i].root.y,
+        );
+
+        this.objectsOnGround[i].root.destroy();
+        this.objectsOnGround.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
+  public createNewTarget(x: number, y: number) {
     onGroundObjects.addResearcher(x, y);
 
     allIslands.addIslandIfItNeeded(x, y);

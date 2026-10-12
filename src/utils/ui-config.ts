@@ -69,3 +69,17 @@ export function getSpeedButtonPosition() {
     y: 20,
   };
 }
+
+export function getPositionOfEngineUpgradeButton() {
+  return {
+    x: 480,
+    y: 995,
+  };
+}
+
+export function getPositionOfResearchingProgressBar() {
+  return {
+    x: getGameScreenCenter().x,
+    y: 1200,
+  };
+}

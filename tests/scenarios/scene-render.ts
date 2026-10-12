@@ -54,4 +54,6 @@ export const sceneRender: Scenario = {
     ],
     workers: [{ buildingId: "p0", profession: "building" }],
   },
+
+  worldObjects: { researchPoints: [{ x: -300, y: -500 }] },
 };
