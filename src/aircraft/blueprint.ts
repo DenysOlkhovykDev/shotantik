@@ -45,7 +45,7 @@ export class Blueprint extends Building {
     targetBuilding: BuildingClass,
     public targetBuildingType: string,
   ) {
-    super(x, y, "Blueprint");
+    super(x, y, "Blueprint", false);
 
     this.targetBuilding = targetBuilding;
     this.draw();
@@ -102,7 +102,7 @@ export class Blueprint extends Building {
     centerY: number,
     radius: number,
     dash = 8,
-    gap = 6,
+    gap = 8,
   ) {
     const circumference = 2 * Math.PI * radius;
     const desiredStep = dash + gap;
@@ -129,7 +129,7 @@ export class Blueprint extends Building {
       graphics.arc(centerX, centerY, radius, startAngle, endAngle);
     }
 
-    graphics.stroke({ width: 3 });
+    graphics.stroke({ width: 4 });
   }
 
   private moveAwayFrom(

@@ -19,7 +19,12 @@ export class Road {
     this.graphic
       .moveTo(fromCenter.x, fromCenter.y)
       .lineTo(toCenter.x, toCenter.y)
-      .stroke({ width: 8, color: "#737675" });
+      .stroke({ width: 10, color: "#000000" });
+
+    this.graphic
+      .moveTo(fromCenter.x, fromCenter.y)
+      .lineTo(toCenter.x, toCenter.y)
+      .stroke({ width: 6, color: "#737675" });
 
     this.graphic.eventMode = "static";
 
