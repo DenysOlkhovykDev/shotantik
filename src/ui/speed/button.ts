@@ -6,19 +6,36 @@ class SpeedButton extends Container {
   private background = new Graphics();
   private speedModifier = 1;
 
+  static backgroundParams = {
+    width: 40,
+    height: 40,
+  };
+
+  static symbolParams = {
+    width: 30,
+    height: 40,
+  };
+
   constructor() {
     super();
 
     this.createBackground();
     this.createSymbol();
 
+    this.position.set(getSpeedButtonPosition().x, getSpeedButtonPosition().y);
+
     this.updateSymbol();
   }
 
   private createBackground(): void {
     this.background
-      .rect(getSpeedButtonPosition().x, getSpeedButtonPosition().y, 30, 40)
-      .fill({ color: "#e5ecea", alpha: 0 });
+      .rect(
+        0,
+        0,
+        SpeedButton.backgroundParams.width,
+        SpeedButton.backgroundParams.height,
+      )
+      .fill({ alpha: 0 });
 
     this.background.eventMode = "static";
 
@@ -58,13 +75,19 @@ class SpeedButton extends Container {
     this.symbol.clear();
 
     this.symbol
-      .moveTo(60, 20)
-      .lineTo(90, 40)
-      .lineTo(60, 60)
+      .moveTo(0, 0)
+      .lineTo(
+        SpeedButton.symbolParams.width,
+        SpeedButton.symbolParams.height / 2,
+      )
+      .lineTo(0, SpeedButton.symbolParams.height)
       .closePath()
-      .moveTo(70, 20)
-      .lineTo(100, 40)
-      .lineTo(70, 60)
+      .moveTo(10, 0)
+      .lineTo(
+        SpeedButton.symbolParams.width + 10,
+        SpeedButton.symbolParams.height / 2,
+      )
+      .lineTo(10, SpeedButton.symbolParams.height)
       .fill({ color: "#000000" });
   }
 
@@ -72,13 +95,19 @@ class SpeedButton extends Container {
     this.symbol.clear();
 
     this.symbol
-      .moveTo(60, 20)
-      .lineTo(90, 40)
-      .lineTo(60, 60)
+      .moveTo(0, 0)
+      .lineTo(
+        SpeedButton.symbolParams.width,
+        SpeedButton.symbolParams.height / 2,
+      )
+      .lineTo(0, SpeedButton.symbolParams.height)
       .closePath()
-      .moveTo(70, 20)
-      .lineTo(100, 40)
-      .lineTo(70, 60)
+      .moveTo(10, 0)
+      .lineTo(
+        SpeedButton.symbolParams.width + 10,
+        SpeedButton.symbolParams.height / 2,
+      )
+      .lineTo(10, SpeedButton.symbolParams.height)
       .fill({ color: "#ff0000" });
   }
 

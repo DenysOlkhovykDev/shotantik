@@ -2,6 +2,16 @@ import { Container, Graphics } from "pixi.js";
 import { getConstructionButtonPosition } from "@utils/ui-config";
 
 export class ConstructionButton extends Container {
+  static plus = {
+    size: 50,
+
+    strokeWidth: 20,
+    strokeColor: "#000000",
+
+    baseWidth: 16,
+    baseColor: "#00ff60",
+  };
+
   graphic = new Graphics();
 
   public buttonPosition = {
@@ -15,22 +25,56 @@ export class ConstructionButton extends Container {
     this.graphic = new Graphics();
 
     this.graphic
-      .circle(this.buttonPosition.x, this.buttonPosition.y, 50)
-      .fill({ color: "#000000", alpha: 0 });
+      .circle(
+        this.buttonPosition.x,
+        this.buttonPosition.y,
+        ConstructionButton.plus.size,
+      )
+      .fill({ alpha: 0 });
 
     this.graphic
-      .moveTo(this.buttonPosition.x - 27, this.buttonPosition.y)
-      .lineTo(this.buttonPosition.x + 27, this.buttonPosition.y)
-      .moveTo(this.buttonPosition.x, this.buttonPosition.y - 27)
-      .lineTo(this.buttonPosition.x, this.buttonPosition.y + 27)
-      .stroke({ width: 20, color: "#000000" });
+      .moveTo(
+        this.buttonPosition.x - ConstructionButton.plus.size / 2 - 2,
+        this.buttonPosition.y,
+      )
+      .lineTo(
+        this.buttonPosition.x + ConstructionButton.plus.size / 2 + 2,
+        this.buttonPosition.y,
+      )
+      .moveTo(
+        this.buttonPosition.x,
+        this.buttonPosition.y - ConstructionButton.plus.size / 2 - 2,
+      )
+      .lineTo(
+        this.buttonPosition.x,
+        this.buttonPosition.y + ConstructionButton.plus.size / 2 + 2,
+      )
+      .stroke({
+        width: ConstructionButton.plus.strokeWidth,
+        color: ConstructionButton.plus.strokeColor,
+      });
 
     this.graphic
-      .moveTo(this.buttonPosition.x - 25, this.buttonPosition.y)
-      .lineTo(this.buttonPosition.x + 25, this.buttonPosition.y)
-      .moveTo(this.buttonPosition.x, this.buttonPosition.y - 25)
-      .lineTo(this.buttonPosition.x, this.buttonPosition.y + 25)
-      .stroke({ width: 16, color: "#00ff60" });
+      .moveTo(
+        this.buttonPosition.x - ConstructionButton.plus.size / 2,
+        this.buttonPosition.y,
+      )
+      .lineTo(
+        this.buttonPosition.x + ConstructionButton.plus.size / 2,
+        this.buttonPosition.y,
+      )
+      .moveTo(
+        this.buttonPosition.x,
+        this.buttonPosition.y - ConstructionButton.plus.size / 2,
+      )
+      .lineTo(
+        this.buttonPosition.x,
+        this.buttonPosition.y + ConstructionButton.plus.size / 2,
+      )
+      .stroke({
+        width: ConstructionButton.plus.baseWidth,
+        color: ConstructionButton.plus.baseColor,
+      });
 
     this.addChild(this.graphic);
   }

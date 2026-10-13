@@ -50,7 +50,7 @@ export const sceneRender: Scenario = {
       { buildingId: "junkuard", resourceName: "Water", amount: 1 },
       { buildingId: "junkuard", resourceName: "Organic", amount: 1 },
       { buildingId: "junkuard", resourceName: "Metal", amount: 1 },
-      { buildingId: "junkuard", resourceName: "Battery", amount: 1 },
+      // { buildingId: "junkuard", resourceName: "Battery", amount: 1 },
     ],
     workers: [{ buildingId: "p0", profession: "building" }],
   },

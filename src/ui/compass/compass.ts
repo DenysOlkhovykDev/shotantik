@@ -4,6 +4,20 @@ import { getGlobalWorldCoordinates } from "../../main";
 import { getGameScreenCenter } from "@utils/ui-config";
 
 export class Compass extends Container {
+  static arrow = {
+    width: 20,
+    height: 20,
+
+    strokeWidth: 4,
+    strokeColor: "#000000",
+
+    baseColor: "#00ff00",
+
+    radius: 250,
+
+    hideThreshold: 300,
+  };
+
   graphics = new Graphics();
 
   constructor(
@@ -26,22 +40,23 @@ export class Compass extends Container {
 
     const angle = Math.atan2(dy, dx);
 
-    const radius = 250;
-
-    const arrowX = centerX + Math.cos(angle) * radius;
-    const arrowY = centerY + Math.sin(angle) * radius;
+    const arrowX = centerX + Math.cos(angle) * Compass.arrow.radius;
+    const arrowY = centerY + Math.sin(angle) * Compass.arrow.radius;
 
     this.graphics.position.set(arrowX, arrowY);
 
     this.graphics.rotation = angle;
 
     this.graphics
-      .moveTo(20, 0)
-      .lineTo(-10, -10)
-      .lineTo(-10, 10)
+      .moveTo(Compass.arrow.width, 0)
+      .lineTo(-Compass.arrow.width / 2, -Compass.arrow.height / 2)
+      .lineTo(-Compass.arrow.width / 2, Compass.arrow.height / 2)
       .closePath()
-      .stroke({ width: 4, color: "#000000" })
-      .fill("#00ff00");
+      .stroke({
+        width: Compass.arrow.strokeWidth,
+        color: Compass.arrow.strokeColor,
+      })
+      .fill(Compass.arrow.baseColor);
   }
 
   public updateCompassPosition() {
@@ -53,7 +68,7 @@ export class Compass extends Container {
       this.compassTargetY,
     );
 
-    if (getDistance(x, y, centerX, centerY) > 300) {
+    if (getDistance(x, y, centerX, centerY) > Compass.arrow.hideThreshold) {
       this.draw(x, y);
     } else {
       this.graphics.clear();

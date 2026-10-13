@@ -51,7 +51,7 @@ export function getHeaderPosition() {
 
 export function getHeaderDeleteButtonPosition() {
   return {
-    x: getHeaderPosition().x,
+    x: getHeaderPosition().x + 10,
     y: getHeaderPosition().y + 40,
   };
 }
@@ -65,7 +65,7 @@ export function getPauseButtonPosition() {
 
 export function getSpeedButtonPosition() {
   return {
-    x: 60,
+    x: 70,
     y: 20,
   };
 }

@@ -70,6 +70,8 @@ export class Blueprint extends Building {
   }
 
   draw() {
+    this.shadowFilter.addBasicShadowFilter(this.contentContainer);
+
     this.createBaseTexture();
   }
 
@@ -82,7 +84,7 @@ export class Blueprint extends Building {
         this.targetBuilding.buildingConfig.boundsCenter.y,
         this.targetBuilding.buildingConfig.boundsRadius,
       )
-      .fill({ color: "#ffffff", alpha: 0 });
+      .fill({ alpha: 0 });
 
     this.drawDashedCircle(
       baseGraphics,

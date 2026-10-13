@@ -5,6 +5,14 @@ import { type Task, TaskStatus } from "@dashboard/task";
 import { aircraft } from "@aircraft/aircraft";
 
 export class BlueprintRoad {
+  static params = {
+    strokeWidth: 8,
+    strokeColor: "#000000",
+
+    baseWidth: 4,
+    baseColor: "#737675",
+  };
+
   graphic: Graphics;
 
   reservedBuildResource: Resource | undefined = undefined;
@@ -30,7 +38,7 @@ export class BlueprintRoad {
     });
   }
 
-  public drawDashedLine(from: Building, to: Building, dash = 8, gap = 14) {
+  private drawDashedLine(from: Building, to: Building, dash = 8, gap = 14) {
     const fromCenter = from.getBaseCenterInWorld();
     const toCenter = to.getBaseCenterInWorld();
     const decorationCenter = to.getBoundsCenterInWorld();
@@ -80,11 +88,19 @@ export class BlueprintRoad {
 
       this.graphic.moveTo(x1, y1);
       this.graphic.lineTo(x2, y2);
-      this.graphic.stroke({ width: 8, color: "#000000", cap: "round" });
+      this.graphic.stroke({
+        width: BlueprintRoad.params.strokeWidth,
+        color: BlueprintRoad.params.strokeColor,
+        cap: "round",
+      });
 
       this.graphic.moveTo(x1, y1);
       this.graphic.lineTo(x2, y2);
-      this.graphic.stroke({ width: 4, color: "#737675", cap: "round" });
+      this.graphic.stroke({
+        width: BlueprintRoad.params.baseWidth,
+        color: BlueprintRoad.params.baseColor,
+        cap: "round",
+      });
     }
   }
 

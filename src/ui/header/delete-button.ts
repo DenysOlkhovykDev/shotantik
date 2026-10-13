@@ -5,6 +5,16 @@ export class DeleteButton extends Container {
   private symbol = new Graphics();
   private background = new Graphics();
 
+  static backgroundParams = {
+    width: 40,
+    height: 40,
+  };
+
+  static trashBin = {
+    strokeWidth: 4,
+    strokeColor: "#ff0000",
+  };
+
   constructor() {
     super();
 
@@ -13,7 +23,14 @@ export class DeleteButton extends Container {
   }
 
   private createBackground() {
-    this.background.rect(0, 40, 40, 40).fill({ color: "#ffffff", alpha: 0 });
+    this.background
+      .rect(
+        0,
+        0,
+        DeleteButton.backgroundParams.width,
+        DeleteButton.backgroundParams.height,
+      )
+      .fill({ alpha: 0 });
 
     this.background.eventMode = "static";
 
@@ -26,29 +43,53 @@ export class DeleteButton extends Container {
   }
 
   private createSymbol() {
-    this.symbol.eventMode = "static";
+    this.symbol.eventMode = "none";
+
+    const width = DeleteButton.backgroundParams.width;
+    const height = DeleteButton.backgroundParams.height;
+    const padding = 8;
+    const gap = 2;
+    const strokeWidth = 4;
+
     this.symbol
-      .moveTo(6, 58)
-      .lineTo(12, 70)
-      .lineTo(24, 70)
-      .lineTo(30, 58)
+      .circle(width / 2, padding, 4)
+      .fill(DeleteButton.trashBin.strokeColor);
+
+    this.symbol
+      .moveTo(padding, padding + gap)
+      .lineTo(width - padding, padding + gap)
+      .stroke({
+        width: strokeWidth,
+        color: DeleteButton.trashBin.strokeColor,
+        cap: "round",
+      });
+
+    const top = padding + 2 * gap + strokeWidth;
+    const bottom = height - padding;
+    const leftTop = padding;
+    const rightTop = width - padding;
+    const leftBottom = leftTop + width / 8;
+    const rightBottom = rightTop - width / 8;
+    const centerLeftTop = leftTop + width / 5;
+    const centerLeftBottom = leftBottom + width / 8;
+    const centerRightTop = rightTop - width / 5;
+    const centerRightBottom = rightBottom - width / 8;
+
+    this.symbol
+      .moveTo(leftTop, top)
+      .lineTo(leftBottom, bottom)
+      .lineTo(rightBottom, bottom)
+      .lineTo(rightTop, top)
       .closePath()
-      .moveTo(14, 58)
-      .lineTo(16, 70)
-      .moveTo(22, 58)
-      .lineTo(20, 70)
-      .stroke({ width: 4, color: "#ff0000", cap: "round" });
-
-    this.symbol
-      .moveTo(6, 52)
-      .lineTo(30, 52)
-      .stroke({ width: 4, color: "#ff0000", cap: "round" });
-    this.symbol.circle(17.5, 50, 4).fill("#ff0000");
-
-    this.symbol.on("pointerdown", (e) => {
-      e.stopPropagation();
-      this.deleteBuilding();
-    });
+      .moveTo(centerLeftTop, top)
+      .lineTo(centerLeftBottom, bottom)
+      .moveTo(centerRightTop, top)
+      .lineTo(centerRightBottom, bottom)
+      .stroke({
+        width: strokeWidth,
+        color: DeleteButton.trashBin.strokeColor,
+        cap: "round",
+      });
 
     this.addChild(this.symbol);
   }

@@ -8,11 +8,17 @@ export class Tutorial extends Container {
 
   overlay = new Graphics();
 
-  tutorialParam = {
+  static tutorialParams = {
     holeRadius: 50,
     holeMessageSpacing: 10,
+    borderRaius: 20,
     messagePadding: 10,
     okButtonHeight: 30,
+
+    strokeWidth: 4,
+    strokeColor: "#000000",
+
+    threshold: 10,
   };
 
   messageContainer = new Container();
@@ -74,18 +80,22 @@ export class Tutorial extends Container {
           color: "#000000",
           alpha: 0.15,
         })
-        .circle(this.pointerX, this.pointerY, this.tutorialParam.holeRadius)
+        .circle(
+          this.pointerX,
+          this.pointerY,
+          Tutorial.tutorialParams.holeRadius,
+        )
         .cut();
 
       if (import.meta.env.VITE_IS_DEBUG === "true") {
         this.overlay
           .moveTo(
             this.pointerX - 100,
-            this.pointerY - this.tutorialParam.holeRadius,
+            this.pointerY - Tutorial.tutorialParams.holeRadius,
           )
           .lineTo(
             this.pointerX + 100,
-            this.pointerY - this.tutorialParam.holeRadius,
+            this.pointerY - Tutorial.tutorialParams.holeRadius,
           )
           .stroke({
             width: 4,
@@ -103,11 +113,11 @@ export class Tutorial extends Container {
         this.overlay
           .moveTo(
             this.pointerX - 100,
-            this.pointerY + this.tutorialParam.holeRadius,
+            this.pointerY + Tutorial.tutorialParams.holeRadius,
           )
           .lineTo(
             this.pointerX + 100,
-            this.pointerY + this.tutorialParam.holeRadius,
+            this.pointerY + Tutorial.tutorialParams.holeRadius,
           )
           .stroke({
             width: 4,
@@ -121,55 +131,59 @@ export class Tutorial extends Container {
     if (this.pointerX !== undefined && this.pointerY !== undefined) {
       const initialX =
         this.pointerX +
-        this.tutorialParam.holeRadius +
-        this.tutorialParam.holeMessageSpacing;
+        Tutorial.tutorialParams.holeRadius +
+        Tutorial.tutorialParams.holeMessageSpacing;
       const initialY = this.pointerY - this.messageText.height / 2;
 
       const buttonOffset = this.needOkButton
-        ? this.tutorialParam.okButtonHeight / 2
+        ? Tutorial.tutorialParams.okButtonHeight / 2
         : 0;
 
       const messageWidth =
-        this.messageText.width + this.tutorialParam.messagePadding * 2;
+        this.messageText.width + Tutorial.tutorialParams.messagePadding * 2;
       const messageHeight =
         this.messageText.height +
-        this.tutorialParam.messagePadding * 2 +
-        (this.needOkButton ? this.tutorialParam.okButtonHeight : 0);
+        Tutorial.tutorialParams.messagePadding * 2 +
+        (this.needOkButton ? Tutorial.tutorialParams.okButtonHeight : 0);
 
       const messageRightSide = initialX + messageWidth;
       const messageBottomSide = initialY + messageHeight;
 
       const messageX =
-        messageRightSide < gameScreen.width - 10
+        messageRightSide < gameScreen.width - Tutorial.tutorialParams.threshold
           ? initialX
           : this.pointerX -
-            this.tutorialParam.holeRadius -
-            this.tutorialParam.holeMessageSpacing -
+            Tutorial.tutorialParams.holeRadius -
+            Tutorial.tutorialParams.holeMessageSpacing -
             messageWidth;
 
       const messageY =
-        messageBottomSide > gameScreen.height - 10
-          ? initialY + gameScreen.height - 10 - messageBottomSide
+        messageBottomSide >
+        gameScreen.height - Tutorial.tutorialParams.threshold
+          ? initialY +
+            gameScreen.height -
+            Tutorial.tutorialParams.threshold -
+            messageBottomSide
           : initialY;
 
       this.drawMessageBackGround(
         messageX,
-        messageY - this.tutorialParam.messagePadding - buttonOffset,
+        messageY - Tutorial.tutorialParams.messagePadding - buttonOffset,
         messageWidth,
         messageHeight,
       );
 
       this.drawMessageText(
-        messageX + this.tutorialParam.messagePadding,
+        messageX + Tutorial.tutorialParams.messagePadding,
         messageY - buttonOffset,
       );
 
       this.drawMessageButton(
-        messageX + this.tutorialParam.messagePadding,
+        messageX + Tutorial.tutorialParams.messagePadding,
         messageY +
           this.messageText.height +
-          this.tutorialParam.messagePadding * 2 -
-          this.tutorialParam.okButtonHeight,
+          Tutorial.tutorialParams.messagePadding * 2 -
+          Tutorial.tutorialParams.okButtonHeight,
       );
     }
   }
@@ -183,9 +197,12 @@ export class Tutorial extends Container {
     this.messageBackground.clear();
 
     this.messageBackground
-      .roundRect(x, y, width, height, 20)
+      .roundRect(x, y, width, height, Tutorial.tutorialParams.borderRaius)
       .fill("#cfcbc8")
-      .stroke({ width: 4, color: "#000000" });
+      .stroke({
+        width: Tutorial.tutorialParams.strokeWidth,
+        color: Tutorial.tutorialParams.strokeColor,
+      });
 
     this.messageBackground.eventMode = "none";
     this.messageContainer.addChild(this.messageBackground);
@@ -202,14 +219,21 @@ export class Tutorial extends Container {
 
     if (this.needOkButton) {
       const buttonWidth = this.messageText.width;
-      const buttonHeight = this.tutorialParam.okButtonHeight - 5;
+      const buttonHeight = Tutorial.tutorialParams.okButtonHeight - 5;
 
       this.okButton
-        .roundRect(x, y, buttonWidth, buttonHeight, 10)
+        .roundRect(
+          x,
+          y,
+          buttonWidth,
+          buttonHeight,
+          Tutorial.tutorialParams.borderRaius -
+            Tutorial.tutorialParams.messagePadding,
+        )
         .fill("#a6a4a3")
         .stroke({
-          width: 4,
-          color: "#000000",
+          width: Tutorial.tutorialParams.strokeWidth,
+          color: Tutorial.tutorialParams.strokeColor,
         });
 
       this.okText.position.set(x + buttonWidth / 2 - this.okText.width / 2, y);
