@@ -30,7 +30,7 @@ export class BlueprintRoad {
     });
   }
 
-  public drawDashedLine(from: Building, to: Building, dash = 10, gap = 10) {
+  public drawDashedLine(from: Building, to: Building, dash = 8, gap = 14) {
     const fromCenter = from.getBaseCenterInWorld();
     const toCenter = to.getBaseCenterInWorld();
     const decorationCenter = to.getBoundsCenterInWorld();
@@ -61,7 +61,7 @@ export class BlueprintRoad {
       );
       effectiveDistance = Math.max(
         0,
-        Math.min(distance, projection - distanceToIntersection),
+        Math.min(distance, projection - distanceToIntersection - dash / 2),
       );
     }
 
@@ -80,9 +80,12 @@ export class BlueprintRoad {
 
       this.graphic.moveTo(x1, y1);
       this.graphic.lineTo(x2, y2);
-    }
+      this.graphic.stroke({ width: 8, color: "#000000", cap: "round" });
 
-    this.graphic.stroke({ width: 6, color: "#737675" });
+      this.graphic.moveTo(x1, y1);
+      this.graphic.lineTo(x2, y2);
+      this.graphic.stroke({ width: 4, color: "#737675", cap: "round" });
+    }
   }
 
   public reserveBuildResource(resource: Resource) {
