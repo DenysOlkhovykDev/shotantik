@@ -428,15 +428,20 @@ class Aircraft {
       }
     }
 
-    for (const worker of this.workers.workers) {
-      if (worker.navigator.currentPlatform === building) {
-        const newBuilding =
-          building.roads[0].from === building
-            ? building.roads[0].to
-            : building.roads[0].from;
+    for (let i = 0; i < this.workers.workers.length; i++) {
+      if (this.workers.workers[i].navigator.currentPlatform === building) {
+        if (building.roads.length) {
+          const newBuilding =
+            building.roads[0].from === building
+              ? building.roads[0].to
+              : building.roads[0].from;
 
-        worker.navigator.currentPlatform = newBuilding;
-        worker.position.set(newBuilding.x, newBuilding.y);
+          this.workers.workers[i].navigator.currentPlatform = newBuilding;
+          this.workers.workers[i].position.set(newBuilding.x, newBuilding.y);
+        } else {
+          this.workers.workers[i].destroy();
+          this.workers.workers.slice(i, 1);
+        }
       }
     }
 
