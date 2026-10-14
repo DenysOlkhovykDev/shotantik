@@ -3,6 +3,17 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin, makeGear } from "@utils/basic-graphic";
 
 export class Gear extends Resource {
+  static params = {
+    amounthOfTeeth: 6,
+    innerRadius: 4.5,
+    outerRadius: 7,
+
+    baseColor: "#bdd2d3",
+    strokewidth: 1.25,
+    centerRaius: 2.25,
+    centerColor: "#000000",
+  };
+
   protected draw() {
     this.createBaseTexture();
 
@@ -17,7 +28,16 @@ export class Gear extends Resource {
 
     baseGraphics.clear();
 
-    makeGear(baseGraphics, 6, 4.5, 7, "#bdd2d3", 1.25, 2.25, "#000000");
+    makeGear(
+      baseGraphics,
+      Gear.params.amounthOfTeeth,
+      Gear.params.innerRadius,
+      Gear.params.outerRadius,
+      Gear.params.baseColor,
+      Gear.params.strokewidth,
+      Gear.params.centerRaius,
+      Gear.params.centerColor,
+    );
 
     Gear.baseTexture = generateTextureFromOrigin(baseGraphics);
   }

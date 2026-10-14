@@ -3,6 +3,7 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "../ui/research/manager";
 import { onGroundObjects } from "../on-ground/objects";
+import { menuItems } from "@utils/menu-items";
 
 export function hasAtleastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -64,10 +65,11 @@ export function checkFirstTargetReached() {
 
   firstTargetReached = true;
 
-  constructionManager.addMenuElement({
-    label: "Researcher",
-    color: "#ca9cf3",
-  });
+  const researcher = menuItems.find((item) => item.label === "Researcher");
+
+  if (researcher) {
+    constructionManager.addMenuElement(researcher);
+  }
 }
 
 export function isCurrentTargetReached() {

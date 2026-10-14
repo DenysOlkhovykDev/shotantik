@@ -3,6 +3,20 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Gum extends Resource {
+  static params = {
+    ballsX: 3.5,
+    ballsY: 0,
+    ballsRadius: 2.5,
+
+    rectWidth: 4,
+    rectheight: 2,
+
+    strokeWidth: 3,
+    strokeColor: "#000000",
+
+    baseColor: "#da315b",
+  };
+
   protected draw() {
     this.createBaseTexture();
 
@@ -16,11 +30,19 @@ export class Gum extends Resource {
     const baseGraphics = new Graphics();
 
     baseGraphics
-      .circle(-3.5, 0, 2.5)
-      .circle(3.5, 0, 2.5)
-      .rect(-2, -1, 4, 2)
-      .stroke({ width: 3, color: "#000000" })
-      .fill("#da315b");
+      .circle(-Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
+      .circle(Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
+      .rect(
+        -Gum.params.rectWidth / 2,
+        -Gum.params.rectheight / 2,
+        Gum.params.rectWidth,
+        Gum.params.rectheight,
+      )
+      .stroke({
+        width: Gum.params.strokeWidth,
+        color: Gum.params.strokeColor,
+      })
+      .fill(Gum.params.baseColor);
 
     Gum.baseTexture = generateTextureFromOrigin(baseGraphics);
   }

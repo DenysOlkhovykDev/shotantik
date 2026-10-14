@@ -6,19 +6,43 @@ class PauseButton extends Container {
   private background = new Graphics();
   private paused = false;
 
+  static backgroundParams = {
+    width: 40,
+    height: 40,
+  };
+
+  static play = {
+    width: 30,
+    height: 40,
+    color: "#000000",
+  };
+
+  static stop = {
+    width: 40,
+    height: 40,
+    color: "#000000",
+  };
+
   constructor() {
     super();
 
     this.createBackground();
     this.createSymbol();
 
+    this.position.set(getPauseButtonPosition().x, getPauseButtonPosition().y);
+
     this.updateSymbol();
   }
 
   private createBackground() {
     this.background
-      .rect(getPauseButtonPosition().x, getPauseButtonPosition().y, 30, 40)
-      .fill({ color: "#e5ecea", alpha: 0 });
+      .rect(
+        0,
+        0,
+        PauseButton.backgroundParams.width,
+        PauseButton.backgroundParams.height,
+      )
+      .fill({ alpha: 0 });
 
     this.background.eventMode = "static";
 
@@ -58,25 +82,25 @@ class PauseButton extends Container {
     this.symbol.clear();
 
     this.symbol
-      .moveTo(20, 20)
-      .lineTo(50, 40)
-      .lineTo(20, 60)
+      .moveTo(0, 0)
+      .lineTo(PauseButton.play.width, PauseButton.play.height / 2)
+      .lineTo(0, PauseButton.play.height)
       .closePath()
-      .fill({ color: "#000000" });
+      .fill({ color: PauseButton.play.color });
   }
 
   private drawStopSymbol() {
     this.symbol.clear();
 
     this.symbol
-      .moveTo(20, 20)
-      .lineTo(20, 60)
-      .moveTo(50, 20)
-      .lineTo(50, 60)
-      .stroke({
-        width: 10,
-        color: "#000000",
-      });
+      .rect(0, 0, PauseButton.stop.width / 4, PauseButton.stop.height)
+      .rect(
+        (PauseButton.stop.width / 4) * 3,
+        0,
+        PauseButton.stop.width / 4,
+        PauseButton.stop.height,
+      )
+      .fill({ color: PauseButton.stop.color });
   }
 
   public isPaused() {

@@ -2,14 +2,23 @@ import { Resource } from "@resources/resource";
 import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
-const leftSide = -6;
-const rightSide = 6;
-const topSide = -4;
-const bottomSide = 4;
-const leftJoin = -3;
-const rightJoin = 3;
-
 export class Truss extends Resource {
+  static paralels = {
+    width: 12,
+    height: 8,
+
+    strokeWidth: 5,
+    strokeColor: "#000000",
+
+    baseWidth: 2,
+    baseColor: "#d6d655",
+  };
+
+  static joins = {
+    width: 1.5,
+    color: "#000000",
+  };
+
   protected draw() {
     this.createBaseTexture();
 
@@ -23,31 +32,43 @@ export class Truss extends Resource {
     const baseGraphics = new Graphics();
 
     baseGraphics
-      .moveTo(rightSide, topSide)
-      .lineTo(rightJoin, bottomSide)
-      .lineTo(leftJoin, topSide)
-      .lineTo(leftSide, bottomSide)
-      .stroke({ width: 1.5, color: "#000000" });
+      .moveTo(Truss.paralels.width / 2, -Truss.paralels.height / 2)
+      .lineTo(Truss.paralels.width / 4, Truss.paralels.height / 2)
+      .lineTo(-Truss.paralels.width / 4, -Truss.paralels.height / 2)
+      .lineTo(-Truss.paralels.width / 2, Truss.paralels.height / 2)
+      .stroke({ width: Truss.joins.width, color: Truss.joins.color });
 
     baseGraphics
-      .moveTo(leftSide - 1, topSide)
-      .lineTo(rightSide + 1, topSide)
-      .stroke({ width: 5, color: "#000000" });
+      .moveTo(-Truss.paralels.width / 2 - 1, -Truss.paralels.height / 2)
+      .lineTo(Truss.paralels.width / 2 + 1, -Truss.paralels.height / 2)
+      .stroke({
+        width: Truss.paralels.strokeWidth,
+        color: Truss.paralels.strokeColor,
+      });
 
     baseGraphics
-      .moveTo(leftSide, topSide)
-      .lineTo(rightSide, topSide)
-      .stroke({ width: 2, color: "#d6d655" });
+      .moveTo(-Truss.paralels.width / 2, -Truss.paralels.height / 2)
+      .lineTo(Truss.paralels.width / 2, -Truss.paralels.height / 2)
+      .stroke({
+        width: Truss.paralels.baseWidth,
+        color: Truss.paralels.baseColor,
+      });
 
     baseGraphics
-      .moveTo(leftSide - 1, bottomSide)
-      .lineTo(rightSide + 1, bottomSide)
-      .stroke({ width: 5, color: "#000000" });
+      .moveTo(-Truss.paralels.width / 2 - 1, Truss.paralels.height / 2)
+      .lineTo(Truss.paralels.width / 2 + 1, Truss.paralels.height / 2)
+      .stroke({
+        width: Truss.paralels.strokeWidth,
+        color: Truss.paralels.strokeColor,
+      });
 
     baseGraphics
-      .moveTo(leftSide, bottomSide)
-      .lineTo(rightSide, bottomSide)
-      .stroke({ width: 2, color: "#d6d655" });
+      .moveTo(-Truss.paralels.width / 2, Truss.paralels.height / 2)
+      .lineTo(Truss.paralels.width / 2, Truss.paralels.height / 2)
+      .stroke({
+        width: Truss.paralels.baseWidth,
+        color: Truss.paralels.baseColor,
+      });
 
     Truss.baseTexture = generateTextureFromOrigin(baseGraphics);
   }

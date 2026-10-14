@@ -6,57 +6,31 @@ import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
 
 import { Navigator } from "@workers/worker-parts/navigator";
+import { menuItems, type MenuItem } from "@utils/menu-items";
 
-export interface MenuItem {
-  label: string;
-  color: string;
+interface ResearchMenuItem extends MenuItem {
   level: number;
 }
 
-export const menuItems: MenuItem[] = [
-  {
-    label: "Collector",
-    color: "#a8d0db",
-    level: 1,
-  },
-  {
-    label: "Farm",
-    color: "#bad895",
-    level: 1,
-  },
-  {
-    label: "Extractor",
-    color: "#dba8a8",
-    level: 1,
-  },
-  {
-    label: "Assembler",
-    color: "#d6de90",
-    level: 1,
-  },
-  {
-    label: "Mixer",
-    color: "#caa5c3",
-    level: 1,
-  },
-  {
-    label: "Grinder",
-    color: "#b7ded3",
-    level: 1,
-  },
-  {
-    label: "Engine",
-    color: "#a8b1db",
-    level: 1,
-  },
-  {
-    label: "Road",
-    color: "#dbcaa8",
-    level: 1,
-  },
-];
-
 export class ResearchMenu extends Container {
+  public menuItems: ResearchMenuItem[] = menuItems
+    .filter((item) =>
+      [
+        "Collector",
+        "Farm",
+        "Extractor",
+        "Assembler",
+        "Mixer",
+        "Grinder",
+        "Engine",
+        "Road",
+      ].includes(item.label),
+    )
+    .map((item) => ({
+      ...item,
+      level: 1,
+    }));
+
   private menuBackground = new Graphics();
   private researchingProgreesBar = new Graphics();
   private menuItemsContainers: Container[] = [];
@@ -64,21 +38,28 @@ export class ResearchMenu extends Container {
   private levelTextElements: Text[] = [];
   private upgradesInfoDisplay = new Text();
 
-  private rows = menuItems.length + 2;
+  private rows = this.menuItems.length + 2;
 
-  private columnWidth = 300;
-  private rowHeight = 60;
-  private gap = 10;
-  private borderRadius = 26;
+  static params = {
+    columnWidth: 300,
+    rowHeight: 60,
+    gap: 10,
+    borderRadius: 26,
+
+    backgroundColor: "#cfcbc8",
+  };
 
   private centerBottom = {
     x: getConstructionMenuPosition().x,
     y: getConstructionMenuPosition().y,
   };
 
-  private menuWidth = this.columnWidth + 2 * this.gap;
+  private menuWidth =
+    ResearchMenu.params.columnWidth + 2 * ResearchMenu.params.gap;
   private menuHeight =
-    this.rows * this.rowHeight + (this.rows - 1) * this.gap + 2 * this.gap;
+    this.rows * ResearchMenu.params.rowHeight +
+    (this.rows - 1) * ResearchMenu.params.gap +
+    2 * ResearchMenu.params.gap;
 
   constructor(private useOneUpgradePoint: () => boolean) {
     super();
@@ -87,7 +68,7 @@ export class ResearchMenu extends Container {
 
     this.eventMode = "static";
 
-    this.x = this.centerBottom.x - this.menuWidth / 2 + this.gap;
+    this.x = this.centerBottom.x - this.menuWidth / 2 + ResearchMenu.params.gap;
     this.y = this.centerBottom.y - this.menuHeight;
   }
 
@@ -104,11 +85,11 @@ export class ResearchMenu extends Container {
   private makeMenuBackground() {
     this.menuBackground
       .roundRect(
-        -this.gap,
-        -this.gap,
+        -ResearchMenu.params.gap,
+        -ResearchMenu.params.gap,
         this.menuWidth,
         this.menuHeight,
-        this.borderRadius,
+        ResearchMenu.params.borderRadius,
       )
       .fill("#cfcbc8");
 
@@ -121,11 +102,11 @@ export class ResearchMenu extends Container {
   }
 
   private makeMenuItems() {
-    menuItems.forEach((item, index) => {
+    this.menuItems.forEach((item, index) => {
       const row = index;
 
       const x = 0;
-      const y = row * (this.rowHeight + this.gap);
+      const y = row * (ResearchMenu.params.rowHeight + ResearchMenu.params.gap);
 
       this.menuItemsContainers[index] = new Container();
 
@@ -137,13 +118,13 @@ export class ResearchMenu extends Container {
     });
   }
 
-  private createMenuItem(item: MenuItem, container: Container) {
+  private createMenuItem(item: ResearchMenuItem, container: Container) {
     this.createInfoBlock(item, container);
 
     this.createUpgradeButton(container, item);
   }
 
-  private createInfoBlock(item: MenuItem, container: Container) {
+  private createInfoBlock(item: ResearchMenuItem, container: Container) {
     this.createInfoBackground(item.color, container);
 
     if (item.label === "Road") {
@@ -156,18 +137,21 @@ export class ResearchMenu extends Container {
   }
 
   private createInfoBackground(backgroundColor: string, container: Container) {
-    const labelPartWidth = (this.columnWidth / 3) * 2;
-    const levelPartX = labelPartWidth - this.borderRadius - this.gap;
-    const levelPartWidth = this.columnWidth / 5;
-    const buildingImagePartWidth = this.columnWidth / 5;
+    const labelPartWidth = (ResearchMenu.params.columnWidth / 3) * 2;
+    const levelPartX =
+      labelPartWidth -
+      ResearchMenu.params.borderRadius -
+      ResearchMenu.params.gap;
+    const levelPartWidth = ResearchMenu.params.columnWidth / 5;
+    const buildingImagePartWidth = ResearchMenu.params.columnWidth / 5;
 
     const background = new Graphics()
       .roundRect(
         0,
         0,
         labelPartWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill("#b2afad");
 
@@ -175,14 +159,16 @@ export class ResearchMenu extends Container {
       .roundRect(
         levelPartX,
         0,
-        levelPartWidth + this.borderRadius - this.gap,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        levelPartWidth +
+          ResearchMenu.params.borderRadius -
+          ResearchMenu.params.gap,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill("#ece7e3");
 
     background
-      .rect(levelPartX, 0, levelPartWidth, this.rowHeight)
+      .rect(levelPartX, 0, levelPartWidth, ResearchMenu.params.rowHeight)
       .fill("#ece7e3");
 
     background
@@ -190,8 +176,8 @@ export class ResearchMenu extends Container {
         0,
         0,
         buildingImagePartWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill(backgroundColor);
 
@@ -206,10 +192,13 @@ export class ResearchMenu extends Container {
     };
 
     const textGap = 5;
-    const labelX = this.columnWidth / 5 + textGap;
+    const labelX = ResearchMenu.params.columnWidth / 5 + textGap;
     const levelX =
-      (this.columnWidth / 3) * 2 - this.borderRadius - this.gap + textGap;
-    const textY = (this.rowHeight / 10) * 3;
+      (ResearchMenu.params.columnWidth / 3) * 2 -
+      ResearchMenu.params.borderRadius -
+      ResearchMenu.params.gap +
+      textGap;
+    const textY = (ResearchMenu.params.rowHeight / 10) * 3;
 
     const labelText = new Text({
       text: label,
@@ -237,7 +226,10 @@ export class ResearchMenu extends Container {
   }
 
   private createRoadImage(container: Container) {
-    const root = Road.crateRoadImage(this.rowHeight, this.rowHeight);
+    const root = Road.crateRoadImage(
+      ResearchMenu.params.rowHeight,
+      ResearchMenu.params.rowHeight,
+    );
 
     root.scale = 0.5;
     root.eventMode = "none";
@@ -249,8 +241,8 @@ export class ResearchMenu extends Container {
     const BuildingClass = buildingMap[buildingName] || Platform;
 
     const building = new BuildingClass(
-      this.rowHeight / 2,
-      this.rowHeight / 2,
+      ResearchMenu.params.rowHeight / 2,
+      ResearchMenu.params.rowHeight / 2,
       true,
     );
 
@@ -261,22 +253,22 @@ export class ResearchMenu extends Container {
     container.addChild(building.root);
   }
 
-  private createUpgradeButton(container: Container, item: MenuItem) {
-    const buttonX = (this.columnWidth / 5) * 4;
-    const buttonWidth = this.columnWidth / 5;
+  private createUpgradeButton(container: Container, item: ResearchMenuItem) {
+    const buttonX = (ResearchMenu.params.columnWidth / 5) * 4;
+    const buttonWidth = ResearchMenu.params.columnWidth / 5;
 
     const button = new Graphics()
       .roundRect(
         buttonX,
         0,
         buttonWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill("#b0e9af");
 
     const centerX = buttonX + buttonWidth / 2;
-    const centerY = 0 + this.rowHeight / 2;
+    const centerY = ResearchMenu.params.rowHeight / 2;
 
     button
       .moveTo(centerX - 10, centerY + 15)
@@ -334,10 +326,11 @@ export class ResearchMenu extends Container {
     this.menuBackground
       .roundRect(
         0,
-        menuItems.length * (this.rowHeight + this.gap),
-        this.columnWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        this.menuItems.length *
+          (ResearchMenu.params.rowHeight + ResearchMenu.params.gap),
+        ResearchMenu.params.columnWidth,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill("#ece7e3");
 
@@ -351,7 +344,9 @@ export class ResearchMenu extends Container {
 
     this.upgradesInfoDisplay.x = 8;
     this.upgradesInfoDisplay.y =
-      menuItems.length * (this.rowHeight + this.gap) + this.rowHeight / 8;
+      this.menuItems.length *
+        (ResearchMenu.params.rowHeight + ResearchMenu.params.gap) +
+      ResearchMenu.params.rowHeight / 8;
 
     this.upgradesInfoDisplay.eventMode = "none";
 
@@ -362,10 +357,11 @@ export class ResearchMenu extends Container {
     this.menuBackground
       .roundRect(
         0,
-        (menuItems.length + 1) * (this.rowHeight + this.gap),
-        this.columnWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        (this.menuItems.length + 1) *
+          (ResearchMenu.params.rowHeight + ResearchMenu.params.gap),
+        ResearchMenu.params.columnWidth,
+        ResearchMenu.params.rowHeight,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap,
       )
       .fill("#b2afad");
 
@@ -379,22 +375,25 @@ export class ResearchMenu extends Container {
     unusedPoints: number,
   ) {
     for (let i = 0; i < this.levelTextElements.length; i++) {
-      this.levelTextElements[i].text = "Lvl: " + menuItems[i].level;
+      this.levelTextElements[i].text = "Lvl: " + this.menuItems[i].level;
     }
 
     this.researchingProgreesBar.clear();
 
     const padding = 8;
 
-    const progressBarWidth = (this.columnWidth / goal) * currentProgress;
+    const progressBarWidth =
+      (ResearchMenu.params.columnWidth / goal) * currentProgress;
 
     this.researchingProgreesBar
       .roundRect(
-        0 + padding,
-        (menuItems.length + 1) * (this.rowHeight + this.gap) + padding,
+        padding,
+        (this.menuItems.length + 1) *
+          (ResearchMenu.params.rowHeight + ResearchMenu.params.gap) +
+          padding,
         progressBarWidth - padding * 2,
-        this.rowHeight - padding * 2,
-        this.borderRadius - this.gap - padding,
+        ResearchMenu.params.rowHeight - padding * 2,
+        ResearchMenu.params.borderRadius - ResearchMenu.params.gap - padding,
       )
       .fill("#35eb38")
       .stroke({

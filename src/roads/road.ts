@@ -2,6 +2,23 @@ import { Graphics } from "pixi.js";
 import { type Building } from "@aircraft/building";
 
 export class Road {
+  static params = {
+    strokeWidth: 10,
+    strokeColor: "#000000",
+
+    baseWidth: 6,
+    baseColor: "#737675",
+  };
+
+  static icon = {
+    width: 60,
+    height: 60,
+    radius: 10,
+
+    strokeWidth: 10,
+    color: "#000000",
+  };
+
   graphic: Graphics;
 
   constructor(
@@ -18,13 +35,19 @@ export class Road {
 
     this.graphic
       .moveTo(fromCenter.x, fromCenter.y)
-      .lineTo(toCenter.x, toCenter.y)
-      .stroke({ width: 10, color: "#000000" });
+      .lineTo(toCenter.x, toCenter.y);
+    this.graphic.stroke({
+      width: Road.params.strokeWidth,
+      color: Road.params.strokeColor,
+    });
 
     this.graphic
       .moveTo(fromCenter.x, fromCenter.y)
-      .lineTo(toCenter.x, toCenter.y)
-      .stroke({ width: 6, color: "#737675" });
+      .lineTo(toCenter.x, toCenter.y);
+    this.graphic.stroke({
+      width: Road.params.baseWidth,
+      color: Road.params.baseColor,
+    });
 
     this.graphic.eventMode = "static";
 
@@ -35,18 +58,18 @@ export class Road {
 
   static crateRoadImage(x: number, y: number) {
     const root = new Graphics();
-    const startX = x + 30;
-    const startY = y - 30;
-    const finishX = x - 30;
-    const finishY = y + 30;
+    const startX = x + Road.icon.width / 2;
+    const startY = y - Road.icon.width / 2;
+    const finishX = x - Road.icon.height / 2;
+    const finishY = y + Road.icon.height / 2;
 
     root
       .moveTo(startX, startY)
       .lineTo(finishX, finishY)
-      .stroke({ width: 8, color: "#000000" });
+      .stroke({ width: Road.icon.strokeWidth, color: Road.icon.color });
 
-    root.circle(startX, startY, 10).fill("#000000");
-    root.circle(finishX, finishY, 10).fill("#000000");
+    root.circle(startX, startY, Road.icon.radius).fill(Road.icon.color);
+    root.circle(finishX, finishY, Road.icon.radius).fill(Road.icon.color);
 
     return root;
   }

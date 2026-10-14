@@ -14,6 +14,8 @@ export class BackgroundTile extends Container {
   static cellSize = 40;
   static gridSize = 16;
 
+  static baseTileColor = "#a2a5a4";
+
   fogContainer: ParticleContainer;
   fogValues: number[][];
 
@@ -67,7 +69,7 @@ export class BackgroundTile extends Container {
           x * BackgroundTile.cellSize +
           (y % 2 === 0 ? 0 : BackgroundTile.cellSize / 2);
 
-        let color = "#a2a5a4";
+        let color = BackgroundTile.baseTileColor;
 
         if (
           import.meta.env.VITE_IS_DEBUG === "true" &&

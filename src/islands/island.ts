@@ -10,7 +10,15 @@ export class Island extends Container {
 
   islandValues: number[][];
 
-  backgroundSize = 64;
+  static backgroundSize = 64;
+  static cellSize = 40;
+
+  static tilesColors = {
+    beach: "#d6cc71",
+    plains: "#1b9d1c",
+    heels: "#504e4e",
+    peaks: "#ffffff",
+  };
 
   private basicShadowFilter = new DropShadowFilter({
     color: "#000000",
@@ -29,20 +37,20 @@ export class Island extends Container {
     this.plains = new Graphics();
     this.heels = new Graphics();
     this.peaks = new Graphics();
-    this.islandValues = Array.from({ length: this.backgroundSize }, () =>
-      Array(this.backgroundSize).fill(0),
+    this.islandValues = Array.from({ length: Island.backgroundSize }, () =>
+      Array(Island.backgroundSize).fill(0),
     );
 
     this.generateNoise(
       this.islandValues,
-      this.backgroundSize,
+      Island.backgroundSize,
       positionX,
       positionY,
       seed,
     );
 
-    for (let x = 0; x < this.backgroundSize; x++) {
-      for (let y = 0; y < this.backgroundSize; y++) {
+    for (let x = 0; x < Island.backgroundSize; x++) {
+      for (let y = 0; y < Island.backgroundSize; y++) {
         const value = this.islandValues[x][y];
         let newX;
         if (y % 2 === 0) {
@@ -57,17 +65,25 @@ export class Island extends Container {
         if (value < 1) {
           // skip
         } else if (value < 2) {
-          drawHex(this.beach, newX, newY, 20);
-          this.beach.fill(makeBrighterColor("#d6cc71", colorModifier));
+          drawHex(this.beach, newX, newY, Island.cellSize / 2);
+          this.beach.fill(
+            makeBrighterColor(Island.tilesColors.beach, colorModifier),
+          );
         } else if (value < 3) {
-          drawHex(this.plains, newX, newY, 20);
-          this.plains.fill(makeBrighterColor("#1b9d1c", colorModifier));
+          drawHex(this.plains, newX, newY, Island.cellSize / 2);
+          this.plains.fill(
+            makeBrighterColor(Island.tilesColors.plains, colorModifier),
+          );
         } else if (value < 4) {
-          drawHex(this.heels, newX, newY, 20);
-          this.heels.fill(makeBrighterColor("#504e4e", colorModifier));
+          drawHex(this.heels, newX, newY, Island.cellSize / 2);
+          this.heels.fill(
+            makeBrighterColor(Island.tilesColors.heels, colorModifier),
+          );
         } else if (value < 5) {
-          drawHex(this.peaks, newX, newY, 20);
-          this.peaks.fill(makeBrighterColor("#ffffff", colorModifier));
+          drawHex(this.peaks, newX, newY, Island.cellSize / 2);
+          this.peaks.fill(
+            makeBrighterColor(Island.tilesColors.peaks, colorModifier),
+          );
         }
       }
     }

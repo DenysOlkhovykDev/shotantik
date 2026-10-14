@@ -3,6 +3,13 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Organic extends Resource {
+  static params = {
+    size: 10,
+    strokeWidth: 3,
+    strokeColor: "#000000",
+    baseCOlor: "#49c461",
+  };
+
   protected draw() {
     this.createBaseTexture();
 
@@ -16,9 +23,17 @@ export class Organic extends Resource {
     const baseGraphics = new Graphics();
 
     baseGraphics
-      .rect(-5, -5, 10, 10)
-      .stroke({ width: 3, color: "#000000" })
-      .fill("#49c461");
+      .rect(
+        -Organic.params.size / 2,
+        -Organic.params.size / 2,
+        Organic.params.size,
+        Organic.params.size,
+      )
+      .stroke({
+        width: Organic.params.strokeWidth,
+        color: Organic.params.strokeColor,
+      })
+      .fill(Organic.params.baseCOlor);
 
     Organic.baseTexture = generateTextureFromOrigin(baseGraphics);
   }

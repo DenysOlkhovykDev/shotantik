@@ -5,8 +5,23 @@ class Joystick extends Container {
   private base: Graphics;
   private thumb: Graphics;
 
-  private radius = 60;
-  private thumbRadius = 25;
+  static baseParams = {
+    radius: 60,
+
+    strokeWidth: 3,
+    strokeColor: "#000000",
+  };
+
+  static thumbParams = {
+    radius: 25,
+
+    baseColor: "#444444",
+
+    strokeWidth: 3,
+    strokeColor: "#000000",
+
+    alpha: 0.8,
+  };
 
   private dragging = false;
 
@@ -21,16 +36,22 @@ class Joystick extends Container {
     this.position.set(getJoyStickPosition().x, getJoyStickPosition().y);
 
     this.base = new Graphics()
-      .circle(0, 0, this.radius)
-      .fill({ color: "#ffffff", alpha: 0 })
-      .stroke({ width: 3, color: "#000000" });
+      .circle(0, 0, Joystick.baseParams.radius)
+      .fill({ alpha: 0 })
+      .stroke({
+        width: Joystick.baseParams.strokeWidth,
+        color: Joystick.baseParams.strokeColor,
+      });
 
     this.thumb = new Graphics()
-      .circle(0, 0, this.thumbRadius)
-      .fill({ color: "#444444", alpha: 1 })
-      .stroke({ width: 3, color: "#000000" });
+      .circle(0, 0, Joystick.thumbParams.radius)
+      .fill({ color: Joystick.thumbParams.baseColor, alpha: 1 })
+      .stroke({
+        width: Joystick.thumbParams.strokeWidth,
+        color: Joystick.thumbParams.strokeColor,
+      });
 
-    this.thumb.alpha = 0.8;
+    this.thumb.alpha = Joystick.thumbParams.alpha;
 
     this.addChild(this.base, this.thumb);
 
@@ -67,17 +88,17 @@ class Joystick extends Container {
 
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (distance > this.radius) {
+    if (distance > Joystick.baseParams.radius) {
       const angle = Math.atan2(dy, dx);
 
-      dx = Math.cos(angle) * this.radius;
-      dy = Math.sin(angle) * this.radius;
+      dx = Math.cos(angle) * Joystick.baseParams.radius;
+      dy = Math.sin(angle) * Joystick.baseParams.radius;
     }
 
     this.thumb.position.set(dx, dy);
 
-    this.inputX = dx / this.radius;
-    this.inputY = dy / this.radius;
+    this.inputX = dx / Joystick.baseParams.radius;
+    this.inputY = dy / Joystick.baseParams.radius;
 
     event.stopPropagation();
   };
@@ -85,7 +106,7 @@ class Joystick extends Container {
   private onUp = () => {
     this.dragging = false;
 
-    this.thumb.alpha = 0.8;
+    this.thumb.alpha = Joystick.thumbParams.alpha;
 
     this.thumb.position.set(0, 0);
 
@@ -104,7 +125,7 @@ class Joystick extends Container {
 
   reset() {
     this.dragging = false;
-    this.thumb.alpha = 0.8;
+    this.thumb.alpha = Joystick.thumbParams.alpha;
     this.thumb.position.set(0, 0);
     this.inputX = 0;
     this.inputY = 0;

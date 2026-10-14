@@ -8,81 +8,71 @@ import {
 } from "@aircraft/building-parts/recipe-sign";
 import { getConstructionMenuPosition } from "@utils/ui-config";
 import { Road } from "@roads/road";
-
-export interface MenuItem {
-  label: string;
-  color: string;
-}
-
-export const menuItems: MenuItem[] = [
-  {
-    label: "Collector",
-    color: "#a8d0db",
-  },
-  {
-    label: "Farm",
-    color: "#bad895",
-  },
-  {
-    label: "Extractor",
-    color: "#dba8a8",
-  },
-  {
-    label: "Assembler",
-    color: "#d6de90",
-  },
-  {
-    label: "Mixer",
-    color: "#caa5c3",
-  },
-  {
-    label: "Grinder",
-    color: "#b7ded3",
-  },
-  {
-    label: "Platform",
-    color: "#acacac",
-  },
-  {
-    label: "Engine",
-    color: "#a8b1db",
-  },
-  {
-    label: "Road",
-    color: "#dbcaa8",
-  },
-];
+import { menuItems, type MenuItem } from "@utils/menu-items";
 
 export class ConstructionMenu extends Container {
+  public menuItems: MenuItem[] = menuItems.filter((item) =>
+    [
+      "Collector",
+      "Farm",
+      "Extractor",
+      "Assembler",
+      "Mixer",
+      "Grinder",
+      "Platform",
+      "Engine",
+      "Road",
+    ].includes(item.label),
+  );
+
   private menuBackground = new Graphics();
   private menuItemsContainers: Container[] = [];
 
-  private columnWidth = 120;
-  private rowHeight = 120;
-  private gap = 10;
-  private borderRadius = 26;
+  private static params = {
+    columnWidth: 120,
+    rowHeight: 120,
+    gap: 10,
+    borderRadius: 26,
 
-  private columns = 3;
-  private rows = Math.ceil(menuItems.length / this.columns);
+    backgroundColor: "#cfcbc8",
+
+    buildingLabelY: 18,
+  };
 
   private centerBottom = {
     x: getConstructionMenuPosition().x,
     y: getConstructionMenuPosition().y,
   };
 
-  private menuWidth =
-    this.columns * this.columnWidth +
-    (this.columns - 1) * this.gap +
-    2 * this.gap;
-  private menuHeight =
-    this.rows * this.rowHeight + (this.rows - 1) * this.gap + 2 * this.gap;
+  private rows!: number;
+  private columns = 3;
+
+  private menuWidth!: number;
+  private menuHeight!: number;
 
   constructor(private setBuildingType: (type: string | undefined) => void) {
     super();
 
+    this.createMenu();
+  }
+
+  public createMenu() {
+    this.rows = Math.ceil(this.menuItems.length / this.columns);
+
+    this.menuWidth =
+      this.columns * ConstructionMenu.params.columnWidth +
+      (this.columns - 1) * ConstructionMenu.params.gap +
+      2 * ConstructionMenu.params.gap;
+
+    this.menuHeight =
+      this.rows * ConstructionMenu.params.rowHeight +
+      (this.rows - 1) * ConstructionMenu.params.gap +
+      2 * ConstructionMenu.params.gap;
+
     this.draw();
 
-    this.x = this.centerBottom.x - this.menuWidth / 2 + this.gap;
+    this.x =
+      this.centerBottom.x - this.menuWidth / 2 + ConstructionMenu.params.gap;
     this.y = this.centerBottom.y - this.menuHeight;
   }
 
@@ -95,24 +85,27 @@ export class ConstructionMenu extends Container {
   private makeMenuBackground() {
     this.menuBackground
       .roundRect(
-        -this.gap,
-        -this.gap,
+        -ConstructionMenu.params.gap,
+        -ConstructionMenu.params.gap,
         this.menuWidth,
         this.menuHeight,
-        this.borderRadius,
+        ConstructionMenu.params.borderRadius,
       )
-      .fill("#cfcbc8");
+      .fill(ConstructionMenu.params.backgroundColor);
 
     this.addChild(this.menuBackground);
   }
 
   private makeMenuItems() {
-    menuItems.forEach((item, index) => {
+    this.menuItems.forEach((item, index) => {
       const column = index % this.columns;
       const row = Math.floor(index / this.columns);
 
-      const x = column * (this.columnWidth + this.gap);
-      const y = row * (this.rowHeight + this.gap);
+      const x =
+        column *
+        (ConstructionMenu.params.columnWidth + ConstructionMenu.params.gap);
+      const y =
+        row * (ConstructionMenu.params.rowHeight + ConstructionMenu.params.gap);
 
       this.menuItemsContainers[index] = new Container();
 
@@ -145,9 +138,9 @@ export class ConstructionMenu extends Container {
       .roundRect(
         0,
         0,
-        this.columnWidth,
-        this.rowHeight,
-        this.borderRadius - this.gap,
+        ConstructionMenu.params.columnWidth,
+        ConstructionMenu.params.rowHeight,
+        ConstructionMenu.params.borderRadius - ConstructionMenu.params.gap,
       )
       .fill(backgroundColor);
 
@@ -171,15 +164,18 @@ export class ConstructionMenu extends Container {
 
     text.anchor.set(0.5);
 
-    text.x = this.columnWidth / 2;
-    text.y = 18;
+    text.x = ConstructionMenu.params.columnWidth / 2;
+    text.y = ConstructionMenu.params.buildingLabelY;
 
     text.eventMode = "none";
     container.addChild(text);
   }
 
   private createRoadImage(container: Container) {
-    const root = Road.crateRoadImage(this.columnWidth, this.rowHeight);
+    const root = Road.crateRoadImage(
+      ConstructionMenu.params.columnWidth,
+      ConstructionMenu.params.rowHeight,
+    );
 
     root.scale = 0.5;
     root.eventMode = "none";
@@ -195,8 +191,8 @@ export class ConstructionMenu extends Container {
     const BuildingClass = buildingMap[buildingName] || Platform;
 
     const building = new BuildingClass(
-      this.columnWidth / 2,
-      this.rowHeight / 2,
+      ConstructionMenu.params.columnWidth / 2,
+      ConstructionMenu.params.rowHeight / 2,
       true,
     );
 
@@ -215,8 +211,8 @@ export class ConstructionMenu extends Container {
       building.showRecipeInfo();
 
       building.recipeSign.position.set(
-        this.columnWidth / 2,
-        this.rowHeight - 18,
+        ConstructionMenu.params.columnWidth / 2,
+        ConstructionMenu.params.rowHeight - 18,
       );
 
       container.addChild(building.recipeSign);
@@ -237,7 +233,10 @@ export class ConstructionMenu extends Container {
       },
       { layout: "vertical" },
     );
-    recipeSign.position.set(this.columnWidth - 31, this.rowHeight - 90);
+    recipeSign.position.set(
+      ConstructionMenu.params.columnWidth - 31,
+      ConstructionMenu.params.rowHeight - 90,
+    );
 
     container.addChild(recipeSign);
   }

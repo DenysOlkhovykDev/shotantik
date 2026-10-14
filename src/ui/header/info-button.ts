@@ -11,28 +11,35 @@ export class InfoButton extends Container {
   });
   private background = new Graphics();
 
-  private infoBoard = new Text({
-    text: `Information
-will be added
-later`,
-    style: new TextStyle({
-      fill: "#000000",
-      fontSize: 28,
-    }),
-  });
-  private infoBoardBackground = new Graphics();
+  static backgroundParams = {
+    width: 40,
+    height: 40,
+  };
 
-  constructor() {
+  static symbolPosition = {
+    x: 9,
+    y: 2,
+  };
+
+  constructor(
+    private showInfoBoard: () => void,
+    private hideInfoBoard: () => void,
+  ) {
     super();
 
     this.createBackground();
     this.createSymbol();
-
-    this.createInfoBoard();
   }
 
   private createBackground() {
-    this.background.rect(-40, 40, 40, 40).fill({ color: "#ffffff", alpha: 0 });
+    this.background
+      .rect(
+        0,
+        0,
+        InfoButton.backgroundParams.width,
+        InfoButton.backgroundParams.height,
+      )
+      .fill({ alpha: 0 });
 
     this.background.eventMode = "static";
 
@@ -45,43 +52,13 @@ later`,
   }
 
   private createSymbol() {
-    this.symbol.eventMode = "static";
-    this.symbol.position.set(-30, 42);
-
-    this.symbol.on("pointerdown", (e) => {
-      e.stopPropagation();
-      this.showInfoBoard();
-    });
+    this.symbol.eventMode = "none";
+    this.symbol.position.set(
+      InfoButton.symbolPosition.x,
+      InfoButton.symbolPosition.y,
+    );
 
     this.addChild(this.symbol);
-  }
-
-  private createInfoBoard() {
-    this.infoBoardBackground
-      .roundRect(-100, 40, 200, 100, 20)
-      .fill("#cfcbc8")
-      .stroke({
-        width: 4,
-        color: "#000000",
-      });
-
-    this.infoBoardBackground.eventMode = "none";
-    this.addChild(this.infoBoardBackground);
-
-    this.infoBoard.position.set(-90, 40);
-    this.addChild(this.infoBoard);
-
-    this.hideInfoBoard();
-  }
-
-  private showInfoBoard() {
-    this.infoBoardBackground.visible = true;
-    this.infoBoard.visible = true;
-  }
-
-  private hideInfoBoard() {
-    this.infoBoardBackground.visible = false;
-    this.infoBoard.visible = false;
   }
 
   public showButton() {
