@@ -33,7 +33,7 @@ export class Battery extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Battery.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

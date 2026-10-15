@@ -172,15 +172,15 @@ export class ConstructionMenu extends Container {
   }
 
   private createRoadImage(container: Container) {
-    const root = Road.crateRoadImage(
+    const road = Road.crateRoadImage(
       ConstructionMenu.params.columnWidth,
       ConstructionMenu.params.rowHeight,
     );
 
-    root.scale = 0.5;
-    root.eventMode = "none";
+    road.scale = 0.5;
+    road.eventMode = "none";
 
-    container.addChild(root);
+    container.addChild(road);
 
     const constructionRecipe = [{ resourceName: "Metal", amount: 1 }];
 
@@ -196,11 +196,11 @@ export class ConstructionMenu extends Container {
       true,
     );
 
-    building.root.scale = 0.5;
-    building.root.eventMode = "none";
+    building.scale = 0.5;
+    building.eventMode = "none";
     building.contentContainer.filters = [];
 
-    container.addChild(building.root);
+    container.addChild(building);
 
     this.createBuildingRecipe(building.constructionRecipe, container);
     this.createCraftRecipe(building, container);

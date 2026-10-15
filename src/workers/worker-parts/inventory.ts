@@ -11,15 +11,15 @@ export class Inventory extends Container {
   public storeResource(resource: Resource) {
     this.storage = resource;
 
-    this.addChild(this.storage.root);
+    this.addChild(this.storage);
 
-    this.storage.root.x = 0;
-    this.storage.root.y = 16;
+    this.storage.x = 0;
+    this.storage.y = 16;
   }
 
   public removeResource() {
     if (this.storage) {
-      this.removeChild(this.storage.root);
+      this.removeChild(this.storage);
     }
   }
 }

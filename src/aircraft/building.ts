@@ -46,15 +46,12 @@ export interface BuildingConfig {
   maxRoadLength: number;
 }
 
-export abstract class Building {
-  // root
+export abstract class Building extends Container {
   // ├── recipeSign
   // ├── DEBUGTaskDisplay
   // └── buildingContainer
   //     ├── contentContainer
   //     └── resourceStorage
-
-  root: Container = new Container();
 
   buildingContainer: Container;
 
@@ -93,11 +90,13 @@ export abstract class Building {
   }
 
   constructor(
-    public x: number,
-    public y: number,
+    public positionX: number,
+    public positionY: number,
     public buildingType: string,
     public isDecorative: boolean,
   ) {
+    super();
+
     this.initEvents();
 
     this.buildingContainer = new Container();
@@ -111,15 +110,15 @@ export abstract class Building {
     );
     this.taskManager = new TaskManager(this);
 
-    this.root.x = this.x;
-    this.root.y = this.y;
+    this.x = this.positionX;
+    this.y = this.positionY;
 
-    this.root.addChild(this.recipeSign);
-    this.root.addChild(this.DEBUGTaskDisplay);
+    this.addChild(this.recipeSign);
+    this.addChild(this.DEBUGTaskDisplay);
     this.buildingContainer.addChild(this.shadowFilter);
     this.buildingContainer.addChild(this.contentContainer);
     this.buildingContainer.addChild(this.resourceStorage);
-    this.root.addChild(this.buildingContainer);
+    this.addChild(this.buildingContainer);
 
     this.geometry.applyGeometryTransform();
   }
@@ -129,8 +128,8 @@ export abstract class Building {
   public abstract animation(delta: number, movingAngle?: number): void;
 
   protected initEvents() {
-    this.root.eventMode = "static";
-    this.root.on("pointerdown", (event: FederatedPointerEvent) =>
+    this.eventMode = "static";
+    this.on("pointerdown", (event: FederatedPointerEvent) =>
       this.onClick(event),
     );
   }

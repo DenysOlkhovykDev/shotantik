@@ -226,15 +226,15 @@ export class ResearchMenu extends Container {
   }
 
   private createRoadImage(container: Container) {
-    const root = Road.crateRoadImage(
+    const road = Road.crateRoadImage(
       ResearchMenu.params.rowHeight,
       ResearchMenu.params.rowHeight,
     );
 
-    root.scale = 0.5;
-    root.eventMode = "none";
+    road.scale = 0.5;
+    road.eventMode = "none";
 
-    container.addChild(root);
+    container.addChild(road);
   }
 
   private createBuildingImage(buildingName: string, container: Container) {
@@ -246,11 +246,11 @@ export class ResearchMenu extends Container {
       true,
     );
 
-    building.root.scale = 0.5;
-    building.root.eventMode = "none";
+    building.scale = 0.5;
+    building.eventMode = "none";
     building.contentContainer.filters = [];
 
-    container.addChild(building.root);
+    container.addChild(building);
   }
 
   private createUpgradeButton(container: Container, item: ResearchMenuItem) {

@@ -21,7 +21,7 @@ export class Gum extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Gum.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

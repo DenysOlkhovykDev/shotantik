@@ -40,25 +40,25 @@ export class ResourceStorage extends Container {
       const isValid = this.recources.every((other) => {
         if (other === resource) return true;
 
-        const dx = other.root.x - x;
-        const dy = other.root.y - y;
+        const dx = other.x - x;
+        const dy = other.y - y;
 
         return Math.sqrt(dx * dx + dy * dy) > minDist;
       });
 
       if (isValid) {
-        resource.root.x = x;
-        resource.root.y = y;
-        resource.root.rotation = Math.random() * Math.PI * 2;
+        resource.x = x;
+        resource.y = y;
+        resource.rotation = Math.random() * Math.PI * 2;
         return;
       }
 
       tries++;
     }
 
-    resource.root.x = 0;
-    resource.root.y = 0;
-    resource.root.rotation = Math.random() * Math.PI * 2;
+    resource.x = 0;
+    resource.y = 0;
+    resource.rotation = Math.random() * Math.PI * 2;
   }
 
   unsubscribeResourceListners(fn: ResourceListener) {
@@ -76,7 +76,7 @@ export class ResourceStorage extends Container {
     if (this.recources.length >= this.inventorySize) return false;
 
     this.recources.push(resource);
-    this.addChild(resource.root);
+    this.addChild(resource);
 
     const resourceName = resource.resourceType;
     const current = this.resourceList.get(resourceName) ?? 0;
@@ -112,7 +112,7 @@ export class ResourceStorage extends Container {
 
     const [resource] = this.recources.splice(resourceIndex, 1);
 
-    this.removeChild(resource.root);
+    this.removeChild(resource);
 
     return resource;
   }

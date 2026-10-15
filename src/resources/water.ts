@@ -18,7 +18,7 @@ export class Water extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Water.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

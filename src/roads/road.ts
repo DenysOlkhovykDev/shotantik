@@ -57,20 +57,20 @@ export class Road {
   }
 
   static crateRoadImage(x: number, y: number) {
-    const root = new Graphics();
+    const graphic = new Graphics();
     const startX = x + Road.icon.width / 2;
     const startY = y - Road.icon.width / 2;
     const finishX = x - Road.icon.height / 2;
     const finishY = y + Road.icon.height / 2;
 
-    root
+    graphic
       .moveTo(startX, startY)
       .lineTo(finishX, finishY)
       .stroke({ width: Road.icon.strokeWidth, color: Road.icon.color });
 
-    root.circle(startX, startY, Road.icon.radius).fill(Road.icon.color);
-    root.circle(finishX, finishY, Road.icon.radius).fill(Road.icon.color);
+    graphic.circle(startX, startY, Road.icon.radius).fill(Road.icon.color);
+    graphic.circle(finishX, finishY, Road.icon.radius).fill(Road.icon.color);
 
-    return root;
+    return graphic;
   }
 }

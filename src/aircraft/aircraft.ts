@@ -96,7 +96,7 @@ class Aircraft {
     }
 
     this.buildings.push(building);
-    this.airCraftLayer.addChild(building.root);
+    this.airCraftLayer.addChild(building);
 
     const from =
       this.buildings.length > 0 && this.constructionSource !== undefined
@@ -142,7 +142,7 @@ class Aircraft {
     const blueprint = new Blueprint(x, y, BuildingClass, buildingType);
 
     this.blueprints.push(blueprint);
-    this.airCraftLayer.addChild(blueprint.root);
+    this.airCraftLayer.addChild(blueprint);
 
     const from =
       this.buildings.length > 0 && this.constructionSource !== undefined
@@ -397,7 +397,7 @@ class Aircraft {
     for (const road of blueprint.roads) {
       road.graphic.destroy();
     }
-    blueprint.root.destroy();
+    blueprint.destroy();
 
     this.blueprints.splice(index, 1);
 
@@ -465,7 +465,7 @@ class Aircraft {
 
     joystick.hide();
 
-    building.root.destroy();
+    building.destroy();
     this.buildings.splice(index, 1);
 
     if (this.constructionSource === index) {
