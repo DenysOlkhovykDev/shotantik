@@ -24,6 +24,11 @@ import { differentAngles } from "@test-scenarios/different-angles";
 import { engineGases } from "@test-scenarios/engine-gases";
 import { interfacePause } from "@test-scenarios/interface-pause";
 import { interfaceSpeed } from "@test-scenarios/interface-speed";
+import { manyBuildersOnDifferentTasks } from "@test-scenarios/many-builders-on-different-tasks";
+import { manyBuildersOnSameTask } from "@test-scenarios/many-builders-on-same-task";
+import { manyDeliverersOnDifferentTasks } from "@test-scenarios/many-deliverers-on-different-tasks";
+import { manyDeliverersOnSameTask } from "@test-scenarios/many-deliverers-on-same-task";
+import { manyProducersOnDifferentTasks } from "@test-scenarios/many-producers-on-different-tasks";
 import { movingBlueprints } from "@test-scenarios/moving-blueprints";
 import { movingResources } from "@test-scenarios/moving-resources";
 import { multipleConstructionOfBuildings } from "@test-scenarios/multiple-construction-of-buildings";
@@ -132,6 +137,11 @@ const scenarios: Record<string, Scenario> = {
   "engine-gases": engineGases,
   "interface-pause": interfacePause,
   "interface-speed": interfaceSpeed,
+  "many-builders-on-different-tasks": manyBuildersOnDifferentTasks,
+  "many-builders-on-same-task": manyBuildersOnSameTask,
+  "many-deliverers-on-different-tasks": manyDeliverersOnDifferentTasks,
+  "many-deliverers-on-same-task": manyDeliverersOnSameTask,
+  "many-producers-on-different-tasks": manyProducersOnDifferentTasks,
   "moving-blueprints": movingBlueprints,
   "moving-resources": movingResources,
   "multiple-construction-of-buildings": multipleConstructionOfBuildings,
