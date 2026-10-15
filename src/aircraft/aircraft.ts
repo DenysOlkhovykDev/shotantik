@@ -30,6 +30,7 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { onGroundObjects } from "../on-ground/objects";
 import { header } from "../ui/header/manager";
+import { getGameScreenCenter } from "@utils/ui-config";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -83,6 +84,16 @@ class Aircraft {
     if (import.meta.env.VITE_IS_DEBUG === "true") {
       this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
     }
+
+    this.airCraftLayer.position.set(
+      getGameScreenCenter().x,
+      getGameScreenCenter().y,
+    );
+    this.workersLayer.position.set(
+      getGameScreenCenter().x,
+      getGameScreenCenter().y,
+    );
+
     stage.addChild(this.airCraftLayer);
     stage.addChild(this.workersLayer);
   }
@@ -110,10 +121,10 @@ class Aircraft {
 
     for (let i = 0; i < this.buildings.length; i++) {
       const radiusByX =
-        Math.abs(this.buildings[i].x - 360) +
+        Math.abs(this.buildings[i].x) +
         this.buildings[i].buildingConfig.boundsRadius;
       const radiusByY =
-        Math.abs(this.buildings[i].y - 640) +
+        Math.abs(this.buildings[i].y) +
         this.buildings[i].buildingConfig.boundsRadius;
 
       const maxDistanceFromCenter =
@@ -121,10 +132,10 @@ class Aircraft {
 
       if (maxDistanceFromCenter > this.boundsRadius) {
         this.boundsRadius = maxDistanceFromCenter;
-        if (import.meta.env.VITE_IS_DEBUG === "true") {
+        if (import.meta.env.VITE_IS_DEBUG === "false") {
           this.DEBUGBoundsRadius.clear();
 
-          this.DEBUGBoundsRadius.circle(360, 640, this.boundsRadius).stroke({
+          this.DEBUGBoundsRadius.circle(0, 0, this.boundsRadius).stroke({
             width: 4,
             color: "#ff0000",
           });

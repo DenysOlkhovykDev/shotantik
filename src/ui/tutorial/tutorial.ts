@@ -2,6 +2,7 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 
 import { gameScreen } from "@utils/game-config";
 import { joystick } from "@joystick/joystick";
+import { getGameScreenCenter } from "@utils/ui-config";
 
 export class Tutorial extends Container {
   private isActive = true;
@@ -253,8 +254,8 @@ export class Tutorial extends Container {
     if (this.findTarget !== undefined && this.isActive) {
       const { x, y } = this.findTarget();
 
-      this.pointerX = x;
-      this.pointerY = y;
+      this.pointerX = x + getGameScreenCenter().x;
+      this.pointerY = y + getGameScreenCenter().y;
 
       this.draw();
     }

@@ -31,12 +31,12 @@ import {
 export const defaultScenario: Scenario = {
   aircraft: {
     buildings: [
-      { from: "", id: "p0", type: "Platform", x: 360, y: 640 },
-      { from: "p0", id: "collector", type: "Collector", x: 260, y: 590 },
-      { from: "p0", id: "extractor", type: "Extractor", x: 460, y: 590 },
-      { from: "p0", id: "farm", type: "Farm", x: 360, y: 540 },
-      { from: "p0", id: "p1", type: "Platform", x: 360, y: 740 },
-      { from: "p1", id: "p2", type: "Platform", x: 360, y: 840 },
+      { from: "", id: "p0", type: "Platform", x: 0, y: 0 },
+      { from: "p0", id: "collector", type: "Collector", x: -100, y: -50 },
+      { from: "p0", id: "extractor", type: "Extractor", x: 100, y: -50 },
+      { from: "p0", id: "farm", type: "Farm", x: 0, y: -100 },
+      { from: "p0", id: "p1", type: "Platform", x: 0, y: 100 },
+      { from: "p1", id: "p2", type: "Platform", x: 0, y: 200 },
     ],
     workers: [
       { buildingId: "p0", profession: "building" },
@@ -46,8 +46,8 @@ export const defaultScenario: Scenario = {
     buildingTasks: [
       {
         from: "p2",
-        x: 360,
-        y: 940,
+        x: 0,
+        y: 300,
         buildingType: "Engine",
       },
     ],
@@ -149,7 +149,8 @@ modules`,
         showCondition: () => hasClickedOnResearcher(),
         hideCondition: () => hasClickedOnUpgradeEngineButton(),
         needOkButton: false,
-        findTarget: () => getPositionOfEngineUpgradeButton(),
+        x: getPositionOfEngineUpgradeButton().x,
+        y: getPositionOfEngineUpgradeButton().y,
       },
       {
         text: `The bar
@@ -158,7 +159,8 @@ to the next point`,
         showCondition: () => hasClickedOnUpgradeEngineButton(),
         hideCondition: () => hasClosedResearchMenu(),
         needOkButton: true,
-        findTarget: () => getPositionOfResearchingProgressBar(),
+        x: getPositionOfResearchingProgressBar().x,
+        y: getPositionOfResearchingProgressBar().y,
       },
       {
         text: `You are free now!

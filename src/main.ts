@@ -19,6 +19,7 @@ import {
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
 import { BackgroundTile } from "./backround/tile";
+import { getGameScreenCenter } from "@utils/ui-config";
 
 export const app = new Application();
 
@@ -90,7 +91,11 @@ app.stage.on("pointerdown", (event) => {
     if (buildingType !== undefined) {
       const { x, y } = event.global;
 
-      aircraft.addBlueprint(x, y, buildingType);
+      aircraft.addBlueprint(
+        x - getGameScreenCenter().x,
+        y - getGameScreenCenter().y,
+        buildingType,
+      );
       constructionManager.setBuildingType(undefined);
     }
 

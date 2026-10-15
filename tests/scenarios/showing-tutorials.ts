@@ -6,12 +6,12 @@ import {
 
 export const showingTutorials: Scenario = {
   aircraft: {
-    buildings: [{ from: "", id: "p0", type: "Platform", x: 360, y: 600 }],
+    buildings: [{ from: "", id: "p0", type: "Platform", x: 0, y: 0 }],
     buildingTasks: [
       {
         from: "p0",
-        x: 360,
-        y: 450,
+        x: 0,
+        y: -150,
         buildingType: "Platform",
       },
     ],
