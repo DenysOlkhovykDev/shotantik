@@ -2,7 +2,7 @@ import { Container, Graphics } from "pixi.js";
 import { getConstructionButtonPosition } from "@utils/ui-config";
 
 export class ConstructionButton extends Container {
-  static plus = {
+  private static plus = {
     size: 50,
 
     strokeWidth: 20,
@@ -12,9 +12,9 @@ export class ConstructionButton extends Container {
     baseColor: "#00ff60",
   };
 
-  graphic = new Graphics();
+  private graphic = new Graphics();
 
-  public buttonPosition = {
+  private buttonPosition = {
     x: getConstructionButtonPosition().x,
     y: getConstructionButtonPosition().y,
   };

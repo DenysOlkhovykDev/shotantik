@@ -2,7 +2,7 @@ import { Graphics } from "pixi.js";
 import { type Building } from "@aircraft/building";
 
 export class Road {
-  static params = {
+  private static params = {
     strokeWidth: 10,
     strokeColor: "#000000",
 
@@ -10,7 +10,7 @@ export class Road {
     baseColor: "#737675",
   };
 
-  static icon = {
+  private static icon = {
     width: 60,
     height: 60,
     radius: 10,

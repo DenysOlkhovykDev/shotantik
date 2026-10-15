@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin, makeGear } from "@utils/basic-graphic";
 
 export class Gear extends Resource {
-  static params = {
+  private static params = {
     amounthOfTeeth: 6,
     innerRadius: 4.5,
     outerRadius: 7,

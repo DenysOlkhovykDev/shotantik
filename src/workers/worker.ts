@@ -7,13 +7,13 @@ import { TaskManager } from "./worker-parts/task-manager";
 import { Navigator } from "./worker-parts/navigator";
 
 export class Worker extends Container {
-  body: Graphics = new Graphics();
+  private body: Graphics = new Graphics();
 
-  mainColor = "#000000";
+  private mainColor = "#000000";
 
-  inventory: Inventory = new Inventory();
-  legs: LegCoordinator = new LegCoordinator();
-  tasks: TaskManager;
+  private inventory: Inventory = new Inventory();
+  private legs: LegCoordinator = new LegCoordinator();
+  private tasks: TaskManager;
   navigator: Navigator;
 
   constructor(

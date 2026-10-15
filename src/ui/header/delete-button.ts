@@ -5,12 +5,12 @@ export class DeleteButton extends Container {
   private symbol = new Graphics();
   private background = new Graphics();
 
-  static backgroundParams = {
+  private static backgroundParams = {
     width: 40,
     height: 40,
   };
 
-  static trashBin = {
+  private static trashBin = {
     strokeWidth: 4,
     strokeColor: "#ff0000",
   };

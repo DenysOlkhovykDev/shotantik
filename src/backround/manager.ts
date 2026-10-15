@@ -2,17 +2,17 @@ import { Container } from "pixi.js";
 import { BackgroundTile } from "./tile";
 
 export class BackgroundManager extends Container {
-  backgroundTiles = new Map<string, BackgroundTile>();
+  private backgroundTiles = new Map<string, BackgroundTile>();
 
-  renderDistance = 2;
+  private renderDistance = 2;
 
-  seed: number;
+  private seed: number;
 
-  chunkWidth = 640;
-  chunkHeight = 544;
+  private chunkWidth = 640;
+  private chunkHeight = 544;
 
-  chunksToCreate: [number, number, string][] = [];
-  pendingChunks = new Set<string>();
+  private chunksToCreate: [number, number, string][] = [];
+  private pendingChunks = new Set<string>();
 
   constructor() {
     super();

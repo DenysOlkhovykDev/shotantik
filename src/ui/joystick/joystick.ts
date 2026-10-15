@@ -5,14 +5,14 @@ class Joystick extends Container {
   private base: Graphics;
   private thumb: Graphics;
 
-  static baseParams = {
+  private static baseParams = {
     radius: 60,
 
     strokeWidth: 3,
     strokeColor: "#000000",
   };
 
-  static thumbParams = {
+  private static thumbParams = {
     radius: 25,
 
     baseColor: "#444444",

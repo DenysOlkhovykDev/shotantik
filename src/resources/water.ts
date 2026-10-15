@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Water extends Resource {
-  static params = {
+  private static params = {
     x: 0,
     y: 0,
     radius: 5,

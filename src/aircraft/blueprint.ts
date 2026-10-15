@@ -7,7 +7,7 @@ import { type Task, TaskStatus } from "@dashboard/task";
 import { type RecipeIngredient } from "./building-parts/recipe-sign";
 
 export class Blueprint extends Building {
-  static readonly blueprintConfig: BuildingConfig = {
+  private static readonly blueprintConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 0,
 
@@ -31,7 +31,7 @@ export class Blueprint extends Building {
   buildResources: string[] = [];
   reservedBuildResources: Resource[] = [];
 
-  DEBUGCollisionDisplay = new Text({
+  private DEBUGCollisionDisplay = new Text({
     text: "",
     style: {
       fill: "#000000",

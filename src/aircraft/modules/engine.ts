@@ -41,7 +41,7 @@ export class Engine extends Building {
 
   static speedModifier = 1;
 
-  static propellerParams = {
+  private static propellerParams = {
     amount: 3,
     size: 7,
     strokeColor: "#000000",
@@ -49,7 +49,7 @@ export class Engine extends Building {
     rotationSpeed: 0.035,
   };
 
-  static decoPropellerParams = {
+  private static decoPropellerParams = {
     amount: 3,
     tracesWidth: 1.6,
     traceRadiuses: [
@@ -60,7 +60,7 @@ export class Engine extends Building {
     color: "#a7a7a7",
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#c9c9c9",
   };
 
@@ -69,23 +69,23 @@ export class Engine extends Building {
   // ├── propellerGraphics
   // ├── baseGraphics
 
-  propellerGraphics: Graphics = new Graphics();
+  private propellerGraphics: Graphics = new Graphics();
 
-  particles: Particle[] = [];
-  particlesColor = "#000000";
-  amountOfParticles = 4;
+  private particles: Particle[] = [];
+  private particlesColor = "#000000";
+  private amountOfParticles = 4;
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Engine", isDecorative);
     this.draw();
   }
 
-  onClick(event: FederatedPointerEvent) {
+  protected onClick(event: FederatedPointerEvent) {
     super.onClick(event);
     joystick.show();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createPropellerBlades();

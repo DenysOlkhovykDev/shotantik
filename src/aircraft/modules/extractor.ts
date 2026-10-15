@@ -33,20 +33,20 @@ export class Extractor extends Building {
     duration: 60,
   };
 
-  static antennasParams = {
+  private static antennasParams = {
     amount: 4,
     angleOffset: Math.PI / 4,
     color: "#000000",
   };
 
-  static spikeParams = {
+  private static spikeParams = {
     amount: 4,
     shape: new Triangle(-10, 0, 6, 10, 6, -10),
     color: "#b06667",
     stroke: "#000000",
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#b06667",
     ringColor: "#965859",
     centerColor: "#c08484",
@@ -56,9 +56,9 @@ export class Extractor extends Building {
   // ├── antennasGraphics
   // ├── baseGraphics
 
-  antennasGraphics: Graphics[] = [];
+  private antennasGraphics: Graphics[] = [];
 
-  antennasPosition = {
+  private antennasPosition = {
     offsetFromCenter: 0,
     movingDirection: 1,
   };
@@ -71,7 +71,7 @@ export class Extractor extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.makeAntennas();

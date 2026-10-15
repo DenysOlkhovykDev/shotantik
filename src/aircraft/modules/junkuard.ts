@@ -35,7 +35,7 @@ export class Junkuard extends Building {
     { resourceName: "Water", amount: 2 },
   ];
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#cac8a5",
   };
 
@@ -43,16 +43,16 @@ export class Junkuard extends Building {
   // ├── particles
   // ├── baseGraphics
 
-  particles: Particle[] = [];
-  particlesColor = "#000000";
-  amountOfParticles = 4;
+  private particles: Particle[] = [];
+  private particlesColor = "#000000";
+  private amountOfParticles = 4;
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Junkuard", isDecorative);
     this.draw();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();

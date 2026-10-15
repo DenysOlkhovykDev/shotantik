@@ -6,11 +6,11 @@ import { header } from "../header/manager";
 import { type MenuItem } from "@utils/menu-items";
 
 export class ConstructionManager extends Container {
-  button: ConstructionButton | undefined = undefined;
-  menu: ConstructionMenu | undefined = undefined;
-  display: ConstructionDisplay | undefined = undefined;
+  private button: ConstructionButton | undefined = undefined;
+  private menu: ConstructionMenu | undefined = undefined;
+  private display: ConstructionDisplay | undefined = undefined;
 
-  buildingType: string | undefined = undefined;
+  private buildingType: string | undefined = undefined;
 
   public initialize() {
     this.button = new ConstructionButton();

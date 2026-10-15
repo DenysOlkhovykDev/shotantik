@@ -4,11 +4,11 @@ import { gameScreen } from "@utils/game-config";
 import { joystick } from "@joystick/joystick";
 
 export class Tutorial extends Container {
-  isActive = true;
+  private isActive = true;
 
-  overlay = new Graphics();
+  private overlay = new Graphics();
 
-  static tutorialParams = {
+  private static tutorialParams = {
     holeRadius: 50,
     holeMessageSpacing: 10,
     borderRaius: 20,
@@ -21,9 +21,9 @@ export class Tutorial extends Container {
     threshold: 10,
   };
 
-  messageContainer = new Container();
-  messageBackground = new Graphics();
-  messageText = new Text({
+  private messageContainer = new Container();
+  private messageBackground = new Graphics();
+  private messageText = new Text({
     text: "",
     style: new TextStyle({
       fill: "#000000",
@@ -31,8 +31,8 @@ export class Tutorial extends Container {
     }),
   });
 
-  okButton = new Graphics();
-  okText = new Text({
+  private okButton = new Graphics();
+  private okText = new Text({
     text: "ok",
     style: new TextStyle({
       fill: "#000000",

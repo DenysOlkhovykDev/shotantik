@@ -37,7 +37,7 @@ export class Grinder extends Building {
     duration: 60,
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     teeth: 16,
     innerRadius: Grinder.buildingConfig.baseGraphicalSize,
     outerRadius: Grinder.buildingConfig.baseGraphicalSize + 8,
@@ -49,7 +49,7 @@ export class Grinder extends Building {
     rotationSpeed: 0.005,
   };
 
-  static gearSatelitesParams = {
+  private static gearSatelitesParams = {
     amount: 3,
     teeth: 6,
     innerRadius: 7,
@@ -66,9 +66,9 @@ export class Grinder extends Building {
   // └── buildingBase
   //      ├── baseGraphics
 
-  buildingBase: Container = new Container();
+  private buildingBase: Container = new Container();
 
-  gearSatelites: Graphics[] = [];
+  private gearSatelites: Graphics[] = [];
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Grinder", isDecorative);
@@ -78,7 +78,7 @@ export class Grinder extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createGearSatelites();

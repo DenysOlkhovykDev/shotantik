@@ -2,11 +2,11 @@ import { Container } from "pixi.js";
 import { ResearchMenu } from "./menu";
 
 export class ResearchManager extends Container {
-  menu: ResearchMenu | undefined = undefined;
+  private menu: ResearchMenu | undefined = undefined;
 
-  buildingType: string | undefined = undefined;
+  private buildingType: string | undefined = undefined;
 
-  defaultTimer = 1000;
+  private defaultTimer = 1000;
 
   researchProgress = {
     goal: this.defaultTimer,

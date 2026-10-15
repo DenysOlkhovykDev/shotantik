@@ -12,7 +12,7 @@ later`,
   });
   private background = new Graphics();
 
-  static params = {
+  private static params = {
     padding: 16,
     radius: 26,
   };

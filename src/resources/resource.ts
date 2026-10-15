@@ -1,7 +1,7 @@
 import { Graphics, type Texture, Container } from "pixi.js";
 
 export abstract class Resource extends Container {
-  DEBUGReservationMark: Graphics = new Graphics();
+  private DEBUGReservationMark: Graphics = new Graphics();
 
   private _isReserved = false;
 

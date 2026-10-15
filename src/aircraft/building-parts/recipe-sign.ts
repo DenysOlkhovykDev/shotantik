@@ -19,7 +19,7 @@ export interface RecipeSignOptions {
 }
 
 export class RecipeSign extends Container {
-  static signParams = {
+  private static signParams = {
     backgroundColor: "#c9c6bb",
     strokeWidth: 2,
     strokeColor: "#000000",
@@ -29,11 +29,11 @@ export class RecipeSign extends Container {
     padding: 10,
   };
 
-  static horizontalMode = {
+  private static horizontalMode = {
     height: 20,
   };
 
-  static verticalMode = {
+  private static verticalMode = {
     width: 30,
     textPositionX: 4,
     textPositionY: 2,
@@ -41,7 +41,7 @@ export class RecipeSign extends Container {
     resourcePositionY: 10,
   };
 
-  static arrowParams = {
+  private static arrowParams = {
     x: 0,
     y: 0,
     width: 10,

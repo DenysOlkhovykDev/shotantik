@@ -37,7 +37,7 @@ export class Mixer extends Building {
     duration: 60,
   };
 
-  static satelitesParams = {
+  private static satelitesParams = {
     amount: 8,
     size: 5,
     rotationSpeed: 0.05,
@@ -45,7 +45,7 @@ export class Mixer extends Building {
     stroke: "#000000",
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#cc92c3",
     decorativeCirclesColor: "#b762ac",
     amountOfDecorativeCircles: 6,
@@ -55,7 +55,7 @@ export class Mixer extends Building {
   // ├── satelitesGraphics
   // ├── baseGraphics
 
-  satelitesGraphics: Graphics[] = [];
+  private satelitesGraphics: Graphics[] = [];
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Mixer", isDecorative);
@@ -65,7 +65,7 @@ export class Mixer extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createSatelites();
