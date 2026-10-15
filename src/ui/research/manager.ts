@@ -1,10 +1,9 @@
 import { Container } from "pixi.js";
-import { ResearchMenu } from "./menu";
+
+import { ResearchMenu } from "@research/menu";
 
 export class ResearchManager extends Container {
   private menu: ResearchMenu | undefined = undefined;
-
-  private buildingType: string | undefined = undefined;
 
   private defaultTimer = 1000;
 

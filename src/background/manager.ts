@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { BackgroundTile } from "./tile";
+import { BackgroundTile } from "@background/tile";
 
 export class BackgroundManager extends Container {
   private backgroundTiles = new Map<string, BackgroundTile>();

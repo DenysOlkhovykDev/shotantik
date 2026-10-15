@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
-import { Tutorial } from "./tutorial";
+
+import { Tutorial } from "@tutorial/tutorial";
 
 export class Tutorials extends Container {
   tutorials: Tutorial[] = [];

@@ -1,10 +1,11 @@
 import { Graphics, Container } from "pixi.js";
+
 import { type Building } from "@aircraft/building";
 
-import { Inventory } from "./worker-parts/inventory";
-import { LegCoordinator } from "./worker-parts/leg-coordinator";
-import { TaskManager } from "./worker-parts/task-manager";
-import { Navigator } from "./worker-parts/navigator";
+import { Inventory } from "@workers/worker-parts/inventory";
+import { LegCoordinator } from "@workers/worker-parts/leg-coordinator";
+import { TaskManager } from "@workers/worker-parts/task-manager";
+import { Navigator } from "@workers/worker-parts/navigator";
 
 export class Worker extends Container {
   private body: Graphics = new Graphics();

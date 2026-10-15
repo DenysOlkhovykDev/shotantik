@@ -1,6 +1,8 @@
 import { type Container } from "pixi.js";
-import { Worker } from "@workers/worker";
+
 import { type Building } from "@aircraft/building";
+
+import { Worker } from "@workers/worker";
 
 export class Workers {
   public workers: Worker[] = [];

@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+
 import {
   testSettings,
   clickCanvas,
   initGame,
   skipFrames,
-} from "./test-infra/test-infra";
+} from "@test-infra/test-infra";
+
 import { getGameScreenCenter } from "@utils/ui-config";
 
 const testName = "researching-technologies";

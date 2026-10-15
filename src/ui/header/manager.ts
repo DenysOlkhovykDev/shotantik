@@ -1,10 +1,13 @@
 import { Container } from "pixi.js";
-import { Display } from "./display";
+
 import { aircraft } from "@aircraft/aircraft";
+
 import { constructionManager } from "@construction/manager";
-import { InfoButton } from "./info-button";
-import { InfoBoard } from "./info-board";
-import { DeleteButton } from "./delete-button";
+import { Display } from "@header/display";
+import { InfoButton } from "@header/info-button";
+import { InfoBoard } from "@header/info-board";
+import { DeleteButton } from "@header/delete-button";
+
 import { getHeaderPosition } from "@utils/ui-config";
 
 class Header extends Container {

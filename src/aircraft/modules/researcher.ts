@@ -1,11 +1,13 @@
 import { type FederatedPointerEvent, Graphics, Sprite } from "pixi.js";
 import { Building, type BuildingConfig } from "@aircraft/building";
+
+import { researchManager } from "@research/manager";
+
 import {
   generateTextureFromOrigin,
   makeBasicCircle,
 } from "@utils/basic-graphic";
 import { getRadialPoint, getRadialLine } from "@utils/basic-geometry";
-import { researchManager } from "../../ui/research/manager";
 
 type RotationSide = "R" | "L" | "U" | "D" | "F" | "B";
 

@@ -1,10 +1,12 @@
 import { type Container } from "pixi.js";
-import { constructionManager } from "@construction/manager";
 import { aircraft } from "@aircraft/aircraft";
 
-import { createAirCraftByScenario } from "./test-aircraft";
-import { createTestWorld } from "./test-world";
-import { createUiElementsByScenario } from "./test-ui-elements";
+import { constructionManager } from "@construction/manager";
+import { header } from "@header/manager";
+
+import { createAirCraftByScenario } from "@test-situations/test-aircraft";
+import { createTestWorld } from "@test-situations/test-world";
+import { createUiElementsByScenario } from "@test-situations/test-ui-elements";
 
 import { defaultScenario } from "@test-scenarios/_default";
 import { defaultPlusAllBuildings } from "@test-scenarios/_default+all-buildings";
@@ -33,7 +35,6 @@ import { reuseResources } from "@test-scenarios/reuse-resources";
 import { sceneRender } from "@test-scenarios/scene-render";
 import { showingTutorials } from "@test-scenarios/showing-tutorials";
 import { tooMuchBlueprints } from "@test-scenarios/too-much-bluerints";
-import { header } from "../ui/header/manager";
 
 function getScenarioName() {
   const params = new URLSearchParams(window.location.search);

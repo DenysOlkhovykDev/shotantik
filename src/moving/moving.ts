@@ -1,9 +1,13 @@
 import { type Container } from "pixi.js";
-import { getGameScreenCenter } from "@utils/ui-config";
+
 import { backgroundManager } from "../main";
+
 import { aircraft } from "@aircraft/aircraft";
 import { Engine } from "@aircraft/modules/engine";
-import { onGroundObjects } from "../on-ground/objects";
+
+import { onGroundObjects } from "@on-ground/objects";
+
+import { getGameScreenCenter } from "@utils/ui-config";
 
 const ship = {
   x: 0,

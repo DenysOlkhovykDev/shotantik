@@ -1,12 +1,13 @@
 import { Container, Graphics, Text } from "pixi.js";
 
-import { getConstructionMenuPosition } from "@utils/ui-config";
-import { Road } from "@roads/road";
 import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
 
+import { Road } from "@roads/road";
 import { Navigator } from "@workers/worker-parts/navigator";
+
 import { menuItems, type MenuItem } from "@utils/menu-items";
+import { getConstructionMenuPosition } from "@utils/ui-config";
 
 interface ResearchMenuItem extends MenuItem {
   level: number;

@@ -1,11 +1,13 @@
 import { test, expect } from "@playwright/test";
+
 import {
   testSettings,
   skipFrames,
   setGameReady,
   clickCanvas,
   initGame,
-} from "./test-infra/test-infra";
+} from "@test-infra/test-infra";
+
 import { getPauseButtonPosition } from "@utils/ui-config";
 
 const testName = "interface-pause";

@@ -1,4 +1,5 @@
 import { Container, Graphics } from "pixi.js";
+
 import { getSpeedButtonPosition } from "@utils/ui-config";
 
 class SpeedButton extends Container {

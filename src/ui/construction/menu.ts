@@ -1,13 +1,16 @@
-import { buildingMap } from "@aircraft/aircraft";
 import { Container, Graphics, Text } from "pixi.js";
+
+import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
 import { type Building } from "@aircraft/building";
 import {
   type RecipeIngredient,
   RecipeSign,
 } from "@aircraft/building-parts/recipe-sign";
-import { getConstructionMenuPosition } from "@utils/ui-config";
+
 import { Road } from "@roads/road";
+
+import { getConstructionMenuPosition } from "@utils/ui-config";
 import { menuItems, type MenuItem } from "@utils/menu-items";
 
 export class ConstructionMenu extends Container {

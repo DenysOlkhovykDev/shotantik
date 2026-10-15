@@ -1,4 +1,3 @@
-import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 import {
   Container,
   Graphics,
@@ -7,6 +6,8 @@ import {
   type Renderer,
   type Texture,
 } from "pixi.js";
+
+import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 
 export class BackgroundTile extends Container {
   private static hexTexture: Texture;

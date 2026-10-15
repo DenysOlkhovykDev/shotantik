@@ -1,5 +1,7 @@
 import { Graphics, Triangle, Sprite } from "pixi.js";
+
 import { Building, type BuildingConfig } from "@aircraft/building";
+
 import {
   generateTextureFromOrigin,
   makeBasicCircle,

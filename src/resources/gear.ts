@@ -1,5 +1,7 @@
-import { Resource } from "@resources/resource";
 import { Graphics, Sprite } from "pixi.js";
+
+import { Resource } from "@resources/resource";
+
 import { generateTextureFromOrigin, makeGear } from "@utils/basic-graphic";
 
 export class Gear extends Resource {

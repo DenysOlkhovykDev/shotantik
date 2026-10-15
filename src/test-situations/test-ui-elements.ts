@@ -1,6 +1,7 @@
-import { compasses } from "../ui/compass/manager";
-import { tutorials } from "../ui/tutorial/manager";
-import { type UiElementsScenario } from "./test-situation";
+import { compasses } from "@compass/manager";
+import { tutorials } from "@tutorial/manager";
+
+import { type UiElementsScenario } from "@test-situations/test-situation";
 
 export function createUiElementsByScenario(scenario: UiElementsScenario) {
   for (const tutorial of scenario.tutorials || []) {

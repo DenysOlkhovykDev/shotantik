@@ -1,8 +1,10 @@
 import { Container } from "pixi.js";
-import { ConstructionButton } from "./button";
-import { ConstructionMenu } from "./menu";
-import { ConstructionDisplay } from "./display";
-import { header } from "../header/manager";
+
+import { ConstructionButton } from "@construction/button";
+import { ConstructionMenu } from "@construction/menu";
+import { ConstructionDisplay } from "@construction/display";
+import { header } from "@header/manager";
+
 import { type MenuItem } from "@utils/menu-items";
 
 export class ConstructionManager extends Container {

@@ -1,5 +1,6 @@
 import type { Building } from "@aircraft/building";
-import { createResource } from "@resources/_resources";
+
+import { createResource } from "@resources/create-resources";
 
 export class CraftingProcessor {
   constructor(private readonly building: Building) {}
