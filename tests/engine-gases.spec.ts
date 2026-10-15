@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+
 import {
   testSettings,
   clickCanvas,
@@ -6,7 +7,8 @@ import {
   setGameReady,
   skipFrames,
   swipeCanvas,
-} from "./test-infra/test-infra";
+} from "@test-infra/test-infra";
+
 import { getGameScreenCenter, getJoyStickPosition } from "@utils/ui-config";
 
 const testName = "engine-gases";

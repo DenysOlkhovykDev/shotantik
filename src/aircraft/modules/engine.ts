@@ -1,6 +1,9 @@
 import { type FederatedPointerEvent, Graphics, Sprite } from "pixi.js";
-import { joystick } from "@joystick/joystick";
+
 import { Building, type BuildingConfig } from "@aircraft/building";
+
+import { joystick } from "@joystick/joystick";
+
 import {
   generateTextureFromOrigin,
   makeBasicCircle,

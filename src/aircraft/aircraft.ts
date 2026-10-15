@@ -1,15 +1,15 @@
 import { Container, Graphics, type Texture } from "pixi.js";
-import { type Building, type BuildingConfig } from "@aircraft/building";
-import { Road } from "@roads/road";
-import { BlueprintRoad } from "@roads/blueprint-road";
-import { JobType, type Task, TaskStatus } from "@dashboard/task";
-import { type Resource } from "@resources/resource";
 
+import { type Building, type BuildingConfig } from "@aircraft/building";
+import {
+  type Recipe,
+  type RecipeIngredient,
+} from "@aircraft/building-parts/recipe-sign";
 import { Platform } from "@aircraft/modules/platform";
+import { Assembler } from "@aircraft/modules/assembler";
 import { Collector } from "@aircraft/modules/collector";
 import { Farm } from "@aircraft/modules/farm";
 import { Extractor } from "@aircraft/modules/extractor";
-import { Assembler } from "@aircraft/modules/assembler";
 import { Junkuard } from "@aircraft/modules/junkuard";
 import { House } from "@aircraft/modules/house";
 import { Mixer } from "@aircraft/modules/mixer";
@@ -17,19 +17,22 @@ import { Grinder } from "@aircraft/modules/grinder";
 import { Engine } from "@aircraft/modules/engine";
 import { Blueprint } from "@aircraft/blueprint";
 import { GlassMaker } from "@aircraft/modules/glassMaker";
-import { Portal } from "./modules/portal";
-import { Researcher } from "./modules/researcher";
+import { Portal } from "@aircraft/modules/portal";
+import { Researcher } from "@aircraft/modules/researcher";
+
+import { Road } from "@roads/road";
+import { BlueprintRoad } from "@roads/blueprint-road";
 
 import { Workers } from "@workers/_workers";
-import {
-  type Recipe,
-  type RecipeIngredient,
-} from "./building-parts/recipe-sign";
-import { researchManager } from "../ui/research/manager";
+import { JobType, type Task, TaskStatus } from "@dashboard/task";
+import { type Resource } from "@resources/resource";
+
+import { researchManager } from "@research/manager";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
-import { onGroundObjects } from "../on-ground/objects";
-import { header } from "../ui/header/manager";
+import { header } from "@header/manager";
+
+import { onGroundObjects } from "@on-ground/objects";
 import { getGameScreenCenter } from "@utils/ui-config";
 
 export type BuildingClass = {

@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+
 import {
   testSettings,
   clickCanvas,
   initGame,
   setGameReady,
-} from "./test-infra/test-infra";
+} from "@test-infra/test-infra";
+
 import {
   getGameScreenCenter,
   getHeaderDeleteButtonPosition,

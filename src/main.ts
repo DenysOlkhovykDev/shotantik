@@ -1,25 +1,29 @@
 import { Application, Container, Text } from "pixi.js";
+
 import { aircraft } from "@aircraft/aircraft";
-import { moveWorld } from "./moving/moving";
-import { joystick } from "@joystick/joystick";
-import { setTestRandom } from "@utils/initializers";
+
+import { BackgroundManager } from "@background/manager";
+import { BackgroundTile } from "@background/tile";
+import { onGroundObjects } from "@on-ground/objects";
 import { createTestSituation } from "@test-situations/test-situation";
+import { moveWorld } from "@moving/moving";
+
+import { joystick } from "@joystick/joystick";
 import { pauseButton } from "@pause/button";
 import { speedButton } from "@speed/button";
 import { constructionManager } from "@construction/manager";
+import { compasses } from "@compass/manager";
+import { tutorials } from "@tutorial/manager";
+import { header } from "@header/manager";
+import { researchManager } from "@research/manager";
+
+import { getGameScreenCenter } from "@utils/ui-config";
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
-import { compasses } from "./ui/compass/manager";
-import { tutorials } from "./ui/tutorial/manager";
-import { header } from "./ui/header/manager";
-import { BackgroundManager } from "./backround/manager";
-import { researchManager } from "./ui/research/manager";
-import { onGroundObjects } from "./on-ground/objects";
 import {
   isCurrentTargetReached,
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
-import { BackgroundTile } from "./backround/tile";
-import { getGameScreenCenter } from "@utils/ui-config";
+import { setTestRandom } from "@utils/initializers";
 
 export const app = new Application();
 

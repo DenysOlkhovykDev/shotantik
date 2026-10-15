@@ -1,5 +1,7 @@
-import { type Task, JobType } from "@dashboard/task";
 import type { Building } from "@aircraft/building";
+
+import { type Task, JobType } from "@dashboard/task";
+
 import { dijkstra } from "@utils/algorithms";
 
 export const dashboard: Task[] = [];

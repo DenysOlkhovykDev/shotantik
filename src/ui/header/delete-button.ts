@@ -1,5 +1,6 @@
-import { aircraft } from "@aircraft/aircraft";
 import { Container, Graphics } from "pixi.js";
+
+import { aircraft } from "@aircraft/aircraft";
 
 export class DeleteButton extends Container {
   private symbol = new Graphics();

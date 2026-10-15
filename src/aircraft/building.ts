@@ -4,11 +4,7 @@ import {
   type Texture,
   Graphics,
 } from "pixi.js";
-import { type Resource } from "@resources/resource";
 import { aircraft } from "@aircraft/aircraft";
-import { type Road } from "@roads/road";
-import { type Task } from "@dashboard/task";
-import { constructionManager } from "@construction/manager";
 import {
   type Recipe,
   type RecipeIngredient,
@@ -16,12 +12,18 @@ import {
 } from "@aircraft/building-parts/recipe-sign";
 import { ResourceStorage } from "@aircraft/building-parts/resource-storage";
 import { TaskManager } from "@aircraft/building-parts/task-manager";
-import { getRadialPoint } from "@utils/basic-geometry";
+import { CraftingProcessor } from "@aircraft/building-parts/crafting-processor";
+import { GeometryCalulator } from "@aircraft/building-parts/geometry-calculator";
+import { shadowFilter } from "@aircraft/building-parts/shadow-filter";
+
+import { type Road } from "@roads/road";
+import { type Task } from "@dashboard/task";
+import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
-import { CraftingProcessor } from "./building-parts/crafting-processor";
-import { GeometryCalulator } from "./building-parts/geometry-calculator";
-import { shadowFilter } from "./building-parts/shadow-filter";
-import { researchManager } from "../ui/research/manager";
+import { researchManager } from "@research/manager";
+import { type Resource } from "@resources/resource";
+
+import { getRadialPoint } from "@utils/basic-geometry";
 
 export interface BuildingConfig {
   storageCenter: {

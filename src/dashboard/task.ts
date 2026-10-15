@@ -1,9 +1,10 @@
+import { aircraft } from "@aircraft/aircraft";
 import { type Building } from "@aircraft/building";
-import { aStar, dijkstra, buildPath } from "@utils/algorithms";
+import { type Blueprint } from "@aircraft/blueprint";
+
 import { type Resource } from "@resources/resource";
 
-import { aircraft } from "@aircraft/aircraft";
-import { type Blueprint } from "@aircraft/blueprint";
+import { aStar, dijkstra, buildPath } from "@utils/algorithms";
 
 export const JobType = {
   delivering: "delivering",

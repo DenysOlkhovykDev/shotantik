@@ -1,8 +1,10 @@
 import { Graphics } from "pixi.js";
+
+import { aircraft } from "@aircraft/aircraft";
 import { type Building } from "@aircraft/building";
+
 import { type Resource } from "@resources/resource";
 import { type Task, TaskStatus } from "@dashboard/task";
-import { aircraft } from "@aircraft/aircraft";
 
 export class BlueprintRoad {
   private static params = {

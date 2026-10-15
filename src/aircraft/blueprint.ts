@@ -1,10 +1,12 @@
 import { Graphics, Text } from "pixi.js";
 import { Building, type BuildingConfig } from "@aircraft/building";
 import { type BuildingClass, aircraft } from "@aircraft/aircraft";
-import { getDistance } from "@utils/basic-geometry";
+import { type RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
+
 import { type Resource } from "@resources/resource";
 import { type Task, TaskStatus } from "@dashboard/task";
-import { type RecipeIngredient } from "./building-parts/recipe-sign";
+
+import { getDistance } from "@utils/basic-geometry";
 
 export class Blueprint extends Building {
   private static readonly blueprintConfig: BuildingConfig = {

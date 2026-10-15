@@ -1,8 +1,11 @@
 import { aircraft } from "@aircraft/aircraft";
+
+import { onGroundObjects } from "@on-ground/objects";
+
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
-import { researchManager } from "../ui/research/manager";
-import { onGroundObjects } from "../on-ground/objects";
+import { researchManager } from "@research/manager";
+
 import { menuItems } from "@utils/menu-items";
 
 export function hasAtleastOneBlueprint() {

@@ -1,6 +1,7 @@
-import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 import { Container, Graphics } from "pixi.js";
 import { DropShadowFilter } from "pixi-filters";
+
+import { drawHex, makeBrighterColor } from "@utils/basic-graphic";
 
 export class Island extends Container {
   private beach: Graphics;

@@ -1,4 +1,5 @@
 import { Container, Graphics } from "pixi.js";
+
 import { getPauseButtonPosition } from "@utils/ui-config";
 
 class PauseButton extends Container {

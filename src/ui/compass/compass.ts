@@ -1,6 +1,8 @@
 import { Container, Graphics } from "pixi.js";
-import { getDistance } from "@utils/basic-geometry";
+
 import { getGlobalWorldCoordinates } from "../../main";
+
+import { getDistance } from "@utils/basic-geometry";
 import { getGameScreenCenter } from "@utils/ui-config";
 
 export class Compass extends Container {

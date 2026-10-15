@@ -1,7 +1,8 @@
 import type { Building } from "@aircraft/building";
-import { Task, JobType, TaskStatus } from "@dashboard/task";
-import { dashboard } from "@dashboard/_dashboard";
 import { type Blueprint } from "@aircraft/blueprint";
+
+import { Task, JobType, TaskStatus } from "@dashboard/task";
+import { dashboard } from "@dashboard/dashboard";
 
 export class TaskManager {
   readonly deliveringTasks: Task[] = [];

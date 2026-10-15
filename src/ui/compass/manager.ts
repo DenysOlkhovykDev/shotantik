@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
-import { Compass } from "./compass";
+
+import { Compass } from "@compass/compass";
 
 export class Compasses extends Container {
   private compasses: Compass[] = [];

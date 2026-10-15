@@ -1,17 +1,21 @@
 import { Container } from "pixi.js";
 
-import { Researcher } from "@aircraft/modules/researcher";
 import { getWorldCoordinates, getWorldRotation } from "../../src/main";
-import { getDistance } from "@utils/basic-geometry";
+
 import { aircraft } from "@aircraft/aircraft";
 import { type Building } from "@aircraft/building";
-import { compasses } from "../ui/compass/manager";
+import { Researcher } from "@aircraft/modules/researcher";
+
+import { allIslands } from "@islands/all-islands";
+
+import { compasses } from "@compass/manager";
+import { researchManager } from "@research/manager";
+
+import { getDistance } from "@utils/basic-geometry";
 import {
   hasClosedResearchMenu,
   isCurrentTargetReached,
 } from "@utils/tutorial-conditions";
-import { researchManager } from "../ui/research/manager";
-import { allIslands } from "../islands/_islands";
 
 type GroundObject = {
   container: Container;

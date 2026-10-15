@@ -1,5 +1,7 @@
 import { Container } from "pixi.js";
-import { Island } from "./island";
+
+import { Island } from "@islands/island";
+
 import { getDistance } from "@utils/basic-geometry";
 
 class Islands extends Container {

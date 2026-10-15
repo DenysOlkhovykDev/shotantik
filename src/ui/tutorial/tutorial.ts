@@ -1,8 +1,9 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 
-import { gameScreen } from "@utils/game-config";
 import { joystick } from "@joystick/joystick";
+
 import { getGameScreenCenter } from "@utils/ui-config";
+import { gameScreen } from "@utils/game-config";
 
 export class Tutorial extends Container {
   private isActive = true;

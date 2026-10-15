@@ -1,7 +1,9 @@
 import { type Container } from "pixi.js";
-import { allIslands } from "../islands/_islands";
-import { onGroundObjects } from "../on-ground/objects";
-import { type WorldObjects } from "./test-situation";
+
+import { allIslands } from "@islands/all-islands";
+import { onGroundObjects } from "@on-ground/objects";
+
+import { type WorldObjects } from "@test-situations/test-situation";
 
 export function createTestWorld(
   worldLayer: Container,

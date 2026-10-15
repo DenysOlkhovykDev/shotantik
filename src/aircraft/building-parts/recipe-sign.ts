@@ -1,5 +1,6 @@
 import { Container, Graphics, Text } from "pixi.js";
-import { createResource } from "@resources/_resources";
+
+import { createResource } from "@resources/create-resources";
 
 export interface RecipeIngredient {
   resourceName: string;

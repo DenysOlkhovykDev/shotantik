@@ -1,10 +1,14 @@
 import { Container, Graphics } from "pixi.js";
+
 import { aircraft, buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
-import { getConstructionDisplayPosition } from "@utils/ui-config";
+
 import { Road } from "@roads/road";
+
+import { constructionManager } from "@construction/manager";
+
+import { getConstructionDisplayPosition } from "@utils/ui-config";
 import { menuItems } from "@utils/menu-items";
-import { constructionManager } from "./manager";
 
 export class ConstructionDisplay extends Container {
   private static display = {

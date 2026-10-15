@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+
 import {
   testSettings,
   skipFrames,
   clickCanvas,
   initGame,
-} from "./test-infra/test-infra";
+} from "@test-infra/test-infra";
+
 import { getSpeedButtonPosition } from "@utils/ui-config";
 
 const testName = "interface-speed";
