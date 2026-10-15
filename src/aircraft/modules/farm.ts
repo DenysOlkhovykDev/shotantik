@@ -30,7 +30,7 @@ export class Farm extends Building {
     duration: 60,
   };
 
-  static kelpsParams = {
+  private static kelpsParams = {
     amount: 4,
     leavesSize: 16,
     leavesWidth: 20,
@@ -41,7 +41,7 @@ export class Farm extends Building {
     leavesColor: "#559c48",
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     groundRingColor: "#a3791f",
     baseColor: "#b0ca75",
     plantCenterColor: "#77c06a",
@@ -50,13 +50,11 @@ export class Farm extends Building {
 
   // contentContainer
   // ├── kelpLeavesGraphics
-  // ├── kelpTrunksGraphics
   // ├── baseGraphics
 
-  kelpLeavesGraphics: Graphics[] = [];
-  kelpTrunksGraphics: Graphics = new Graphics();
+  private kelpLeavesGraphics: Graphics[] = [];
 
-  kelpsPostion = {
+  private kelpsPostion = {
     time: 0,
   };
 
@@ -75,7 +73,7 @@ export class Farm extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createKelpLeaves();

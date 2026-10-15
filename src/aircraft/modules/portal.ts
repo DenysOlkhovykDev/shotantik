@@ -28,7 +28,7 @@ export class Portal extends Building {
     { resourceName: "Water", amount: 3 },
   ];
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#cab8db",
     backgroundColor: "#ae6bde",
     backgroundStrokeColor: "#581c74",
@@ -37,7 +37,7 @@ export class Portal extends Building {
     backgroundStrokeWidth: 4,
   };
 
-  static cubesParams = {
+  private static cubesParams = {
     positions: [
       { x: 0, y: -24 },
       { x: 10, y: -18 },
@@ -66,10 +66,10 @@ export class Portal extends Building {
   // ├── baseGraphics
   // ├── cubesGraphics
 
-  cubesGraphics: Graphics[] = [];
+  private cubesGraphics: Graphics[] = [];
 
-  cubesMovingDirection = 1;
-  cubesOffsetFromCenter = 4;
+  private cubesMovingDirection = 1;
+  private cubesOffsetFromCenter = 4;
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Portal", isDecorative);
@@ -77,7 +77,7 @@ export class Portal extends Building {
     this.priorityForTasks = 5;
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();

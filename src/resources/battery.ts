@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Battery extends Resource {
-  static casing = {
+  private static casing = {
     color: "#f8f8f8",
 
     strokeWidth: 3,
@@ -13,13 +13,13 @@ export class Battery extends Resource {
     height: 10,
   };
 
-  static contact = {
+  private static contact = {
     width: 3,
     height: 4,
     color: "#000000",
   };
 
-  static plus = {
+  private static plus = {
     x: 0,
     y: 0,
     width: 4,

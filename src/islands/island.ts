@@ -3,17 +3,17 @@ import { Container, Graphics } from "pixi.js";
 import { DropShadowFilter } from "pixi-filters";
 
 export class Island extends Container {
-  beach: Graphics;
-  plains: Graphics;
-  heels: Graphics;
-  peaks: Graphics;
+  private beach: Graphics;
+  private plains: Graphics;
+  private heels: Graphics;
+  private peaks: Graphics;
 
-  islandValues: number[][];
+  private islandValues: number[][];
 
-  static backgroundSize = 64;
-  static cellSize = 40;
+  private static backgroundSize = 64;
+  private static cellSize = 40;
 
-  static tilesColors = {
+  private static tilesColors = {
     beach: "#d6cc71",
     plains: "#1b9d1c",
     heels: "#504e4e",

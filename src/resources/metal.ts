@@ -4,7 +4,7 @@ import { generateTextureFromOrigin } from "@utils/basic-graphic";
 import { getRadialPoint } from "@utils/basic-geometry";
 
 export class Metal extends Resource {
-  static params = {
+  private static params = {
     amountOfPoints: 3,
     radius: 6,
     strokeWidth: 3,

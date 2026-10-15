@@ -27,13 +27,13 @@ export class House extends Building {
     { resourceName: "Water", amount: 5 },
   ];
 
-  static antennasParams = {
+  private static antennasParams = {
     totalAmount: 3,
     angleOffset: Math.PI / 4,
     color: "#000000",
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#72ac4a",
     centerColor: "#5b8937",
   };
@@ -42,18 +42,22 @@ export class House extends Building {
   // ├── antennasGraphics
   // ├── baseGraphics
 
-  antennasGraphics: Graphics[] = [];
+  private antennasGraphics: Graphics[] = [];
 
-  antennasState = { currentAmount: 3 };
+  private antennasState = { currentAmount: 3 };
 
-  buildingState = { growingDirection: 1, size: 1, changeSizeDelay: 300 };
+  private buildingState = {
+    growingDirection: 1,
+    size: 1,
+    changeSizeDelay: 300,
+  };
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "House", isDecorative);
     this.draw();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.makeAntennas();

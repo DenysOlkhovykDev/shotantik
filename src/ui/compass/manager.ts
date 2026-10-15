@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { Compass } from "./compass";
 
 export class Compasses extends Container {
-  compasses: Compass[] = [];
+  private compasses: Compass[] = [];
 
   public addCompass(x: number, y: number, condition: () => boolean) {
     const compass = new Compass(x, y, condition);

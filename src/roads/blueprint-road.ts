@@ -5,7 +5,7 @@ import { type Task, TaskStatus } from "@dashboard/task";
 import { aircraft } from "@aircraft/aircraft";
 
 export class BlueprintRoad {
-  static params = {
+  private static params = {
     strokeWidth: 8,
     strokeColor: "#000000",
 

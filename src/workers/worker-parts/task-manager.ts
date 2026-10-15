@@ -7,7 +7,7 @@ const isTest = import.meta.env.MODE === "test";
 
 export class TaskManager {
   task: Task | undefined;
-  productionProgress = 0;
+  private productionProgress = 0;
 
   constructor(public profession: string) {}
 

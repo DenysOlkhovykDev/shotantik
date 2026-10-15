@@ -28,7 +28,7 @@ export class Platform extends Building {
     { resourceName: "Water", amount: 1 },
   ];
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#cccbcb",
     centerColor: "#a9a9a9",
   };
@@ -38,7 +38,7 @@ export class Platform extends Building {
     this.draw();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();
@@ -71,7 +71,7 @@ export class Platform extends Building {
 
   animation() {}
 
-  onClick(event: FederatedPointerEvent) {
+  protected onClick(event: FederatedPointerEvent) {
     super.onClick(event, false);
     constructionManager.showButton();
     aircraft.showCraftSigns();

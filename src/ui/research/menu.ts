@@ -40,7 +40,7 @@ export class ResearchMenu extends Container {
 
   private rows = this.menuItems.length + 2;
 
-  static params = {
+  private static params = {
     columnWidth: 300,
     rowHeight: 60,
     gap: 10,

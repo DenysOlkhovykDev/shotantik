@@ -33,7 +33,7 @@ export class GlassMaker extends Building {
     this.draw();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();

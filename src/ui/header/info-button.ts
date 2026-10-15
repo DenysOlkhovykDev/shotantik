@@ -11,12 +11,12 @@ export class InfoButton extends Container {
   });
   private background = new Graphics();
 
-  static backgroundParams = {
+  private static backgroundParams = {
     width: 40,
     height: 40,
   };
 
-  static symbolPosition = {
+  private static symbolPosition = {
     x: 9,
     y: 2,
   };

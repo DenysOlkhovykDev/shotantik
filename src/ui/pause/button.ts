@@ -6,18 +6,18 @@ class PauseButton extends Container {
   private background = new Graphics();
   private paused = false;
 
-  static backgroundParams = {
+  private static backgroundParams = {
     width: 40,
     height: 40,
   };
 
-  static play = {
+  private static play = {
     width: 30,
     height: 40,
     color: "#000000",
   };
 
-  static stop = {
+  private static stop = {
     width: 40,
     height: 40,
     color: "#000000",

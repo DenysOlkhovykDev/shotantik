@@ -75,7 +75,7 @@ export abstract class Building extends Container {
   static craftRecipe: Recipe | undefined;
   static constructionRecipe: RecipeIngredient[];
 
-  DEBUGTaskDisplay: Graphics = new Graphics();
+  private DEBUGTaskDisplay: Graphics = new Graphics();
 
   public get buildingConfig(): BuildingConfig {
     return (this.constructor as typeof Building).buildingConfig;
@@ -134,7 +134,10 @@ export abstract class Building extends Container {
     );
   }
 
-  onClick(event: FederatedPointerEvent, needResetCinstructionSettings = true) {
+  protected onClick(
+    event: FederatedPointerEvent,
+    needResetCinstructionSettings = true,
+  ) {
     event.stopPropagation();
 
     joystick.hide();

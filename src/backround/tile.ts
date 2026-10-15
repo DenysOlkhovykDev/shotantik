@@ -9,15 +9,15 @@ import {
 } from "pixi.js";
 
 export class BackgroundTile extends Container {
-  static hexTexture: Texture;
+  private static hexTexture: Texture;
 
-  static cellSize = 40;
-  static gridSize = 16;
+  private static cellSize = 40;
+  private static gridSize = 16;
 
-  static baseTileColor = "#a2a5a4";
+  private static baseTileColor = "#a2a5a4";
 
-  fogContainer: ParticleContainer;
-  fogValues: number[][];
+  private fogContainer: ParticleContainer;
+  private fogValues: number[][];
 
   static initialize(renderer: Renderer) {
     const graphics = new Graphics();
@@ -100,7 +100,7 @@ export class BackgroundTile extends Container {
     this.addChild(this.fogContainer);
   }
 
-  generateNoise(
+  private generateNoise(
     array: number[][],
     size: number,
     chunkX: number,
@@ -136,7 +136,7 @@ export class BackgroundTile extends Container {
     }
   }
 
-  getValueFromCoordinates(x: number, y: number, seed: number) {
+  private getValueFromCoordinates(x: number, y: number, seed: number) {
     const value = Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43758.5453;
 
     return value - Math.floor(value);

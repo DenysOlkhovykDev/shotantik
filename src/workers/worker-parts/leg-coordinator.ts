@@ -7,13 +7,13 @@ interface Leg {
 }
 
 export class LegCoordinator extends Container {
-  legX = 4;
-  legY = 14;
-  numberOfLegs = 4;
+  private legX = 4;
+  private legY = 14;
+  private numberOfLegs = 4;
 
-  legCoordinates: Leg[] = [];
-  legs: Graphics[] = [];
-  stepPhase = 0;
+  private legCoordinates: Leg[] = [];
+  private legs: Graphics[] = [];
+  private stepPhase = 0;
 
   private isMoving = false;
 

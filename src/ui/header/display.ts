@@ -1,7 +1,7 @@
 import { Container, Text, TextStyle } from "pixi.js";
 
 export class Display extends Container {
-  text = new Text({
+  private text = new Text({
     text: "",
     style: new TextStyle({
       fill: "#000000",

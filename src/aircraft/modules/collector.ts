@@ -33,7 +33,7 @@ export class Collector extends Building {
     duration: 60,
   };
 
-  static gridsParams = {
+  private static gridsParams = {
     amount: 3,
     sizes: [6.5, 12, 12],
     angleOffsets: { small: 1.05, medium: 0.5 },
@@ -41,7 +41,7 @@ export class Collector extends Building {
     rotationSpeed: 0.005,
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#a8d0db",
     lineColors: "#6ba6de",
     circlesColors: "#81bcf3",
@@ -51,7 +51,7 @@ export class Collector extends Building {
   // ├── gridsGraphics
   // ├── baseGraphics
 
-  gridsGraphics: Graphics = new Graphics();
+  private gridsGraphics: Graphics = new Graphics();
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Collector", isDecorative);
@@ -60,7 +60,7 @@ export class Collector extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createGrids();

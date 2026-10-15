@@ -6,12 +6,12 @@ class SpeedButton extends Container {
   private background = new Graphics();
   private speedModifier = 1;
 
-  static backgroundParams = {
+  private static backgroundParams = {
     width: 40,
     height: 40,
   };
 
-  static symbolParams = {
+  private static symbolParams = {
     width: 30,
     height: 40,
   };

@@ -42,17 +42,17 @@ export class Researcher extends Building {
     { resourceName: "Water", amount: 3 },
   ];
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#908d92",
   };
 
-  static cubesParams = {
+  private static cubesParams = {
     size: 8,
     strokeWidth: 4,
     strokeColor: "#000000",
   };
 
-  static rotationParams: RotationParams = {
+  private static rotationParams: RotationParams = {
     segments: {
       R: [
         { x: 18, y: 23 },
@@ -102,10 +102,10 @@ export class Researcher extends Building {
   // ├── baseGraphics
   // ├── cubesGraphics
 
-  cubesGraphics: Graphics[] = [];
-  rotationSparkle = new Graphics();
+  private cubesGraphics: Graphics[] = [];
+  private rotationSparkle = new Graphics();
 
-  rubiksCubeTiles = [
+  private rubiksCubeTiles = [
     Array.from({ length: 3 }, () => Array(3).fill("#ea0600")), // R
     Array.from({ length: 3 }, () => Array(3).fill("#07a42e")), // F
     Array.from({ length: 3 }, () => Array(3).fill("#f2f2f2")), // U
@@ -127,7 +127,7 @@ export class Researcher extends Building {
     this.priorityForTasks = 5;
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createBaseTexture();

@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Truss extends Resource {
-  static paralels = {
+  private static paralels = {
     width: 12,
     height: 8,
 
@@ -14,7 +14,7 @@ export class Truss extends Resource {
     baseColor: "#d6d655",
   };
 
-  static joins = {
+  private static joins = {
     width: 1.5,
     color: "#000000",
   };

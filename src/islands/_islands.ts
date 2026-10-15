@@ -3,7 +3,7 @@ import { Island } from "./island";
 import { getDistance } from "@utils/basic-geometry";
 
 class Islands extends Container {
-  islands: Island[] = [];
+  private islands: Island[] = [];
 
   addIsland(x: number, y: number) {
     const seed = Math.trunc(Math.random() * 250);

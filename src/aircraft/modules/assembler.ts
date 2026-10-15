@@ -36,7 +36,7 @@ export class Assembler extends Building {
     duration: 60,
   };
 
-  static manipulatorsParams = {
+  private static manipulatorsParams = {
     amount: 3,
     jointRadius: 5,
     jointBorderWidth: 2,
@@ -51,7 +51,7 @@ export class Assembler extends Building {
     speed: 0.01,
   };
 
-  static buildingParams = {
+  private static buildingParams = {
     baseColor: "#bc9c56",
     centerColor: "#ebdc5d",
     square: {
@@ -73,9 +73,9 @@ export class Assembler extends Building {
   // ├── maniulatorsGraphics
   // ├── baseGraphics
 
-  maniulatorsGraphics: Graphics[] = [];
+  private maniulatorsGraphics: Graphics[] = [];
 
-  manipulatorsPosition = {
+  private manipulatorsPosition = {
     rotation: [0.1, 0.15, 0.2],
     direction: [1, 1, 1],
   };
@@ -88,7 +88,7 @@ export class Assembler extends Building {
     this.refreshTasks();
   }
 
-  draw() {
+  protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
     this.createManipulators();

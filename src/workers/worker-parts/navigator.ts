@@ -7,7 +7,7 @@ const isTest = import.meta.env.MODE === "test";
 export class Navigator {
   static speed = 2;
 
-  path: Building[] = [];
+  private path: Building[] = [];
   state: string;
 
   constructor(public currentPlatform: Building) {

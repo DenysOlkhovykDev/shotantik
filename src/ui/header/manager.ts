@@ -8,10 +8,10 @@ import { DeleteButton } from "./delete-button";
 import { getHeaderPosition } from "@utils/ui-config";
 
 class Header extends Container {
-  display: Display;
-  infoButton: InfoButton;
-  deleteButton: DeleteButton;
-  infoBoard: InfoBoard;
+  private display: Display;
+  private infoButton: InfoButton;
+  private deleteButton: DeleteButton;
+  private infoBoard: InfoBoard;
 
   constructor() {
     super();

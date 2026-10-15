@@ -1,7 +1,7 @@
 import { type Building } from "@aircraft/building";
 
 export class GeometryCalulator {
-  orientation = 0;
+  private orientation = 0;
 
   constructor(private readonly building: Building) {}
 

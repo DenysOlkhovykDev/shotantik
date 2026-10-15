@@ -7,7 +7,7 @@ import { menuItems } from "@utils/menu-items";
 import { constructionManager } from "./manager";
 
 export class ConstructionDisplay extends Container {
-  static display = {
+  private static display = {
     scale: 0.8,
     size: 60,
 
@@ -15,7 +15,7 @@ export class ConstructionDisplay extends Container {
     strokeColor: "#000000",
   };
 
-  static cancelButton = {
+  private static cancelButton = {
     x: -100,
     width: 40,
     height: 40,

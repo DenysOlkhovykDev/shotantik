@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Gum extends Resource {
-  static params = {
+  private static params = {
     ballsX: 3.5,
     ballsY: 0,
     ballsRadius: 2.5,

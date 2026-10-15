@@ -3,7 +3,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Organic extends Resource {
-  static params = {
+  private static params = {
     size: 10,
     strokeWidth: 3,
     strokeColor: "#000000",
