@@ -18,7 +18,7 @@ export class Gear extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Gear.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

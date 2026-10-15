@@ -39,19 +39,19 @@ export class ConstructionDisplay extends Container {
       this.createCancelButton();
 
       if (buildingName === "Road") {
-        const root = Road.crateRoadImage(0, 0);
+        const road = Road.crateRoadImage(0, 0);
 
-        root.scale = ConstructionDisplay.display.scale;
-        root.eventMode = "none";
-        this.addChild(root);
+        road.scale = ConstructionDisplay.display.scale;
+        road.eventMode = "none";
+        this.addChild(road);
       } else {
         const BuildingClass = buildingMap[buildingName] || Platform;
 
         const building = new BuildingClass(0, 0, true);
 
-        building.root.scale = ConstructionDisplay.display.scale;
-        building.root.eventMode = "none";
-        this.addChild(building.root);
+        building.scale = ConstructionDisplay.display.scale;
+        building.eventMode = "none";
+        this.addChild(building);
       }
       this.visible = true;
     } else {

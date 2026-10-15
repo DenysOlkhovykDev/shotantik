@@ -1,8 +1,6 @@
 import { Graphics, type Texture, Container } from "pixi.js";
 
-export abstract class Resource {
-  root: Container;
-
+export abstract class Resource extends Container {
   DEBUGReservationMark: Graphics = new Graphics();
 
   private _isReserved = false;
@@ -10,14 +8,14 @@ export abstract class Resource {
   static baseTexture: Texture;
 
   constructor(public resourceType: string) {
-    this.root = new Container();
-    this.root.x = 0;
-    this.root.y = 0;
+    super();
+    this.x = 0;
+    this.y = 0;
     this.isReserved = false;
 
     this.draw();
 
-    this.root.addChild(this.DEBUGReservationMark);
+    this.addChild(this.DEBUGReservationMark);
   }
 
   get isReserved(): boolean {

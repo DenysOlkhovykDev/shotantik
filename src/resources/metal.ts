@@ -16,7 +16,7 @@ export class Metal extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Metal.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

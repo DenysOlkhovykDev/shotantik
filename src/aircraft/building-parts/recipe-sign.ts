@@ -82,7 +82,7 @@ export class RecipeSign extends Container {
 
     for (const ingredient of recipe.ingredients) {
       for (let i = 0; i < ingredient.amount; i++) {
-        const resource = createResource(ingredient.resourceName).root;
+        const resource = createResource(ingredient.resourceName);
         const availableCount = availableCounts
           ? (availableCounts.get(ingredient.resourceName) ?? 0)
           : ingredient.amount;
@@ -107,7 +107,7 @@ export class RecipeSign extends Container {
         ),
       );
 
-      const result = createResource(recipe.result).root;
+      const result = createResource(recipe.result);
       if (options.isAvailableResult === false) {
         result.alpha = RecipeSign.signParams.unavailableResource;
       }
@@ -157,7 +157,7 @@ export class RecipeSign extends Container {
     this.addChild(background);
 
     ingredients.forEach((ingredient, index) => {
-      const resource = createResource(ingredient.resourceName).root;
+      const resource = createResource(ingredient.resourceName);
       resource.position.set(
         RecipeSign.verticalMode.resourcePositionX,
         RecipeSign.verticalMode.resourcePositionY +

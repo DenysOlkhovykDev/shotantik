@@ -14,7 +14,7 @@ export class Organic extends Resource {
     this.createBaseTexture();
 
     const base = new Sprite(Organic.baseTexture);
-    this.root.addChild(base);
+    this.addChild(base);
   }
 
   protected createBaseTexture(): void {

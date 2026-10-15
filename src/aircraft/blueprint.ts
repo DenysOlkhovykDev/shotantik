@@ -50,7 +50,7 @@ export class Blueprint extends Building {
     this.targetBuilding = targetBuilding;
     this.draw();
 
-    this.root.addChild(this.DEBUGCollisionDisplay);
+    this.addChild(this.DEBUGCollisionDisplay);
   }
 
   public get buildingConfig(): BuildingConfig {
@@ -150,7 +150,7 @@ export class Blueprint extends Building {
 
     this.x += nx * speed * delta;
     this.y += ny * speed * delta;
-    this.root.position.set(this.x, this.y);
+    this.position.set(this.x, this.y);
     this.orientByBuildDirection(this.roads[0].from);
 
     for (const road of this.roads) {
@@ -169,7 +169,7 @@ export class Blueprint extends Building {
 
     this.x += nx * speed * delta;
     this.y += ny * speed * delta;
-    this.root.position.set(this.x, this.y);
+    this.position.set(this.x, this.y);
     this.orientByBuildDirection(this.roads[0].from);
 
     for (const road of this.roads) {

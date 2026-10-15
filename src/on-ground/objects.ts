@@ -14,7 +14,7 @@ import { researchManager } from "../ui/research/manager";
 import { allIslands } from "../islands/_islands";
 
 type GroundObject = {
-  root: Container;
+  container: Container;
   boundsRadius: number;
   isColide: boolean;
 };
@@ -26,13 +26,13 @@ class OnGroundObjects extends Container {
     const researcher = new Researcher(x, y);
 
     this.objectsOnGround.push({
-      root: researcher.root,
+      container: researcher,
       boundsRadius: researcher.buildingConfig.boundsRadius,
       isColide: false,
     });
-    researcher.root.eventMode = "none";
+    researcher.eventMode = "none";
 
-    this.addChild(researcher.root);
+    this.addChild(researcher);
   }
 
   public checkColision() {
@@ -64,7 +64,7 @@ class OnGroundObjects extends Container {
     const { x: worldX, y: worldY } = getWorldCoordinates();
 
     return (
-      getDistance(worldX, worldY, object.root.x, object.root.y) <=
+      getDistance(worldX, worldY, object.container.x, object.container.y) <=
       aircraft.boundsRadius + object.boundsRadius
     );
   }
@@ -77,11 +77,9 @@ class OnGroundObjects extends Container {
     sin: number,
     cos: number,
   ) {
-    const localX =
-      building.root.x + building.buildingConfig.boundsCenter.x - 360;
+    const localX = building.x + building.buildingConfig.boundsCenter.x - 360;
 
-    const localY =
-      building.root.y + building.buildingConfig.boundsCenter.y - 640;
+    const localY = building.y + building.buildingConfig.boundsCenter.y - 640;
 
     const buildingX = worldX + localX * cos - localY * sin;
 
@@ -90,8 +88,8 @@ class OnGroundObjects extends Container {
     const distance = getDistance(
       buildingX,
       buildingY,
-      object.root.x,
-      object.root.y,
+      object.container.x,
+      object.container.y,
     );
 
     return (
@@ -123,11 +121,11 @@ class OnGroundObjects extends Container {
     for (let i = 0; i < this.objectsOnGround.length; i++) {
       if (this.objectsOnGround[i].isColide) {
         compasses.deleteCompass(
-          this.objectsOnGround[i].root.x,
-          this.objectsOnGround[i].root.y,
+          this.objectsOnGround[i].container.x,
+          this.objectsOnGround[i].container.y,
         );
 
-        this.objectsOnGround[i].root.destroy();
+        this.objectsOnGround[i].container.destroy();
         this.objectsOnGround.splice(i, 1);
         i--;
       }
