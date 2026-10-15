@@ -5,10 +5,7 @@ import {
   initGame,
   skipFrames,
 } from "./test-infra/test-infra";
-import {
-  getGameScreenCenter,
-  getPositionOfEngineUpgradeButton,
-} from "@utils/ui-config";
+import { getGameScreenCenter } from "@utils/ui-config";
 
 const testName = "researching-technologies";
 
@@ -25,11 +22,7 @@ test(testName, async ({ page }) => {
 
   await skipFrames(page, 2);
 
-  await clickCanvas(
-    page,
-    getPositionOfEngineUpgradeButton().x,
-    getPositionOfEngineUpgradeButton().y,
-  );
+  await clickCanvas(page, 480, 995);
 
   await skipFrames(page, 2);
 

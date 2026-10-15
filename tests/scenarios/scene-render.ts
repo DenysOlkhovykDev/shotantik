@@ -3,38 +3,38 @@ import { type Scenario } from "@test-situations/test-situation";
 export const sceneRender: Scenario = {
   aircraft: {
     buildings: [
-      { from: "", id: "p0", type: "Platform", x: 360, y: 200 },
-      { from: "p0", id: "collector", type: "Collector", x: 260, y: 200 },
+      { from: "", id: "p0", type: "Platform", x: 0, y: -500 },
+      { from: "p0", id: "collector", type: "Collector", x: -100, y: -500 },
 
-      { from: "p0", id: "p1", type: "Platform", x: 360, y: 300 },
-      { from: "p1", id: "farm", type: "Farm", x: 460, y: 300 },
+      { from: "p0", id: "p1", type: "Platform", x: 0, y: -400 },
+      { from: "p1", id: "farm", type: "Farm", x: 100, y: -400 },
 
-      { from: "p1", id: "p2", type: "Platform", x: 360, y: 400 },
-      { from: "p2", id: "extractor", type: "Extractor", x: 260, y: 400 },
+      { from: "p1", id: "p2", type: "Platform", x: 0, y: -300 },
+      { from: "p2", id: "extractor", type: "Extractor", x: -100, y: -300 },
 
-      { from: "p2", id: "p3", type: "Platform", x: 360, y: 500 },
-      { from: "p3", id: "house", type: "House", x: 460, y: 500 },
+      { from: "p2", id: "p3", type: "Platform", x: 0, y: -200 },
+      { from: "p3", id: "house", type: "House", x: 100, y: -200 },
 
-      { from: "p3", id: "p4", type: "Platform", x: 360, y: 600 },
-      { from: "p4", id: "junkuard", type: "Junkuard", x: 240, y: 600 },
+      { from: "p3", id: "p4", type: "Platform", x: 0, y: -100 },
+      { from: "p4", id: "junkuard", type: "Junkuard", x: -120, y: -100 },
 
-      { from: "p4", id: "p5", type: "Platform", x: 360, y: 700 },
-      { from: "p5", id: "assembler", type: "Assembler", x: 460, y: 700 },
+      { from: "p4", id: "p5", type: "Platform", x: 0, y: 0 },
+      { from: "p5", id: "assembler", type: "Assembler", x: 100, y: 0 },
 
-      { from: "p5", id: "p6", type: "Platform", x: 360, y: 800 },
-      { from: "p6", id: "engine", type: "Engine", x: 260, y: 800 },
+      { from: "p5", id: "p6", type: "Platform", x: 0, y: 100 },
+      { from: "p6", id: "engine", type: "Engine", x: -100, y: 100 },
 
-      { from: "p6", id: "p7", type: "Platform", x: 360, y: 900 },
-      { from: "p7", id: "mixer", type: "Mixer", x: 460, y: 900 },
+      { from: "p6", id: "p7", type: "Platform", x: 0, y: 200 },
+      { from: "p7", id: "mixer", type: "Mixer", x: 100, y: 200 },
 
-      { from: "p7", id: "p8", type: "Platform", x: 360, y: 1000 },
-      { from: "p8", id: "grinder", type: "Grinder", x: 260, y: 1000 },
+      { from: "p7", id: "p8", type: "Platform", x: 0, y: 300 },
+      { from: "p8", id: "grinder", type: "Grinder", x: -100, y: 300 },
 
-      { from: "p8", id: "p9", type: "Platform", x: 360, y: 1100 },
-      { from: "p9", id: "portal", type: "Portal", x: 460, y: 1100 },
+      { from: "p8", id: "p9", type: "Platform", x: 0, y: 400 },
+      { from: "p9", id: "portal", type: "Portal", x: 100, y: 400 },
 
-      { from: "p9", id: "p10", type: "Platform", x: 360, y: 1200 },
-      { from: "p10", id: "researcher", type: "Researcher", x: 260, y: 1200 },
+      { from: "p9", id: "p10", type: "Platform", x: 0, y: 500 },
+      { from: "p10", id: "researcher", type: "Researcher", x: -100, y: 500 },
     ],
     resources: [
       { buildingId: "collector", resourceName: "Water", amount: 5 },
@@ -50,7 +50,7 @@ export const sceneRender: Scenario = {
       { buildingId: "junkuard", resourceName: "Water", amount: 1 },
       { buildingId: "junkuard", resourceName: "Organic", amount: 1 },
       { buildingId: "junkuard", resourceName: "Metal", amount: 1 },
-      // { buildingId: "junkuard", resourceName: "Battery", amount: 1 },
+      { buildingId: "junkuard", resourceName: "Battery", amount: 1 },
     ],
     workers: [{ buildingId: "p0", profession: "building" }],
   },

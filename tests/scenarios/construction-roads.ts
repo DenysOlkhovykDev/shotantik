@@ -3,12 +3,12 @@ import { type Scenario } from "@test-situations/test-situation";
 export const constructionRoads: Scenario = {
   aircraft: {
     buildings: [
-      { from: "", id: "p0", type: "Platform", x: 460, y: 640 },
-      { from: "", id: "ps", type: "Platform", x: 160, y: 600 },
-      { from: "p0", id: "p1", type: "Platform", x: 360, y: 640 },
-      { from: "p1", id: "p2", type: "Platform", x: 260, y: 740 },
-      { from: "p2", id: "p3", type: "Platform", x: 360, y: 840 },
-      { from: "p3", id: "p4", type: "Platform", x: 460, y: 840 },
+      { from: "", id: "p0", type: "Platform", x: 100, y: 0 },
+      { from: "", id: "ps", type: "Platform", x: -200, y: -40 },
+      { from: "p0", id: "p1", type: "Platform", x: 0, y: 0 },
+      { from: "p1", id: "p2", type: "Platform", x: -100, y: 100 },
+      { from: "p2", id: "p3", type: "Platform", x: 0, y: 200 },
+      { from: "p3", id: "p4", type: "Platform", x: 100, y: 200 },
     ],
     workers: [{ buildingId: "p0", profession: "building" }],
     resources: [
@@ -19,8 +19,8 @@ export const constructionRoads: Scenario = {
     buildingTasks: [
       {
         from: "p4",
-        x: 560,
-        y: 840,
+        x: 200,
+        y: 200,
         buildingType: "Platform",
       },
     ],

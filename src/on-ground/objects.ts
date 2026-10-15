@@ -77,9 +77,9 @@ class OnGroundObjects extends Container {
     sin: number,
     cos: number,
   ) {
-    const localX = building.x + building.buildingConfig.boundsCenter.x - 360;
+    const localX = building.x + building.buildingConfig.boundsCenter.x;
 
-    const localY = building.y + building.buildingConfig.boundsCenter.y - 640;
+    const localY = building.y + building.buildingConfig.boundsCenter.y;
 
     const buildingX = worldX + localX * cos - localY * sin;
 
