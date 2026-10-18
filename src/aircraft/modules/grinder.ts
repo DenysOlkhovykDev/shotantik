@@ -12,7 +12,7 @@ import { getRadialPoint } from "@utils/basic-geometry";
 export class Grinder extends Building {
   static readonly buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
-    storageRadius: 32,
+    storageRadius: 30,
 
     inventorySize: 4,
 
