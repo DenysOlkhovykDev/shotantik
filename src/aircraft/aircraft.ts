@@ -79,6 +79,7 @@ class Aircraft {
 
   public airCraftLayer = new Container();
   public workersLayer = new Container();
+  public roadsLayer = new Container();
   private DEBUGBoundsRadius = new Graphics();
 
   public boundsRadius = 0;
@@ -87,6 +88,8 @@ class Aircraft {
     if (import.meta.env.VITE_IS_DEBUG === "true") {
       this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
     }
+
+    this.airCraftLayer.addChildAt(this.roadsLayer, 0);
 
     this.airCraftLayer.position.set(
       getGameScreenCenter().x,
@@ -216,7 +219,7 @@ class Aircraft {
     from.addRoad(road);
     to.addRoad(road);
 
-    this.airCraftLayer.addChildAt(road.graphic, 0);
+    this.roadsLayer.addChildAt(road.graphic, 0);
   }
 
   public addBlueprintRoad(from: Building, to: Building) {
@@ -224,7 +227,7 @@ class Aircraft {
 
     to.addRoad(blueprintRoad);
 
-    this.airCraftLayer.addChildAt(blueprintRoad.graphic, 0);
+    this.roadsLayer.addChildAt(blueprintRoad.graphic, 0);
 
     return blueprintRoad;
   }
