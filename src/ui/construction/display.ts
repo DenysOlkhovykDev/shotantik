@@ -39,7 +39,7 @@ export class ConstructionDisplay extends Container {
 
   public displayBuildingType(buildingName: string | undefined) {
     if (buildingName) {
-      this.createDisplayBackround(buildingName);
+      this.createDisplayBackground(buildingName);
       this.createCancelButton();
 
       if (buildingName === "Road") {
@@ -64,7 +64,7 @@ export class ConstructionDisplay extends Container {
     }
   }
 
-  private createDisplayBackround(buildingName: string) {
+  private createDisplayBackground(buildingName: string) {
     const backgroundColor = menuItems.find(
       (item) => item.label === buildingName,
     )?.color;

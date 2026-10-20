@@ -100,6 +100,6 @@ export class Platform extends Building {
       }
     }
 
-    aircraft.setConstuctionSource(this);
+    aircraft.setConstructionSource(this);
   }
 }

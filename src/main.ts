@@ -84,7 +84,7 @@ createTestSituation(worldLayer);
 
 app.stage.addChild(worldLayer); // Temp
 
-aircraft.initilaizeAircraft(app.stage);
+aircraft.initializeAircraft(app.stage);
 
 app.stage.addChild(UIcontainer); // Temp
 
@@ -174,7 +174,7 @@ function updateGame(deltaTime: number) {
 
   tutorials.updateTutorials();
 
-  researchManager.updateReserachProgress(deltaTime);
+  researchManager.updateResearchProgress(deltaTime);
 }
 
 export function getWorldCoordinates() {

@@ -13,7 +13,7 @@ import {
 import { ResourceStorage } from "@aircraft/building-parts/resource-storage";
 import { TaskManager } from "@aircraft/building-parts/task-manager";
 import { CraftingProcessor } from "@aircraft/building-parts/crafting-processor";
-import { GeometryCalulator } from "@aircraft/building-parts/geometry-calculator";
+import { GeometryCalculator } from "@aircraft/building-parts/geometry-calculator";
 import { shadowFilter } from "@aircraft/building-parts/shadow-filter";
 
 import { type Road } from "@roads/road";
@@ -62,7 +62,7 @@ export abstract class Building extends Container {
   contentContainer: Container;
   static readonly buildingConfig: BuildingConfig;
   static baseTexture: Texture;
-  geometry: GeometryCalulator;
+  geometry: GeometryCalculator;
 
   roads: Road[] = [];
 
@@ -104,7 +104,7 @@ export abstract class Building extends Container {
     this.buildingContainer = new Container();
     this.contentContainer = new Container();
 
-    this.geometry = new GeometryCalulator(this);
+    this.geometry = new GeometryCalculator(this);
     this.craftingProcessor = new CraftingProcessor(this);
     this.resourceStorage = new ResourceStorage(
       this.buildingConfig.inventorySize,
@@ -138,7 +138,7 @@ export abstract class Building extends Container {
 
   protected onClick(
     event: FederatedPointerEvent,
-    needResetCinstructionSettings = true,
+    needResetConstructionSettings = true,
   ) {
     event.stopPropagation();
 
@@ -152,7 +152,7 @@ export abstract class Building extends Container {
 
     researchManager.hideMenu();
 
-    if (needResetCinstructionSettings) {
+    if (needResetConstructionSettings) {
       aircraft.resetConstructionSource();
 
       constructionManager.setBuildingType(undefined);
@@ -243,10 +243,10 @@ export abstract class Building extends Container {
 
   // ResourceStorage
 
-  public unsubscribeResourceListners(
+  public unsubscribeResourceListeners(
     fn: (task: Task, resource: Resource) => void,
   ) {
-    return this.resourceStorage.unsubscribeResourceListners(fn);
+    return this.resourceStorage.unsubscribeResourceListeners(fn);
   }
 
   public tryToAddResource(resource: Resource, task?: Task) {
@@ -290,7 +290,7 @@ export abstract class Building extends Container {
         result: this.craftRecipe.result,
       },
       {
-        availableResources: this.resourceStorage.recources.map(
+        availableResources: this.resourceStorage.resources.map(
           (resource) => resource.resourceType,
         ),
         isAvailableResult: false,

@@ -66,13 +66,13 @@ class SpeedButton extends Container {
 
   private updateSymbol(): void {
     if (this.getSpeedModifier() === 1) {
-      this.drawStandartSymbol();
+      this.drawStandardSymbol();
     } else {
       this.drawDoubleSymbol();
     }
   }
 
-  private drawStandartSymbol(): void {
+  private drawStandardSymbol(): void {
     this.symbol.clear();
 
     this.symbol
@@ -120,7 +120,7 @@ class SpeedButton extends Container {
     this.speedModifier = 2;
   }
 
-  public standartSpeedModifier() {
+  public standardSpeedModifier() {
     this.speedModifier = 1;
   }
 
@@ -128,7 +128,7 @@ class SpeedButton extends Container {
     if (this.getSpeedModifier() === 1) {
       this.doubleSpeedModifier();
     } else {
-      this.standartSpeedModifier();
+      this.standardSpeedModifier();
     }
   }
 }

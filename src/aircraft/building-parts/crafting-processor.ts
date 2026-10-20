@@ -74,7 +74,7 @@ export class CraftingProcessor {
     );
 
     return (
-      this.building.resourceStorage.recources.length - consumedResources + 1 <=
+      this.building.resourceStorage.resources.length - consumedResources + 1 <=
       this.building.buildingConfig.inventorySize
     );
   }

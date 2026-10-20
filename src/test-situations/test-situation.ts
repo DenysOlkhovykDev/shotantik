@@ -39,7 +39,7 @@ import { researchingTechnologies } from "@test-scenarios/researching-technologie
 import { reuseResources } from "@test-scenarios/reuse-resources";
 import { sceneRender } from "@test-scenarios/scene-render";
 import { showingTutorials } from "@test-scenarios/showing-tutorials";
-import { tooMuchBlueprints } from "@test-scenarios/too-much-bluerints";
+import { tooMuchBlueprints } from "@test-scenarios/too-much-blueprints";
 
 function getScenarioName() {
   const params = new URLSearchParams(window.location.search);

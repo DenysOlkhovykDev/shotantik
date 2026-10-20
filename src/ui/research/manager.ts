@@ -42,7 +42,7 @@ export class ResearchManager extends Container {
     }
   }
 
-  public updateReserachProgress(delta: number) {
+  public updateResearchProgress(delta: number) {
     this.researchProgress.current +=
       delta * this.researchProgress.amountOfResearchers;
     if (this.researchProgress.current >= this.researchProgress.goal) {

@@ -8,7 +8,7 @@ import { researchManager } from "@research/manager";
 
 import { menuItems } from "@utils/menu-items";
 
-export function hasAtleastOneBlueprint() {
+export function hasAtLeastOneBlueprint() {
   return aircraft.blueprints.length > 0;
 }
 
@@ -76,7 +76,7 @@ export function checkFirstTargetReached() {
 }
 
 export function isCurrentTargetReached() {
-  return onGroundObjects.objectsOnGround[0]?.isColide ?? false;
+  return onGroundObjects.objectsOnGround[0]?.isCollide ?? false;
 }
 
 export function hasClickedOnPlatformNearTarget() {

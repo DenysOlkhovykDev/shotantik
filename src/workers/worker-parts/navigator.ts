@@ -68,7 +68,7 @@ export class Navigator {
   public pickPathToBuilding(task: Task) {
     this.path = task.getRouteForTarget(this.currentPlatform);
 
-    this.pathMovingPrepearing();
+    this.pathMovingPreparing();
   }
 
   public pickPathToResource(task: Task) {
@@ -79,12 +79,12 @@ export class Navigator {
 
     this.path = path;
 
-    this.pathMovingPrepearing();
+    this.pathMovingPreparing();
 
     return resource;
   }
 
-  private pathMovingPrepearing() {
+  private pathMovingPreparing() {
     this.path.shift();
 
     this.state = "moving";

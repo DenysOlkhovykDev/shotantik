@@ -9,7 +9,7 @@ type ResourceListener = (task: Task, resource: Resource) => void;
 
 export class ResourceStorage extends Container {
   resourceList: Map<string, number> = new Map<string, number>();
-  recources: Resource[] = [];
+  resources: Resource[] = [];
 
   private resourceListeners: ResourceListener[] = [];
 
@@ -21,7 +21,7 @@ export class ResourceStorage extends Container {
   }
 
   getResourceCount(resourceName: string) {
-    return this.recources.filter(
+    return this.resources.filter(
       (resource) => resource.resourceType === resourceName,
     ).length;
   }
@@ -39,7 +39,7 @@ export class ResourceStorage extends Container {
       const x = Math.cos(angle) * distanceFromCenter;
       const y = Math.sin(angle) * distanceFromCenter;
 
-      const isValid = this.recources.every((other) => {
+      const isValid = this.resources.every((other) => {
         if (other === resource) return true;
 
         const dx = other.x - x;
@@ -63,7 +63,7 @@ export class ResourceStorage extends Container {
     resource.rotation = Math.random() * Math.PI * 2;
   }
 
-  unsubscribeResourceListners(fn: ResourceListener) {
+  unsubscribeResourceListeners(fn: ResourceListener) {
     this.resourceListeners.push(fn);
 
     return () => {
@@ -75,9 +75,9 @@ export class ResourceStorage extends Container {
   }
 
   tryToAddResource(resource: Resource, task?: Task) {
-    if (this.recources.length >= this.inventorySize) return false;
+    if (this.resources.length >= this.inventorySize) return false;
 
-    this.recources.push(resource);
+    this.resources.push(resource);
     this.addChild(resource);
 
     const resourceName = resource.resourceType;
@@ -99,11 +99,11 @@ export class ResourceStorage extends Container {
   }
 
   takeResourceByIndex(resourceIndex: number) {
-    if (resourceIndex < 0 || resourceIndex >= this.recources.length) {
+    if (resourceIndex < 0 || resourceIndex >= this.resources.length) {
       return undefined;
     }
 
-    const resourceName = this.recources[resourceIndex].resourceType;
+    const resourceName = this.resources[resourceIndex].resourceType;
     const current = this.resourceList.get(resourceName) ?? 0;
 
     if (current > 1) {
@@ -112,7 +112,7 @@ export class ResourceStorage extends Container {
       this.resourceList.delete(resourceName);
     }
 
-    const [resource] = this.recources.splice(resourceIndex, 1);
+    const [resource] = this.resources.splice(resourceIndex, 1);
 
     this.removeChild(resource);
 
@@ -120,13 +120,13 @@ export class ResourceStorage extends Container {
   }
 
   takeResourceByType(resource: Resource) {
-    const index = this.recources.indexOf(resource);
+    const index = this.resources.indexOf(resource);
 
     return this.takeResourceByIndex(index);
   }
 
   takeReservedResourceByName(resourceName: string) {
-    const index = this.recources.findIndex(
+    const index = this.resources.findIndex(
       (resource) =>
         resource.resourceType === resourceName && resource.isReserved,
     );
@@ -135,7 +135,7 @@ export class ResourceStorage extends Container {
   }
 
   takeResourceByName(resourceName: string) {
-    const index = this.recources.findIndex(
+    const index = this.resources.findIndex(
       (resource) =>
         resource.resourceType === resourceName && !resource.isReserved,
     );

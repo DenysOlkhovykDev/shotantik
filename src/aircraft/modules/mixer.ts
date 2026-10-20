@@ -39,7 +39,7 @@ export class Mixer extends Building {
     duration: 60,
   };
 
-  private static satelitesParams = {
+  private static satellitesParams = {
     amount: 8,
     size: 5,
     rotationSpeed: 0.05,
@@ -54,10 +54,10 @@ export class Mixer extends Building {
   };
 
   // contentContainer
-  // ├── satelitesGraphics
+  // ├── satellitesGraphics
   // ├── baseGraphics
 
-  private satelitesGraphics: Graphics[] = [];
+  private satellitesGraphics: Graphics[] = [];
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Mixer", isDecorative);
@@ -70,7 +70,7 @@ export class Mixer extends Building {
   protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
-    this.createSatelites();
+    this.createSatellites();
 
     this.createBaseTexture();
 
@@ -78,29 +78,29 @@ export class Mixer extends Building {
     this.contentContainer.addChild(base);
   }
 
-  private createSatelites() {
-    for (let i = 0; i < Mixer.satelitesParams.amount; i++) {
-      this.satelitesGraphics[i] = new Graphics();
+  private createSatellites() {
+    for (let i = 0; i < Mixer.satellitesParams.amount; i++) {
+      this.satellitesGraphics[i] = new Graphics();
 
       const { x: cx, y: cy } = getRadialPoint(
         i,
-        Mixer.satelitesParams.amount,
+        Mixer.satellitesParams.amount,
         Mixer.buildingConfig.baseGraphicalSize - 5,
       );
 
-      this.satelitesGraphics[i].position.set(cx, cy);
+      this.satellitesGraphics[i].position.set(cx, cy);
 
       for (let j = 0; j < 3; j++) {
         const { x, y } = getRadialPoint(j, 3, 10);
 
-        this.satelitesGraphics[i]
+        this.satellitesGraphics[i]
           .moveTo(x, y)
-          .circle(x, y, Mixer.satelitesParams.size)
-          .fill(Mixer.satelitesParams.color)
-          .stroke({ width: 2, color: Mixer.satelitesParams.stroke });
+          .circle(x, y, Mixer.satellitesParams.size)
+          .fill(Mixer.satellitesParams.color)
+          .stroke({ width: 2, color: Mixer.satellitesParams.stroke });
       }
 
-      this.contentContainer.addChild(this.satelitesGraphics[i]);
+      this.contentContainer.addChild(this.satellitesGraphics[i]);
     }
   }
 
@@ -152,9 +152,9 @@ export class Mixer extends Building {
   }
 
   animation(delta: number) {
-    for (let i = 0; i < Mixer.satelitesParams.amount; i++) {
-      this.satelitesGraphics[i].rotation +=
-        Mixer.satelitesParams.rotationSpeed * delta;
+    for (let i = 0; i < Mixer.satellitesParams.amount; i++) {
+      this.satellitesGraphics[i].rotation +=
+        Mixer.satellitesParams.rotationSpeed * delta;
     }
   }
 }

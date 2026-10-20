@@ -107,7 +107,7 @@ export class Researcher extends Building {
   private cubesGraphics: Graphics[] = [];
   private rotationSparkle = new Graphics();
 
-  private rubiksCubeTiles = [
+  private rubikCubeTiles = [
     Array.from({ length: 3 }, () => Array(3).fill("#ea0600")), // R
     Array.from({ length: 3 }, () => Array(3).fill("#07a42e")), // F
     Array.from({ length: 3 }, () => Array(3).fill("#f2f2f2")), // U
@@ -182,7 +182,7 @@ export class Researcher extends Building {
             graphic,
             Researcher.cubesParams.size,
             face,
-            this.rubiksCubeTiles[face][row][column],
+            this.rubikCubeTiles[face][row][column],
           );
 
           this.cubesGraphics.push(graphic);
@@ -264,7 +264,7 @@ export class Researcher extends Building {
 
   animation(delta: number) {
     const maxPosition =
-      Researcher.rotationParams.segments[this.getCurrnetSide()].length;
+      Researcher.rotationParams.segments[this.getCurrentSide()].length;
 
     this.rotationState.rotationSparklePosition +=
       Researcher.rotationParams.speed * delta * (maxPosition / 6);
@@ -300,7 +300,7 @@ export class Researcher extends Building {
   }
 
   private showSegmentPart() {
-    const segments = Researcher.rotationParams.segments[this.getCurrnetSide()];
+    const segments = Researcher.rotationParams.segments[this.getCurrentSide()];
 
     const segmentCount = segments.length - 1;
 
@@ -327,9 +327,9 @@ export class Researcher extends Building {
   }
   private hideSegmentPart() {
     const maxPosition =
-      Researcher.rotationParams.segments[this.getCurrnetSide()].length - 1;
+      Researcher.rotationParams.segments[this.getCurrentSide()].length - 1;
 
-    const segments = Researcher.rotationParams.segments[this.getCurrnetSide()];
+    const segments = Researcher.rotationParams.segments[this.getCurrentSide()];
 
     const segmentCount = segments.length - 1;
 
@@ -374,7 +374,7 @@ export class Researcher extends Building {
       .stroke({ width: 15, color: "#ffffff", cap: "round" });
   }
 
-  private getCurrnetSide() {
+  private getCurrentSide() {
     return Researcher.rotationParams.schedule[
       this.rotationState.currentRotatedSide
     ];
@@ -390,16 +390,16 @@ export class Researcher extends Building {
       B: () => this.rotateBackSide(),
     };
 
-    rotateMethods[this.getCurrnetSide()]();
+    rotateMethods[this.getCurrentSide()]();
   }
 
   private rotateRightSide() {
-    this.rubiksCubeTiles[0] = rotateMatrix(this.rubiksCubeTiles[0]);
+    this.rubikCubeTiles[0] = rotateMatrix(this.rubikCubeTiles[0]);
 
-    const front = this.rubiksCubeTiles[1];
-    const up = this.rubiksCubeTiles[2];
-    const down = this.rubiksCubeTiles[3];
-    const back = this.rubiksCubeTiles[4];
+    const front = this.rubikCubeTiles[1];
+    const up = this.rubikCubeTiles[2];
+    const down = this.rubikCubeTiles[3];
+    const back = this.rubikCubeTiles[4];
 
     const frontRow = [front[0][2], front[1][2], front[2][2]];
 
@@ -414,12 +414,12 @@ export class Researcher extends Building {
   }
 
   private rotateLeftSide() {
-    this.rubiksCubeTiles[5] = rotateMatrix(this.rubiksCubeTiles[5]);
+    this.rubikCubeTiles[5] = rotateMatrix(this.rubikCubeTiles[5]);
 
-    const front = this.rubiksCubeTiles[1];
-    const up = this.rubiksCubeTiles[2];
-    const down = this.rubiksCubeTiles[3];
-    const back = this.rubiksCubeTiles[4];
+    const front = this.rubikCubeTiles[1];
+    const up = this.rubikCubeTiles[2];
+    const down = this.rubikCubeTiles[3];
+    const back = this.rubikCubeTiles[4];
 
     const frontRow = [front[0][0], front[1][0], front[2][0]];
 
@@ -434,12 +434,12 @@ export class Researcher extends Building {
   }
 
   private rotateUpSide() {
-    this.rubiksCubeTiles[2] = rotateMatrix(this.rubiksCubeTiles[2]);
+    this.rubikCubeTiles[2] = rotateMatrix(this.rubikCubeTiles[2]);
 
-    const right = this.rubiksCubeTiles[0];
-    const front = this.rubiksCubeTiles[1];
-    const back = this.rubiksCubeTiles[4];
-    const left = this.rubiksCubeTiles[5];
+    const right = this.rubikCubeTiles[0];
+    const front = this.rubikCubeTiles[1];
+    const back = this.rubikCubeTiles[4];
+    const left = this.rubikCubeTiles[5];
 
     const frontRow = [...front[0]];
 
@@ -454,12 +454,12 @@ export class Researcher extends Building {
   }
 
   private rotateDownSide() {
-    this.rubiksCubeTiles[3] = rotateMatrix(this.rubiksCubeTiles[3]);
+    this.rubikCubeTiles[3] = rotateMatrix(this.rubikCubeTiles[3]);
 
-    const right = this.rubiksCubeTiles[0];
-    const front = this.rubiksCubeTiles[1];
-    const back = this.rubiksCubeTiles[4];
-    const left = this.rubiksCubeTiles[5];
+    const right = this.rubikCubeTiles[0];
+    const front = this.rubikCubeTiles[1];
+    const back = this.rubikCubeTiles[4];
+    const left = this.rubikCubeTiles[5];
 
     const frontRow = [...front[2]];
 
@@ -474,12 +474,12 @@ export class Researcher extends Building {
   }
 
   private rotateFrontSide() {
-    this.rubiksCubeTiles[1] = rotateMatrix(this.rubiksCubeTiles[1]);
+    this.rubikCubeTiles[1] = rotateMatrix(this.rubikCubeTiles[1]);
 
-    const right = this.rubiksCubeTiles[0];
-    const up = this.rubiksCubeTiles[2];
-    const down = this.rubiksCubeTiles[3];
-    const left = this.rubiksCubeTiles[5];
+    const right = this.rubikCubeTiles[0];
+    const up = this.rubikCubeTiles[2];
+    const down = this.rubikCubeTiles[3];
+    const left = this.rubikCubeTiles[5];
 
     const upRow = [...up[2]];
 
@@ -494,12 +494,12 @@ export class Researcher extends Building {
   }
 
   private rotateBackSide() {
-    this.rubiksCubeTiles[4] = rotateMatrix(this.rubiksCubeTiles[4]);
+    this.rubikCubeTiles[4] = rotateMatrix(this.rubikCubeTiles[4]);
 
-    const right = this.rubiksCubeTiles[0];
-    const up = this.rubiksCubeTiles[2];
-    const down = this.rubiksCubeTiles[3];
-    const left = this.rubiksCubeTiles[5];
+    const right = this.rubikCubeTiles[0];
+    const up = this.rubikCubeTiles[2];
+    const down = this.rubikCubeTiles[3];
+    const left = this.rubikCubeTiles[5];
 
     const upRow = [...up[0]];
 
@@ -520,7 +520,7 @@ export class Researcher extends Building {
           const index = face * 9 + row * 3 + column;
 
           this.cubesGraphics[index].tint =
-            this.rubiksCubeTiles[face][row][column];
+            this.rubikCubeTiles[face][row][column];
         }
       }
     }
