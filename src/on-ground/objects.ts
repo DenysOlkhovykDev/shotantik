@@ -20,7 +20,7 @@ import {
 type GroundObject = {
   container: Container;
   boundsRadius: number;
-  isColide: boolean;
+  isCollide: boolean;
 };
 
 class OnGroundObjects extends Container {
@@ -32,14 +32,14 @@ class OnGroundObjects extends Container {
     this.objectsOnGround.push({
       container: researcher,
       boundsRadius: researcher.buildingConfig.boundsRadius,
-      isColide: false,
+      isCollide: false,
     });
     researcher.eventMode = "none";
 
     this.addChild(researcher);
   }
 
-  public checkColision() {
+  public checkCollision() {
     for (let i = 0; i < this.objectsOnGround.length; i++) {
       if (this.overlapWithAircraftBounds(this.objectsOnGround[i])) {
         const cos = Math.cos(-getWorldRotation());
@@ -47,7 +47,7 @@ class OnGroundObjects extends Container {
         const { x: worldX, y: worldY } = getWorldCoordinates();
 
         for (const building of aircraft.buildings) {
-          this.objectsOnGround[i].isColide = this.overlapWithBuilding(
+          this.objectsOnGround[i].isCollide = this.overlapWithBuilding(
             this.objectsOnGround[i],
             building,
             worldX,
@@ -56,7 +56,7 @@ class OnGroundObjects extends Container {
             cos,
           );
 
-          if (this.objectsOnGround[i].isColide) {
+          if (this.objectsOnGround[i].isCollide) {
             break;
           }
         }
@@ -123,7 +123,7 @@ class OnGroundObjects extends Container {
 
   private deleteOldTarget() {
     for (let i = 0; i < this.objectsOnGround.length; i++) {
-      if (this.objectsOnGround[i].isColide) {
+      if (this.objectsOnGround[i].isCollide) {
         compasses.deleteCompass(
           this.objectsOnGround[i].container.x,
           this.objectsOnGround[i].container.y,

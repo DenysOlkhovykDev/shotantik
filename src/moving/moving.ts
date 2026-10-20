@@ -38,7 +38,7 @@ export function moveWorld(
   }
 
   if (ship.thrustVelocity !== 0 || ship.angularVelocity !== 0) {
-    onGroundObjects.checkColision();
+    onGroundObjects.checkCollision();
   }
 
   thrustWorld(delta, thrustInput);

@@ -72,10 +72,10 @@ export class Assembler extends Building {
   };
 
   // contentContainer
-  // ├── maniulatorsGraphics
+  // ├── manipulatorsGraphics
   // ├── baseGraphics
 
-  private maniulatorsGraphics: Graphics[] = [];
+  private manipulatorsGraphics: Graphics[] = [];
 
   private manipulatorsPosition = {
     rotation: [0.1, 0.15, 0.2],
@@ -103,7 +103,7 @@ export class Assembler extends Building {
 
   private createManipulators() {
     for (let i = 0; i < 3; i++) {
-      this.maniulatorsGraphics[i] = new Graphics();
+      this.manipulatorsGraphics[i] = new Graphics();
 
       const start = getRadialPoint(
         i * 6,
@@ -126,10 +126,10 @@ export class Assembler extends Building {
         Assembler.buildingConfig.baseGraphicalSize,
       );
 
-      this.maniulatorsGraphics[i].position.set(start.x, start.y);
-      this.maniulatorsGraphics[i].pivot.set(start.x, start.y);
+      this.manipulatorsGraphics[i].position.set(start.x, start.y);
+      this.manipulatorsGraphics[i].pivot.set(start.x, start.y);
 
-      this.maniulatorsGraphics[i]
+      this.manipulatorsGraphics[i]
         .moveTo(end.x, end.y)
         .lineTo(head.x, head.y)
         .stroke({
@@ -137,7 +137,7 @@ export class Assembler extends Building {
           color: Assembler.manipulatorsParams.backgroundColor,
         });
 
-      this.maniulatorsGraphics[i]
+      this.manipulatorsGraphics[i]
         .moveTo(start.x, start.y)
         .lineTo(middle.x, middle.y)
         .lineTo(end.x, end.y)
@@ -147,7 +147,7 @@ export class Assembler extends Building {
           cap: "round",
         });
 
-      this.maniulatorsGraphics[i]
+      this.manipulatorsGraphics[i]
         .moveTo(start.x, start.y)
         .lineTo(middle.x, middle.y)
         .lineTo(end.x, end.y)
@@ -157,7 +157,7 @@ export class Assembler extends Building {
           cap: "round",
         });
 
-      this.maniulatorsGraphics[i]
+      this.manipulatorsGraphics[i]
         .circle(start.x, start.y, Assembler.manipulatorsParams.jointRadius)
         .fill(Assembler.manipulatorsParams.baseColor)
         .stroke({
@@ -165,7 +165,7 @@ export class Assembler extends Building {
           color: Assembler.manipulatorsParams.backgroundColor,
         });
 
-      this.maniulatorsGraphics[i]
+      this.manipulatorsGraphics[i]
         .circle(middle.x, middle.y, Assembler.manipulatorsParams.jointRadius)
         .fill(Assembler.manipulatorsParams.baseColor)
         .stroke({
@@ -173,10 +173,10 @@ export class Assembler extends Building {
           color: Assembler.manipulatorsParams.backgroundColor,
         });
 
-      this.maniulatorsGraphics[i].rotation =
+      this.manipulatorsGraphics[i].rotation =
         this.manipulatorsPosition.rotation[i];
 
-      this.contentContainer.addChild(this.maniulatorsGraphics[i]);
+      this.contentContainer.addChild(this.manipulatorsGraphics[i]);
     }
   }
 
@@ -251,7 +251,7 @@ export class Assembler extends Building {
   }
 
   animation(delta: number) {
-    for (let i = 0; i < this.maniulatorsGraphics.length; i++) {
+    for (let i = 0; i < this.manipulatorsGraphics.length; i++) {
       if (
         this.manipulatorsPosition.rotation[i] <=
         Assembler.manipulatorsParams.minRotation
@@ -269,7 +269,7 @@ export class Assembler extends Building {
         delta *
         this.manipulatorsPosition.direction[i];
 
-      this.maniulatorsGraphics[i].rotation =
+      this.manipulatorsGraphics[i].rotation =
         this.manipulatorsPosition.rotation[i];
     }
   }

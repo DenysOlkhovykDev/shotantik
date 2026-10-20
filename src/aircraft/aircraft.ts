@@ -10,7 +10,7 @@ import { Assembler } from "@aircraft/modules/assembler";
 import { Collector } from "@aircraft/modules/collector";
 import { Farm } from "@aircraft/modules/farm";
 import { Extractor } from "@aircraft/modules/extractor";
-import { Junkuard } from "@aircraft/modules/junkuard";
+import { Junkyard } from "@aircraft/modules/junkyard";
 import { House } from "@aircraft/modules/house";
 import { Mixer } from "@aircraft/modules/mixer";
 import { Grinder } from "@aircraft/modules/grinder";
@@ -51,7 +51,7 @@ export const buildingMap: Record<string, BuildingClass> = {
   Farm,
   Extractor,
   Assembler,
-  Junkuard,
+  Junkyard,
   House,
   Mixer,
   Grinder,
@@ -84,7 +84,7 @@ class Aircraft {
 
   public boundsRadius = 0;
 
-  public initilaizeAircraft(stage: Container) {
+  public initializeAircraft(stage: Container) {
     if (import.meta.env.VITE_IS_DEBUG === "true") {
       this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
     }
@@ -149,7 +149,7 @@ class Aircraft {
       }
     }
 
-    onGroundObjects.checkColision();
+    onGroundObjects.checkCollision();
 
     return building;
   }
@@ -174,7 +174,7 @@ class Aircraft {
 
       for (let i = 0; i < constructionRecipe.length; i++) {
         for (let j = 0; j < constructionRecipe[i].amount; j++) {
-          const availableResource = from.resourceStorage.recources.find(
+          const availableResource = from.resourceStorage.resources.find(
             (resource) =>
               resource.resourceType === constructionRecipe[i].resourceName &&
               !resource.isReserved,
@@ -200,14 +200,14 @@ class Aircraft {
         }
       }
 
-      const unsubscribe = from.unsubscribeResourceListners(
+      const unsubscribe = from.unsubscribeResourceListeners(
         (task: Task, resource: Resource) => {
           blueprint.onBlueprintResourceAdded(task, resource);
         },
       );
 
       blueprint.unsubscribe = unsubscribe;
-      blueprint.blueprinToBuilding();
+      blueprint.blueprintToBuilding();
     }
 
     return blueprint;
@@ -242,7 +242,7 @@ class Aircraft {
     if (alreadyHaveRoad.length === 0) {
       const blueprintRoad = this.addBlueprintRoad(from, to);
 
-      const availableResource = from.resourceStorage.recources.find(
+      const availableResource = from.resourceStorage.resources.find(
         (resource) => resource.resourceType === "Metal" && !resource.isReserved,
       );
 
@@ -256,7 +256,7 @@ class Aircraft {
         }
       }
 
-      const unsubscribe = from.unsubscribeResourceListners(
+      const unsubscribe = from.unsubscribeResourceListeners(
         (task: Task, resource: Resource) => {
           blueprintRoad.onBlueprintResourceAdded(task, resource);
         },
@@ -271,7 +271,7 @@ class Aircraft {
     }
   }
 
-  public setConstuctionSource(node: Building) {
+  public setConstructionSource(node: Building) {
     this.constructionSource = this.buildings.indexOf(node);
   }
 
@@ -404,8 +404,8 @@ class Aircraft {
 
     blueprint.cleanup();
 
-    for (let i = 0; i < sourceBuilding.resourceStorage.recources.length; i++) {
-      const resource = sourceBuilding.resourceStorage.recources[i];
+    for (let i = 0; i < sourceBuilding.resourceStorage.resources.length; i++) {
+      const resource = sourceBuilding.resourceStorage.resources[i];
       if (!resource.isReserved) {
         this.findWhereToReuseUselessResource(resource);
       }

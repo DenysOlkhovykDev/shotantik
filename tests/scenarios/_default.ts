@@ -10,7 +10,7 @@ import {
   findFirstBlueprint,
   findFirstBuilding,
   findFirstBuildingByName,
-  hasAtleastOneBlueprint,
+  hasAtLeastOneBlueprint,
   hasClickedOnConstructionMenuButton,
   hasClickedOnEngine,
   hasClickedOnFirstBlueprint,
@@ -58,7 +58,7 @@ export const defaultScenario: Scenario = {
         text: `This is the
 blueprint 
 of Engine`,
-        showCondition: () => hasAtleastOneBlueprint() && !hasEngineBuilded(),
+        showCondition: () => hasAtLeastOneBlueprint() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnFirstBlueprint(),
         needOkButton: false,
         findTarget: () => findFirstBlueprint(),

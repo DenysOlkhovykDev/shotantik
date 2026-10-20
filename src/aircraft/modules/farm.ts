@@ -56,7 +56,7 @@ export class Farm extends Building {
 
   private kelpLeavesGraphics: Graphics[] = [];
 
-  private kelpsPostion = {
+  private kelpsPosition = {
     time: 0,
   };
 
@@ -193,7 +193,7 @@ export class Farm extends Building {
   }
 
   animation(delta: number) {
-    this.kelpsPostion.time += delta * Farm.kelpsParams.movingSpeed;
+    this.kelpsPosition.time += delta * Farm.kelpsParams.movingSpeed;
 
     for (let i = 0; i < Farm.kelpsParams.amount; i++) {
       this.kelpLeavesGraphics[i].clear();
@@ -245,7 +245,7 @@ export class Farm extends Building {
       const localAmplitude = Farm.kelpsParams.maxAmplitude * t * t;
 
       const offset =
-        Math.sin(this.kelpsPostion.time + t * Math.PI * 2 + index * 0.35) *
+        Math.sin(this.kelpsPosition.time + t * Math.PI * 2 + index * 0.35) *
         localAmplitude;
 
       leafGraphics.lineTo(px + nx * offset, py + ny * offset);

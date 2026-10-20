@@ -17,7 +17,7 @@ export function createAirCraftByScenario(scenario: AircraftScenario) {
       );
       buildingsMap.set(building.id, newBuilding);
     } else {
-      aircraft.setConstuctionSource(buildingsMap.get(building.from));
+      aircraft.setConstructionSource(buildingsMap.get(building.from));
       const newBuilding = aircraft.addBuilding(
         building.x,
         building.y,
@@ -59,7 +59,7 @@ export function createAirCraftByScenario(scenario: AircraftScenario) {
   }
 
   for (const blueprint of scenario.buildingTasks || []) {
-    aircraft.setConstuctionSource(buildingsMap.get(blueprint.from));
+    aircraft.setConstructionSource(buildingsMap.get(blueprint.from));
     aircraft.addBlueprint(blueprint.x, blueprint.y, blueprint.buildingType);
   }
 

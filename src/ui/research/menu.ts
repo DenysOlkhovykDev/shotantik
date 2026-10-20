@@ -33,7 +33,7 @@ export class ResearchMenu extends Container {
     }));
 
   private menuBackground = new Graphics();
-  private researchingProgreesBar = new Graphics();
+  private researchingProgressBar = new Graphics();
   private menuItemsContainers: Container[] = [];
 
   private levelTextElements: Text[] = [];
@@ -80,7 +80,7 @@ export class ResearchMenu extends Container {
 
     this.createUpgradesInfoDisplay();
 
-    this.createProgreesBar();
+    this.createProgressBar();
   }
 
   private makeMenuBackground() {
@@ -354,7 +354,7 @@ export class ResearchMenu extends Container {
     this.addChild(this.upgradesInfoDisplay);
   }
 
-  private createProgreesBar() {
+  private createProgressBar() {
     this.menuBackground
       .roundRect(
         0,
@@ -366,7 +366,7 @@ export class ResearchMenu extends Container {
       )
       .fill("#b2afad");
 
-    this.addChild(this.researchingProgreesBar);
+    this.addChild(this.researchingProgressBar);
   }
 
   private updateResearchingMenu(
@@ -379,14 +379,14 @@ export class ResearchMenu extends Container {
       this.levelTextElements[i].text = "Lvl: " + this.menuItems[i].level;
     }
 
-    this.researchingProgreesBar.clear();
+    this.researchingProgressBar.clear();
 
     const padding = 8;
 
     const progressBarWidth =
       (ResearchMenu.params.columnWidth / goal) * currentProgress;
 
-    this.researchingProgreesBar
+    this.researchingProgressBar
       .roundRect(
         padding,
         (this.menuItems.length + 1) *

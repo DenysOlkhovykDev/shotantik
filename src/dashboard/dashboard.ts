@@ -29,7 +29,7 @@ export function getAvailableTaskWithHighestPriority(
 
       const freeSpace =
         task.target.buildingConfig.inventorySize -
-        task.target.resourceStorage.recources.length;
+        task.target.resourceStorage.resources.length;
       const notCompletedTasks = task.blueprint?.tasks.length ?? 0;
 
       if (

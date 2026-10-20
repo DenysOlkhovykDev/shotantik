@@ -51,7 +51,7 @@ export class Grinder extends Building {
     rotationSpeed: 0.005,
   };
 
-  private static gearSatelitesParams = {
+  private static gearSatellitesParams = {
     amount: 3,
     teeth: 6,
     innerRadius: 7,
@@ -64,13 +64,13 @@ export class Grinder extends Building {
   };
 
   // contentContainer
-  // ├── gearSatelites
+  // ├── gearSatellites
   // └── buildingBase
   //      ├── baseGraphics
 
   private buildingBase: Container = new Container();
 
-  private gearSatelites: Graphics[] = [];
+  private gearSatellites: Graphics[] = [];
 
   constructor(x: number, y: number, isDecorative = false) {
     super(x, y, "Grinder", isDecorative);
@@ -83,7 +83,7 @@ export class Grinder extends Building {
   protected draw() {
     this.shadowFilter.addBasicShadowFilter(this.contentContainer);
 
-    this.createGearSatelites();
+    this.createGearSatellites();
 
     this.createBaseTexture();
 
@@ -92,30 +92,30 @@ export class Grinder extends Building {
     this.contentContainer.addChild(this.buildingBase);
   }
 
-  private createGearSatelites() {
-    for (let i = 0; i < Grinder.gearSatelitesParams.amount; i++) {
-      this.gearSatelites[i] = new Graphics();
+  private createGearSatellites() {
+    for (let i = 0; i < Grinder.gearSatellitesParams.amount; i++) {
+      this.gearSatellites[i] = new Graphics();
 
       makeGear(
-        this.gearSatelites[i],
-        Grinder.gearSatelitesParams.teeth,
-        Grinder.gearSatelitesParams.innerRadius,
-        Grinder.gearSatelitesParams.outerRadius,
-        Grinder.gearSatelitesParams.baseColor,
-        Grinder.gearSatelitesParams.strokeWidth,
-        Grinder.gearSatelitesParams.centerRadius,
-        Grinder.gearSatelitesParams.centerColor,
+        this.gearSatellites[i],
+        Grinder.gearSatellitesParams.teeth,
+        Grinder.gearSatellitesParams.innerRadius,
+        Grinder.gearSatellitesParams.outerRadius,
+        Grinder.gearSatellitesParams.baseColor,
+        Grinder.gearSatellitesParams.strokeWidth,
+        Grinder.gearSatellitesParams.centerRadius,
+        Grinder.gearSatellitesParams.centerColor,
       );
 
       const { x, y } = getRadialPoint(
         i,
-        Grinder.gearSatelitesParams.amount,
+        Grinder.gearSatellitesParams.amount,
         Grinder.buildingConfig.baseGraphicalSize,
       );
 
-      this.gearSatelites[i].position.set(x, y);
+      this.gearSatellites[i].position.set(x, y);
 
-      this.contentContainer.addChild(this.gearSatelites[i]);
+      this.contentContainer.addChild(this.gearSatellites[i]);
     }
   }
 
@@ -162,9 +162,9 @@ export class Grinder extends Building {
   animation(delta: number) {
     this.buildingBase.rotation += Grinder.buildingParams.rotationSpeed * delta;
 
-    for (let i = 0; i < Grinder.gearSatelitesParams.amount; i++) {
-      this.gearSatelites[i].rotation +=
-        Grinder.gearSatelitesParams.rotationSpeed * delta;
+    for (let i = 0; i < Grinder.gearSatellitesParams.amount; i++) {
+      this.gearSatellites[i].rotation +=
+        Grinder.gearSatellitesParams.rotationSpeed * delta;
     }
   }
 }

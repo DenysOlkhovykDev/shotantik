@@ -126,7 +126,7 @@ export class BlueprintRoad {
   public blueprintRoadToRoad() {
     if (this.reservedBuildResource) {
       const hasAllReservedResources =
-        this.from.resourceStorage.recources.includes(
+        this.from.resourceStorage.resources.includes(
           this.reservedBuildResource,
         );
 

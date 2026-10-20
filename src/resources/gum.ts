@@ -11,7 +11,7 @@ export class Gum extends Resource {
     ballsRadius: 2.5,
 
     rectWidth: 4,
-    rectheight: 2,
+    rectHeight: 2,
 
     strokeWidth: 3,
     strokeColor: "#000000",
@@ -36,9 +36,9 @@ export class Gum extends Resource {
       .circle(Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
       .rect(
         -Gum.params.rectWidth / 2,
-        -Gum.params.rectheight / 2,
+        -Gum.params.rectHeight / 2,
         Gum.params.rectWidth,
-        Gum.params.rectheight,
+        Gum.params.rectHeight,
       )
       .stroke({
         width: Gum.params.strokeWidth,

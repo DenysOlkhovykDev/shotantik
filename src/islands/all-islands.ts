@@ -9,14 +9,14 @@ class Islands extends Container {
 
   addIsland(x: number, y: number) {
     const seed = Math.trunc(Math.random() * 250);
-    const isla = new Island(
+    const island = new Island(
       x - (64 * 34 + 17) / 2,
       y - ((64 - 1) * 30) / 2,
       seed,
     );
-    this.islands.push(isla);
+    this.islands.push(island);
 
-    this.addChild(isla);
+    this.addChild(island);
   }
 
   addIslandIfItNeeded(x: number, y: number) {

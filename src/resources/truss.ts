@@ -5,7 +5,7 @@ import { Resource } from "@resources/resource";
 import { generateTextureFromOrigin } from "@utils/basic-graphic";
 
 export class Truss extends Resource {
-  private static paralels = {
+  private static parallels = {
     width: 12,
     height: 8,
 
@@ -34,42 +34,42 @@ export class Truss extends Resource {
     const baseGraphics = new Graphics();
 
     baseGraphics
-      .moveTo(Truss.paralels.width / 2, -Truss.paralels.height / 2)
-      .lineTo(Truss.paralels.width / 4, Truss.paralels.height / 2)
-      .lineTo(-Truss.paralels.width / 4, -Truss.paralels.height / 2)
-      .lineTo(-Truss.paralels.width / 2, Truss.paralels.height / 2)
+      .moveTo(Truss.parallels.width / 2, -Truss.parallels.height / 2)
+      .lineTo(Truss.parallels.width / 4, Truss.parallels.height / 2)
+      .lineTo(-Truss.parallels.width / 4, -Truss.parallels.height / 2)
+      .lineTo(-Truss.parallels.width / 2, Truss.parallels.height / 2)
       .stroke({ width: Truss.joins.width, color: Truss.joins.color });
 
     baseGraphics
-      .moveTo(-Truss.paralels.width / 2 - 1, -Truss.paralels.height / 2)
-      .lineTo(Truss.paralels.width / 2 + 1, -Truss.paralels.height / 2)
+      .moveTo(-Truss.parallels.width / 2 - 1, -Truss.parallels.height / 2)
+      .lineTo(Truss.parallels.width / 2 + 1, -Truss.parallels.height / 2)
       .stroke({
-        width: Truss.paralels.strokeWidth,
-        color: Truss.paralels.strokeColor,
+        width: Truss.parallels.strokeWidth,
+        color: Truss.parallels.strokeColor,
       });
 
     baseGraphics
-      .moveTo(-Truss.paralels.width / 2, -Truss.paralels.height / 2)
-      .lineTo(Truss.paralels.width / 2, -Truss.paralels.height / 2)
+      .moveTo(-Truss.parallels.width / 2, -Truss.parallels.height / 2)
+      .lineTo(Truss.parallels.width / 2, -Truss.parallels.height / 2)
       .stroke({
-        width: Truss.paralels.baseWidth,
-        color: Truss.paralels.baseColor,
+        width: Truss.parallels.baseWidth,
+        color: Truss.parallels.baseColor,
       });
 
     baseGraphics
-      .moveTo(-Truss.paralels.width / 2 - 1, Truss.paralels.height / 2)
-      .lineTo(Truss.paralels.width / 2 + 1, Truss.paralels.height / 2)
+      .moveTo(-Truss.parallels.width / 2 - 1, Truss.parallels.height / 2)
+      .lineTo(Truss.parallels.width / 2 + 1, Truss.parallels.height / 2)
       .stroke({
-        width: Truss.paralels.strokeWidth,
-        color: Truss.paralels.strokeColor,
+        width: Truss.parallels.strokeWidth,
+        color: Truss.parallels.strokeColor,
       });
 
     baseGraphics
-      .moveTo(-Truss.paralels.width / 2, Truss.paralels.height / 2)
-      .lineTo(Truss.paralels.width / 2, Truss.paralels.height / 2)
+      .moveTo(-Truss.parallels.width / 2, Truss.parallels.height / 2)
+      .lineTo(Truss.parallels.width / 2, Truss.parallels.height / 2)
       .stroke({
-        width: Truss.paralels.baseWidth,
-        color: Truss.paralels.baseColor,
+        width: Truss.parallels.baseWidth,
+        color: Truss.parallels.baseColor,
       });
 
     Truss.baseTexture = generateTextureFromOrigin(baseGraphics);

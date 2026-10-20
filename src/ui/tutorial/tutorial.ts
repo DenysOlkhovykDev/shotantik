@@ -13,7 +13,7 @@ export class Tutorial extends Container {
   private static tutorialParams = {
     holeRadius: 50,
     holeMessageSpacing: 10,
-    borderRaius: 20,
+    borderRadius: 20,
     messagePadding: 10,
     okButtonHeight: 30,
 
@@ -199,7 +199,7 @@ export class Tutorial extends Container {
     this.messageBackground.clear();
 
     this.messageBackground
-      .roundRect(x, y, width, height, Tutorial.tutorialParams.borderRaius)
+      .roundRect(x, y, width, height, Tutorial.tutorialParams.borderRadius)
       .fill("#cfcbc8")
       .stroke({
         width: Tutorial.tutorialParams.strokeWidth,
@@ -229,7 +229,7 @@ export class Tutorial extends Container {
           y,
           buttonWidth,
           buttonHeight,
-          Tutorial.tutorialParams.borderRaius -
+          Tutorial.tutorialParams.borderRadius -
             Tutorial.tutorialParams.messagePadding,
         )
         .fill("#a6a4a3")

@@ -6,13 +6,13 @@ import { generateTextureFromOrigin, makeGear } from "@utils/basic-graphic";
 
 export class Gear extends Resource {
   private static params = {
-    amounthOfTeeth: 6,
+    amountOfTeeth: 6,
     innerRadius: 4.5,
     outerRadius: 7,
 
     baseColor: "#bdd2d3",
     strokewidth: 1.25,
-    centerRaius: 2.25,
+    centerRadius: 2.25,
     centerColor: "#000000",
   };
 
@@ -32,12 +32,12 @@ export class Gear extends Resource {
 
     makeGear(
       baseGraphics,
-      Gear.params.amounthOfTeeth,
+      Gear.params.amountOfTeeth,
       Gear.params.innerRadius,
       Gear.params.outerRadius,
       Gear.params.baseColor,
       Gear.params.strokewidth,
-      Gear.params.centerRaius,
+      Gear.params.centerRadius,
       Gear.params.centerColor,
     );
 

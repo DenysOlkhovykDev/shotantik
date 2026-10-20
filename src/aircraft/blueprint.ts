@@ -322,7 +322,7 @@ export class Blueprint extends Building {
       this.updateRecipeSign();
     }
 
-    this.blueprinToBuilding();
+    this.blueprintToBuilding();
   }
 
   public reuseUselessResource(resource: Resource) {
@@ -333,20 +333,20 @@ export class Blueprint extends Building {
     if (
       taskWithNeededResource &&
       !resource.isReserved &&
-      taskWithNeededResource.target.resourceStorage.recources.includes(resource)
+      taskWithNeededResource.target.resourceStorage.resources.includes(resource)
     ) {
       this.onBlueprintResourceAdded(taskWithNeededResource, resource);
     }
   }
 
-  public blueprinToBuilding() {
+  public blueprintToBuilding() {
     const source = this.roads[0]?.from;
     if (!source) return;
 
     const hasAllReservedResources =
       this.reservedBuildResources.length === this.buildResources.length &&
       this.reservedBuildResources.every((resource) =>
-        source.resourceStorage.recources.includes(resource),
+        source.resourceStorage.resources.includes(resource),
       );
 
     if (this.tasks.length === 0 && hasAllReservedResources) {
@@ -357,11 +357,11 @@ export class Blueprint extends Building {
 
       const oldConstructionSource = aircraft.constructionSource;
 
-      aircraft.setConstuctionSource(source);
+      aircraft.setConstructionSource(source);
       aircraft.addBuilding(this.x, this.y, this.targetBuildingType);
       aircraft.deleteBlueprint(this);
       if (oldConstructionSource !== undefined) {
-        aircraft.setConstuctionSource(
+        aircraft.setConstructionSource(
           aircraft.buildings[oldConstructionSource],
         );
       }

@@ -59,7 +59,7 @@ export class Portal extends Building {
     baseRotation: Math.PI / 2,
 
     maxOffsetFromCenter: 4,
-    minffsetFromCenter: -2,
+    minOffsetFromCenter: -2,
   };
 
   // contentContainer
@@ -175,8 +175,8 @@ export class Portal extends Building {
       this.cubesMovingDirection = -1;
     }
 
-    if (this.cubesOffsetFromCenter < Portal.cubesParams.minffsetFromCenter) {
-      this.cubesOffsetFromCenter = Portal.cubesParams.minffsetFromCenter;
+    if (this.cubesOffsetFromCenter < Portal.cubesParams.minOffsetFromCenter) {
+      this.cubesOffsetFromCenter = Portal.cubesParams.minOffsetFromCenter;
       this.cubesMovingDirection = 1;
     }
 

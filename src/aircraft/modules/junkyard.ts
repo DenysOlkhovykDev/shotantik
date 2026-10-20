@@ -16,7 +16,7 @@ type Particle = {
   delay: number;
 };
 
-export class Junkuard extends Building {
+export class Junkyard extends Building {
   static readonly buildingConfig: BuildingConfig = {
     storageCenter: { x: 0, y: 0 },
     storageRadius: 52,
@@ -50,7 +50,7 @@ export class Junkuard extends Building {
   private amountOfParticles = 4;
 
   constructor(x: number, y: number, isDecorative = false) {
-    super(x, y, "Junkuard", isDecorative);
+    super(x, y, "Junkyard", isDecorative);
     this.draw();
   }
 
@@ -59,25 +59,25 @@ export class Junkuard extends Building {
 
     this.createBaseTexture();
 
-    const base = new Sprite(Junkuard.baseTexture);
+    const base = new Sprite(Junkyard.baseTexture);
     this.contentContainer.addChild(base);
 
     this.createParticles();
   }
 
   private createBaseTexture() {
-    if (Junkuard.baseTexture) return;
+    if (Junkyard.baseTexture) return;
 
     const baseGraphics = new Graphics();
 
     makeBasicCircle(
       baseGraphics,
-      Junkuard.buildingConfig.baseGraphicalSize,
-      Junkuard.buildingParams.baseColor,
+      Junkyard.buildingConfig.baseGraphicalSize,
+      Junkyard.buildingParams.baseColor,
       true,
     );
 
-    Junkuard.baseTexture = generateTextureFromOrigin(baseGraphics);
+    Junkyard.baseTexture = generateTextureFromOrigin(baseGraphics);
   }
 
   private createParticles() {
