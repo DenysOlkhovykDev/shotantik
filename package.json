@@ -11,6 +11,7 @@
     "test": "tsx tests/test-infra/run-tests.ts",
     "build": "vite build",
     "build:gh-pages": "vite build --mode gh-pages",
+    "build:itch": "vite build --mode itch",
     "deploy": "npm run build:gh-pages && gh-pages -d dist"
   },
   "repository": {
