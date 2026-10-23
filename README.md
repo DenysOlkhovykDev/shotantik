@@ -14,6 +14,10 @@ World exploration:
 
 <img src="public/screenshots/sailing.png" width="300">
 
+Upgrades:
+
+<img src="public/screenshots/upgrades.png" width="300">
+
 ## About
 
 Shotantik is a resource management game focused on both material and time management.
