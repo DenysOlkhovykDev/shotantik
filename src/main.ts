@@ -17,13 +17,13 @@ import { tutorials } from "@tutorial/manager";
 import { header } from "@header/manager";
 import { researchManager } from "@research/manager";
 
+import { getGameScreenCenter } from "@utils/ui-config";
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import {
   isCurrentTargetReached,
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
-import { getGameScreenCenter } from "@utils/ui-config";
 
 export const app = new Application();
 
@@ -50,7 +50,7 @@ if (isTest) {
   window.setIsGameReady = setIsGameReady;
 }
 
-const UIcontainer = new Container();
+const UIcontainer = new Container(); // Temp
 
 const DEBUG_INFO = new Text({
   text: ``,
@@ -72,27 +72,34 @@ UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
 UIcontainer.addChild(DEBUG_INFO);
 
+const worldLayer = new Container(); // Temp
+
 BackgroundTile.initialize(app.renderer);
 
-const worldLayer = new Container();
-worldLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
-
 export const backgroundManager = new BackgroundManager();
+
 worldLayer.addChild(backgroundManager);
 
 createTestSituation(worldLayer);
-aircraft.initializeAircraft(worldLayer);
 
-app.stage.addChild(worldLayer);
-app.stage.addChild(UIcontainer);
+app.stage.addChild(worldLayer); // Temp
+
+aircraft.initializeAircraft(app.stage);
+
+app.stage.addChild(UIcontainer); // Temp
 
 app.stage.on("pointerdown", (event) => {
   const buildingType = constructionManager.getBuildingType();
 
   if (buildingType !== "Road") {
     if (buildingType !== undefined) {
-      const local = aircraft.toLocal(event.global);
-      aircraft.addBlueprint(local.x, local.y, buildingType);
+      const { x, y } = event.global;
+
+      aircraft.addBlueprint(
+        x - getGameScreenCenter().x,
+        y - getGameScreenCenter().y,
+        buildingType,
+      );
       constructionManager.setBuildingType(undefined);
     }
 
@@ -145,13 +152,11 @@ function updateGame(deltaTime: number) {
   const angle = moveWorld(
     deltaTime,
     worldLayer,
+    aircraft.airCraftLayer,
+    aircraft.workersLayer,
     joystick.inputX,
     joystick.inputY,
   );
-
-  const shipPosition = getWorldCoordinates();
-  backgroundManager.update(shipPosition.x, shipPosition.y);
-  onGroundObjects.checkCollision();
 
   aircraft.workers.moveWorkers(deltaTime);
 
@@ -173,11 +178,11 @@ function updateGame(deltaTime: number) {
 }
 
 export function getWorldCoordinates() {
-  return { x: aircraft.x, y: aircraft.y };
+  return { x: worldLayer.pivot.x, y: worldLayer.pivot.y }; // Temp
 }
 
 export function getWorldRotation() {
-  return -aircraft.rotation;
+  return worldLayer.rotation;
 }
 
 export function getGlobalWorldCoordinates(x: number, y: number) {
@@ -186,5 +191,5 @@ export function getGlobalWorldCoordinates(x: number, y: number) {
     y: y,
   });
 
-  return { x: global.x, y: global.y };
+  return { x: global.x, y: global.y }; // Temp
 }
