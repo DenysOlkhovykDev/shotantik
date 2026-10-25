@@ -1,4 +1,9 @@
-import { Application, Container, Text } from "pixi.js";
+import {
+  Application,
+  Container,
+  type FederatedPointerEvent,
+  Text,
+} from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
 
@@ -86,7 +91,83 @@ aircraft.initializeAircraft(worldLayer);
 app.stage.addChild(worldLayer);
 app.stage.addChild(UIcontainer);
 
+let zoom = 1;
+const minZoom = 0.5;
+const maxZoom = 5;
+const zoomSpeed = 0.001;
+
+const pointers = new Map();
+let lastPinchDistance = 0;
+
+app.stage.on(
+  "wheel",
+  (event) => {
+    event.preventDefault();
+
+    setZoom(zoom * Math.exp(-event.deltaY * zoomSpeed));
+  },
+  { passive: false },
+);
+
+function setZoom(value: number) {
+  zoom = Math.max(minZoom, Math.min(maxZoom, value));
+}
+
 app.stage.on("pointerdown", (event) => {
+  clickToBuild(event);
+
+  if (event.pointerType !== "touch") return;
+
+  pointers.set(event.pointerId, {
+    x: event.clientX,
+    y: event.clientY,
+  });
+
+  if (pointers.size === 2) {
+    lastPinchDistance = getPinchDistance();
+  }
+});
+
+app.stage.on("pointermove", (event) => {
+  if (!pointers.has(event.pointerId)) return;
+
+  pointers.set(event.pointerId, {
+    x: event.clientX,
+    y: event.clientY,
+  });
+
+  if (pointers.size !== 2) return;
+
+  const distance = getPinchDistance();
+
+  if (lastPinchDistance > 0) {
+    setZoom(zoom * (distance / lastPinchDistance));
+  }
+
+  lastPinchDistance = distance;
+});
+
+function getPinchDistance() {
+  const [a, b] = pointers.values();
+
+  return Math.hypot(b.x - a.x, b.y - a.y);
+}
+
+function removePointer(event: FederatedPointerEvent) {
+  pointers.delete(event.pointerId);
+
+  lastPinchDistance = pointers.size === 2 ? getPinchDistance() : 0;
+}
+
+app.stage.on("pointerup", (event) => {
+  removePointer(event);
+});
+
+app.stage.on("pointercancel", (event) => {
+  removePointer(event);
+});
+
+function clickToBuild(event: FederatedPointerEvent) {
   const buildingType = constructionManager.getBuildingType();
 
   if (buildingType !== "Road") {
@@ -108,7 +189,7 @@ app.stage.on("pointerdown", (event) => {
 
     joystick.hide();
   }
-});
+}
 
 let previousFrameTime = performance.now();
 
@@ -147,6 +228,7 @@ function updateGame(deltaTime: number) {
     worldLayer,
     joystick.inputX,
     joystick.inputY,
+    zoom,
   );
 
   const shipPosition = getWorldCoordinates();

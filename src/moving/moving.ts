@@ -9,6 +9,7 @@ export function moveWorld(
   cameraLayer: Container,
   turnInput: number,
   thrustInput: number,
+  zoom: number,
 ) {
   const absTurn = Math.abs(turnInput);
   const absThrust = Math.abs(thrustInput);
@@ -27,7 +28,7 @@ export function moveWorld(
   cameraLayer.pivot.set(aircraft.x, aircraft.y);
   cameraLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
   cameraLayer.rotation = -aircraft.rotation;
-  cameraLayer.scale.set(1);
+  cameraLayer.scale.set(zoom);
 
   return thrustInput === 0 ? undefined : Math.atan2(thrustInput, 0);
 }
