@@ -33,7 +33,6 @@ import { joystick } from "@joystick/joystick";
 import { header } from "@header/manager";
 
 import { onGroundObjects } from "@on-ground/objects";
-import { getGameScreenCenter } from "@utils/ui-config";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -68,7 +67,7 @@ interface SelectedBuilding {
   index?: number;
 }
 
-class Aircraft {
+class Aircraft extends Container {
   public buildings: Building[] = [];
   public blueprints: Blueprint[] = [];
   public workers: Workers = new Workers();
@@ -84,24 +83,25 @@ class Aircraft {
 
   public boundsRadius = 0;
 
-  public initializeAircraft(stage: Container) {
+  public motionParameters = {
+    thrustVelocity: 0,
+    angularVelocity: 0,
+  };
+
+  public initializeAircraft(worldLayer: Container) {
     if (import.meta.env.VITE_IS_DEBUG === "true") {
       this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
     }
 
     this.airCraftLayer.addChildAt(this.roadsLayer, 0);
 
-    this.airCraftLayer.position.set(
-      getGameScreenCenter().x,
-      getGameScreenCenter().y,
-    );
-    this.workersLayer.position.set(
-      getGameScreenCenter().x,
-      getGameScreenCenter().y,
-    );
+    this.airCraftLayer.position.set(0, 0);
+    this.workersLayer.position.set(0, 0);
 
-    stage.addChild(this.airCraftLayer);
-    stage.addChild(this.workersLayer);
+    this.addChild(this.airCraftLayer);
+    this.addChild(this.workersLayer);
+
+    worldLayer.addChild(this);
   }
 
   public addBuilding(x: number, y: number, buildingType: BuildingType) {

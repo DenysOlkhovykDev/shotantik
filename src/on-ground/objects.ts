@@ -1,7 +1,5 @@
 import { Container } from "pixi.js";
 
-import { getWorldCoordinates, getWorldRotation } from "../../src/main";
-
 import { aircraft } from "@aircraft/aircraft";
 import { type Building } from "@aircraft/building";
 import { Researcher } from "@aircraft/modules/researcher";
@@ -42,16 +40,16 @@ class OnGroundObjects extends Container {
   public checkCollision() {
     for (let i = 0; i < this.objectsOnGround.length; i++) {
       if (this.overlapWithAircraftBounds(this.objectsOnGround[i])) {
-        const cos = Math.cos(-getWorldRotation());
-        const sin = Math.sin(-getWorldRotation());
-        const { x: worldX, y: worldY } = getWorldCoordinates();
+        const worldAngle = aircraft.rotation;
+        const cos = Math.cos(worldAngle);
+        const sin = Math.sin(worldAngle);
 
         for (const building of aircraft.buildings) {
           this.objectsOnGround[i].isCollide = this.overlapWithBuilding(
             this.objectsOnGround[i],
             building,
-            worldX,
-            worldY,
+            aircraft.x,
+            aircraft.y,
             sin,
             cos,
           );
@@ -65,10 +63,13 @@ class OnGroundObjects extends Container {
   }
 
   private overlapWithAircraftBounds(object: GroundObject) {
-    const { x: worldX, y: worldY } = getWorldCoordinates();
-
     return (
-      getDistance(worldX, worldY, object.container.x, object.container.y) <=
+      getDistance(
+        aircraft.x,
+        aircraft.y,
+        object.container.x,
+        object.container.y,
+      ) <=
       aircraft.boundsRadius + object.boundsRadius
     );
   }
