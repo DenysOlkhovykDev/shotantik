@@ -83,3 +83,10 @@ export function getPositionOfResearchingProgressBar() {
     y: 1200,
   };
 }
+
+export function getCameraResetButtonPosition() {
+  return {
+    x: gameScreen.width - gameScreen.width / 18,
+    y: 40,
+  };
+}

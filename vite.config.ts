@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => ({
       "@islands": path.resolve(__dirname, "src/islands"),
       "@on-ground": path.resolve(__dirname, "src/on-ground"),
       "@resources": path.resolve(__dirname, "src/resources"),
+      "@camera": path.resolve(__dirname, "src/ui/camera"),
       "@compass": path.resolve(__dirname, "src/ui/compass"),
       "@construction": path.resolve(__dirname, "src/ui/construction"),
       "@header": path.resolve(__dirname, "src/ui/header"),
