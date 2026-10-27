@@ -58,6 +58,15 @@ export class Tutorial extends Container {
       event.stopPropagation();
     });
 
+    this.overlay.on(
+      "wheel",
+      (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      { passive: false },
+    );
+
     this.addChild(this.overlay, this.messageContainer);
 
     this.draw();

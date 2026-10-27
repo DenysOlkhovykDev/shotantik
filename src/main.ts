@@ -1,4 +1,9 @@
-import { Application, Container, Text } from "pixi.js";
+import {
+  Application,
+  Container,
+  type FederatedPointerEvent,
+  Text,
+} from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
 
@@ -16,14 +21,15 @@ import { compasses } from "@compass/manager";
 import { tutorials } from "@tutorial/manager";
 import { header } from "@header/manager";
 import { researchManager } from "@research/manager";
+import { cameraSettings } from "@camera/manager";
 
-import { getGameScreenCenter } from "@utils/ui-config";
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import {
   isCurrentTargetReached,
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
+import { getGameScreenCenter } from "@utils/ui-config";
 
 export const app = new Application();
 
@@ -50,7 +56,7 @@ if (isTest) {
   window.setIsGameReady = setIsGameReady;
 }
 
-const UIcontainer = new Container(); // Temp
+const UIcontainer = new Container();
 
 const DEBUG_INFO = new Text({
   text: ``,
@@ -63,6 +69,7 @@ const DEBUG_INFO = new Text({
 UIcontainer.addChild(joystick);
 UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
+UIcontainer.addChild(cameraSettings);
 constructionManager.initialize();
 UIcontainer.addChild(constructionManager);
 researchManager.initialize();
@@ -72,34 +79,78 @@ UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
 UIcontainer.addChild(DEBUG_INFO);
 
-const worldLayer = new Container(); // Temp
-
 BackgroundTile.initialize(app.renderer);
 
-export const backgroundManager = new BackgroundManager();
+const worldLayer = new Container();
+worldLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
 
+export const backgroundManager = new BackgroundManager();
 worldLayer.addChild(backgroundManager);
 
 createTestSituation(worldLayer);
+aircraft.initializeAircraft(worldLayer);
 
-app.stage.addChild(worldLayer); // Temp
+app.stage.addChild(worldLayer);
+app.stage.addChild(UIcontainer);
 
-aircraft.initializeAircraft(app.stage);
+app.stage.on(
+  "wheel",
+  (event) => {
+    event.preventDefault();
 
-app.stage.addChild(UIcontainer); // Temp
+    cameraSettings.changeZoomByScrolling(-event.deltaY);
+  },
+  { passive: false },
+);
 
 app.stage.on("pointerdown", (event) => {
+  if (event.pointerType === "touch") {
+    cameraSettings.startChangingZoomByTouch(
+      event.pointerId,
+      event.clientX,
+      event.clientY,
+    );
+  }
+
+  cameraSettings.startPanning(event.pointerId, event.clientX, event.clientY);
+
+  clickToBuild(event);
+});
+
+app.stage.on("pointermove", (event) => {
+  if (event.pointerType === "touch") {
+    cameraSettings.continueChangingZoomByTouch(
+      event.pointerId,
+      event.clientX,
+      event.clientY,
+    );
+  }
+
+  cameraSettings.continuePanning(event.pointerId, event.clientX, event.clientY);
+});
+
+app.stage.on("pointerup", (event) => {
+  cameraSettings.stopChangingZoomByTouch(event.pointerId);
+  cameraSettings.stopPanning(event.pointerId);
+});
+
+app.stage.on("pointerupoutside", (event) => {
+  cameraSettings.stopChangingZoomByTouch(event.pointerId);
+  cameraSettings.stopPanning(event.pointerId);
+});
+
+app.stage.on("pointercancel", (event) => {
+  cameraSettings.stopChangingZoomByTouch(event.pointerId);
+  cameraSettings.stopPanning(event.pointerId);
+});
+
+function clickToBuild(event: FederatedPointerEvent) {
   const buildingType = constructionManager.getBuildingType();
 
   if (buildingType !== "Road") {
     if (buildingType !== undefined) {
-      const { x, y } = event.global;
-
-      aircraft.addBlueprint(
-        x - getGameScreenCenter().x,
-        y - getGameScreenCenter().y,
-        buildingType,
-      );
+      const local = aircraft.toLocal(event.global);
+      aircraft.addBlueprint(local.x, local.y, buildingType);
       constructionManager.setBuildingType(undefined);
     }
 
@@ -115,7 +166,7 @@ app.stage.on("pointerdown", (event) => {
 
     joystick.hide();
   }
-});
+}
 
 let previousFrameTime = performance.now();
 
@@ -152,11 +203,20 @@ function updateGame(deltaTime: number) {
   const angle = moveWorld(
     deltaTime,
     worldLayer,
-    aircraft.airCraftLayer,
-    aircraft.workersLayer,
     joystick.inputX,
     joystick.inputY,
+    cameraSettings.offsetX,
+    cameraSettings.offsetY,
+    cameraSettings.getZoom(),
   );
+
+  const shipPosition = getWorldCoordinates();
+  backgroundManager.update(
+    shipPosition.x,
+    shipPosition.y,
+    cameraSettings.getZoom(),
+  );
+  onGroundObjects.checkCollision();
 
   aircraft.workers.moveWorkers(deltaTime);
 
@@ -178,11 +238,11 @@ function updateGame(deltaTime: number) {
 }
 
 export function getWorldCoordinates() {
-  return { x: worldLayer.pivot.x, y: worldLayer.pivot.y }; // Temp
+  return { x: aircraft.x, y: aircraft.y };
 }
 
 export function getWorldRotation() {
-  return worldLayer.rotation;
+  return -aircraft.rotation;
 }
 
 export function getGlobalWorldCoordinates(x: number, y: number) {
@@ -191,5 +251,5 @@ export function getGlobalWorldCoordinates(x: number, y: number) {
     y: y,
   });
 
-  return { x: global.x, y: global.y }; // Temp
+  return { x: global.x, y: global.y };
 }

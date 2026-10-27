@@ -1,11 +1,13 @@
 import { Container } from "pixi.js";
 
 import { Tutorial } from "@tutorial/tutorial";
+import { cameraSettings } from "@camera/manager";
 
 export class Tutorials extends Container {
   tutorials: Tutorial[] = [];
 
   currentTutorial = 0;
+
   public addTutorial(
     text: string,
     showCondition: () => boolean,
@@ -29,10 +31,22 @@ export class Tutorials extends Container {
   }
 
   public updateTutorials() {
+    let isVisibleTutorial = false;
+
     if (this.tutorials.length > 0) {
       for (let i = 0; i < this.tutorials.length; i++) {
-        this.tutorials[i].updateTutorial();
+        const result = this.tutorials[i].updateTutorial();
+
+        if (result) {
+          isVisibleTutorial = true;
+        }
       }
+    }
+
+    if (isVisibleTutorial) {
+      cameraSettings.disallowZoom();
+    } else {
+      cameraSettings.allowZoom();
     }
   }
 }

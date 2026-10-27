@@ -1,30 +1,17 @@
 import { type Container } from "pixi.js";
 
-import { backgroundManager } from "../main";
-
 import { aircraft } from "@aircraft/aircraft";
 import { Engine } from "@aircraft/modules/engine";
-
-import { onGroundObjects } from "@on-ground/objects";
-
 import { getGameScreenCenter } from "@utils/ui-config";
-
-const ship = {
-  x: 0,
-  y: 0,
-  angle: 0,
-  m: 1,
-  thrustVelocity: 0,
-  angularVelocity: 0,
-};
 
 export function moveWorld(
   delta: number,
-  worldLayer: Container,
-  buildingsLayer: Container,
-  workersLayer: Container,
+  cameraLayer: Container,
   turnInput: number,
   thrustInput: number,
+  offsetX: number,
+  offsetY: number,
+  zoom: number,
 ) {
   const absTurn = Math.abs(turnInput);
   const absThrust = Math.abs(thrustInput);
@@ -37,72 +24,66 @@ export function moveWorld(
     turnInput = 0;
   }
 
-  if (ship.thrustVelocity !== 0 || ship.angularVelocity !== 0) {
-    onGroundObjects.checkCollision();
+  thrustShip(delta, thrustInput);
+  turnShip(delta, turnInput);
+
+  cameraLayer.pivot.set(aircraft.x + offsetX, aircraft.y + offsetY);
+  cameraLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
+  if (offsetX === 0 && offsetY === 0) {
+    cameraLayer.rotation = -aircraft.rotation;
   }
+  cameraLayer.scale.set(zoom);
 
-  thrustWorld(delta, thrustInput);
-  turnWorld(delta, turnInput);
-
-  worldLayer.pivot.set(ship.x, ship.y);
-  worldLayer.rotation = ship.angle;
-  worldLayer.position.set(
-    getGameScreenCenter().x * ship.m,
-    getGameScreenCenter().y * ship.m,
-  );
-
-  worldLayer.scale.set(ship.m);
-  buildingsLayer.scale.set(ship.m);
-  workersLayer.scale.set(ship.m);
-
-  backgroundManager.update(ship.x, ship.y);
-
-  if (thrustInput === 0) {
-    return undefined;
-  } else {
-    return Math.atan2(thrustInput, 0);
-  }
+  return thrustInput === 0 ? undefined : Math.atan2(thrustInput, 0);
 }
 
-function thrustWorld(delta: number, thrustInput: number) {
+function thrustShip(delta: number, thrustInput: number) {
   const thrust = Math.max(-1, Math.min(1, thrustInput));
-
   const engines = aircraft.buildings.filter((b) => b.buildingType === "Engine");
-
   const targetVelocity =
     thrust *
     ((30 * (engines.length * Engine.speedModifier)) /
       aircraft.buildings.length);
-
   const thrustResponse = 1 - Math.exp(-0.02 * delta);
 
-  ship.thrustVelocity = zeroIfTiny(
-    approach(ship.thrustVelocity, targetVelocity, thrustResponse),
+  aircraft.motionParameters.thrustVelocity = zeroIfTiny(
+    approach(
+      aircraft.motionParameters.thrustVelocity,
+      targetVelocity,
+      thrustResponse,
+    ),
     1e-2,
   );
 
-  ship.x += -ship.thrustVelocity * Math.sin(-ship.angle) * delta;
-  ship.y += ship.thrustVelocity * Math.cos(-ship.angle) * delta;
+  aircraft.x -=
+    aircraft.motionParameters.thrustVelocity *
+    Math.sin(aircraft.rotation) *
+    delta;
+  aircraft.y +=
+    aircraft.motionParameters.thrustVelocity *
+    Math.cos(aircraft.rotation) *
+    delta;
 }
 
-function turnWorld(delta: number, turnInput: number) {
+function turnShip(delta: number, turnInput: number) {
   const turn = Math.max(-1, Math.min(1, turnInput));
-
   const engines = aircraft.buildings.filter((b) => b.buildingType === "Engine");
-
   const targetTurn =
     turn *
     ((0.1 * (engines.length * Engine.speedModifier)) /
       aircraft.buildings.length);
-
   const turnResponse = 1 - Math.exp(-0.08 * delta);
 
-  ship.angularVelocity = zeroIfTiny(
-    approach(ship.angularVelocity, targetTurn, turnResponse),
+  aircraft.motionParameters.angularVelocity = zeroIfTiny(
+    approach(
+      aircraft.motionParameters.angularVelocity,
+      targetTurn,
+      turnResponse,
+    ),
     1e-6,
   );
 
-  ship.angle -= ship.angularVelocity * delta;
+  aircraft.rotation += aircraft.motionParameters.angularVelocity * delta;
 }
 
 function approach(current: number, target: number, response: number) {
