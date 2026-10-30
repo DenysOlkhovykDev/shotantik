@@ -50,3 +50,13 @@ export function getRadialLine(
     endY: sin * endRadius,
   };
 }
+
+export function getRandomPointInRadius(radius: number) {
+  const angle = Math.random() * Math.PI * 2;
+  const distanceFromCenter = Math.sqrt(Math.random()) * radius;
+
+  const x = Math.cos(angle) * distanceFromCenter;
+  const y = Math.sin(angle) * distanceFromCenter;
+
+  return { x, y };
+}

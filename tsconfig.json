@@ -13,6 +13,7 @@
       "@islands/*": ["./src/islands/*"],
       "@on-ground/*": ["./src/on-ground/*"],
       "@resources/*": ["./src/resources/*"],
+      "@camera/*": ["./src/ui/camera/*"],
       "@compass/*": ["./src/ui/compass/*"],
       "@construction/*": ["./src/ui/construction/*"],
       "@header/*": ["./src/ui/header/*"],

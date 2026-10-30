@@ -4,7 +4,7 @@ import { BackgroundTile } from "@background/tile";
 export class BackgroundManager extends Container {
   private backgroundTiles = new Map<string, BackgroundTile>();
 
-  private renderDistance = 2;
+  private renderDistance = 3;
 
   private seed: number;
 
@@ -34,7 +34,16 @@ export class BackgroundManager extends Container {
     }
   }
 
-  update(playerX: number, playerY: number) {
+  update(playerX: number, playerY: number, zoom: number) {
+    const minZoom = 0.5;
+    const maxZoom = 1;
+
+    const alpha = (zoom - minZoom) / (maxZoom - minZoom);
+
+    for (const tile of this.backgroundTiles.values()) {
+      tile.alpha = Math.max(0, Math.min(1, alpha));
+    }
+
     const playerChunkX = Math.floor(playerX / this.chunkWidth);
     const playerChunkY = Math.floor(playerY / this.chunkHeight);
 
