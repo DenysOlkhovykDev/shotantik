@@ -89,7 +89,7 @@ export class Worker extends Container {
     this.legs.startMoving();
     this.legs.update(delta);
 
-    this.navigator.move(this, delta);
+    this.navigator.moveToTargetBuilding(this, delta);
   }
 
   private handleStaying(delta: number) {
