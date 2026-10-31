@@ -295,7 +295,7 @@ export class ResearchMenu extends Container {
           const baseSpeed = 2;
           const maxSpeed = 5;
 
-          Navigator.speed =
+          Navigator.movingSpeed =
             maxSpeed - (maxSpeed - baseSpeed) / (1 + (item.level - 1) * 0.1);
         } else if (item.label === "Engine") {
           const EngineClass = buildingMap["Engine"];

@@ -67,6 +67,9 @@ export class Worker extends Container {
   public moveWorker(delta: number) {
     if (!this.tasks.task) {
       this.pickTaskAndPath();
+      if (this.tasks.task === undefined) {
+        this.navigator.moveToBetterPlace(this, delta);
+      }
     } else if (this.navigator.state === "moving") {
       this.handleMoving(delta);
     } else if (this.navigator.state === "stay") {
@@ -89,7 +92,7 @@ export class Worker extends Container {
     this.legs.startMoving();
     this.legs.update(delta);
 
-    this.navigator.move(this, delta);
+    this.navigator.moveToTargetBuilding(this, delta);
   }
 
   private handleStaying(delta: number) {
@@ -98,19 +101,24 @@ export class Worker extends Container {
     if (this.tasks.profession === "production") {
       this.tasks.handleProductionLogic(delta);
     } else {
-      const result = this.tasks.handleResourceLogic(
-        this.navigator.currentPlatform,
-        this.inventory.storage,
-      );
-
-      if (result) {
-        this.inventory.storeResource(result);
-      } else {
-        this.inventory.removeResource();
-      }
+      this.handleStoreOrGiveResource();
 
       if (this.tasks.task) {
         this.navigator.pickPathToBuilding(this.tasks.task);
+      }
+    }
+  }
+
+  private handleStoreOrGiveResource() {
+    if (this.inventory.storage) {
+      this.tasks.giveResource(this.inventory.storage);
+
+      this.inventory.removeResource();
+    } else {
+      const result = this.tasks.takeResource(this.navigator.currentPlatform);
+
+      if (result) {
+        this.inventory.storeResource(result);
       }
     }
   }
