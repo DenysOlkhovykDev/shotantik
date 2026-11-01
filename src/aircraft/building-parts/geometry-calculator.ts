@@ -5,14 +5,14 @@ export class GeometryCalculator {
 
   constructor(private readonly building: Building) {}
 
-  public getBaseCenterInWorld() {
+  public getBaseCenter() {
     return {
       x: this.building.x,
       y: this.building.y,
     };
   }
 
-  public getBoundsCenterInWorld() {
+  public getBoundsCenter() {
     return {
       x: this.building.x + this.building.buildingConfig.boundsCenter.x,
       y: this.building.y + this.building.buildingConfig.boundsCenter.y,
@@ -28,8 +28,8 @@ export class GeometryCalculator {
   }
 
   public orientByBuildDirection(from: Building) {
-    const fromCenter = from.geometry.getBaseCenterInWorld();
-    const toCenter = this.getBaseCenterInWorld();
+    const fromCenter = from.geometry.getBaseCenter();
+    const toCenter = this.getBaseCenter();
 
     const dx = toCenter.x - fromCenter.x;
     const dy = toCenter.y - fromCenter.y;

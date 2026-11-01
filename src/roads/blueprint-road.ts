@@ -41,9 +41,9 @@ export class BlueprintRoad {
   }
 
   private drawDashedLine(from: Building, to: Building, dash = 8, gap = 14) {
-    const fromCenter = from.getBaseCenterInWorld();
-    const toCenter = to.getBaseCenterInWorld();
-    const decorationCenter = to.getBoundsCenterInWorld();
+    const fromCenter = from.getBaseCenter();
+    const toCenter = to.getBaseCenter();
+    const decorationCenter = to.getBoundsCenter();
 
     const dx = toCenter.x - fromCenter.x;
     const dy = toCenter.y - fromCenter.y;

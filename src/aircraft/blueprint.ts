@@ -141,7 +141,7 @@ export class Blueprint extends Building {
     y: number,
     delta: number,
     speed: number,
-    center = this.getBaseCenterInWorld(),
+    center = this.getBaseCenter(),
   ) {
     const dx = center.x - x;
     const dy = center.y - y;
@@ -161,7 +161,7 @@ export class Blueprint extends Building {
   }
 
   private moveTowards(x: number, y: number, delta: number, speed: number) {
-    const center = this.getBaseCenterInWorld();
+    const center = this.getBaseCenter();
     const dx = x - center.x;
     const dy = y - center.y;
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -180,7 +180,7 @@ export class Blueprint extends Building {
   }
 
   public checkAndMove(building: Building, delta: number) {
-    const prevPosition = this.getBoundsCenterInWorld();
+    const prevPosition = this.getBoundsCenter();
 
     if (
       this.getDistanceToBuilding(building) <=
@@ -190,11 +190,11 @@ export class Blueprint extends Building {
     ) {
       this.collisions += 5 * delta;
       this.moveAwayFrom(
-        building.getBoundsCenterInWorld().x,
-        building.getBoundsCenterInWorld().y,
+        building.getBoundsCenter().x,
+        building.getBoundsCenter().y,
         delta,
         2,
-        this.getBoundsCenterInWorld(),
+        this.getBoundsCenter(),
       );
     }
 
@@ -204,8 +204,8 @@ export class Blueprint extends Building {
     ) {
       this.collisions += 1 * delta;
       this.moveAwayFrom(
-        this.roads[0].from.getBaseCenterInWorld().x,
-        this.roads[0].from.getBaseCenterInWorld().y,
+        this.roads[0].from.getBaseCenter().x,
+        this.roads[0].from.getBaseCenter().y,
         delta,
         0.5,
       );
@@ -217,8 +217,8 @@ export class Blueprint extends Building {
     ) {
       this.collisions += 1 * delta;
       this.moveTowards(
-        this.roads[0].from.getBaseCenterInWorld().x,
-        this.roads[0].from.getBaseCenterInWorld().y,
+        this.roads[0].from.getBaseCenter().x,
+        this.roads[0].from.getBaseCenter().y,
         delta,
         0.5,
       );
@@ -230,8 +230,8 @@ export class Blueprint extends Building {
       getDistance(
         prevPosition.x,
         prevPosition.y,
-        this.getBoundsCenterInWorld().x,
-        this.getBoundsCenterInWorld().y,
+        this.getBoundsCenter().x,
+        this.getBoundsCenter().y,
       ) === 0
     ) {
       if (this.collisions > 0) {
@@ -251,10 +251,10 @@ export class Blueprint extends Building {
 
   private getDistanceToBuilding(building: Building) {
     return getDistance(
-      building.getBoundsCenterInWorld().x,
-      building.getBoundsCenterInWorld().y,
-      this.getBoundsCenterInWorld().x,
-      this.getBoundsCenterInWorld().y,
+      building.getBoundsCenter().x,
+      building.getBoundsCenter().y,
+      this.getBoundsCenter().x,
+      this.getBoundsCenter().y,
     );
   }
 
@@ -265,15 +265,15 @@ export class Blueprint extends Building {
   private checkRoadsCollision(building: Building, delta: number) {
     const minDist = this.targetBuilding.buildingConfig.boundsRadius + 25;
     for (const road of building.roads) {
-      const fromCenter = road.from.getBaseCenterInWorld();
-      const toCenter = road.to.getBaseCenterInWorld();
+      const fromCenter = road.from.getBaseCenter();
+      const toCenter = road.to.getBaseCenter();
 
       const ax = fromCenter.x;
       const ay = fromCenter.y;
       const bx = toCenter.x;
       const by = toCenter.y;
 
-      const boundsCenter = this.getBoundsCenterInWorld();
+      const boundsCenter = this.getBoundsCenter();
       const px = boundsCenter.x;
       const py = boundsCenter.y;
 

@@ -8,9 +8,6 @@ import { getRandomPointInRadius } from "@utils/basic-geometry";
 const isTest = import.meta.env.MODE === "test";
 
 export class Navigator {
-  static movingSpeed = 2;
-  static rotationSpeed = 0.16;
-
   private path: Building[] = [];
   state: string;
 
@@ -22,11 +19,21 @@ export class Navigator {
     this.state = "stay";
   }
 
-  public moveToTargetBuilding(worker: Worker, delta: number) {
+  public moveToTargetBuilding(
+    worker: Worker,
+    movingSpeed: number,
+    delta: number,
+  ) {
     if (this.path.length > 0) {
-      const targetCenter = this.path[0].getBaseCenterInWorld();
+      const targetCenter = this.path[0].getBaseCenter();
 
-      const result = this.move(worker, delta, targetCenter.x, targetCenter.y);
+      const result = worker.legs.moveCharacter(
+        worker.body,
+        targetCenter.x,
+        targetCenter.y,
+        movingSpeed,
+        delta,
+      );
 
       if (result) {
         this.onReachTargetBuilding();
@@ -36,10 +43,10 @@ export class Navigator {
     }
   }
 
-  public moveToBetterPlace(worker: Worker, delta: number) {
+  public moveToBetterPlace(worker: Worker, movingSpeed: number, delta: number) {
     if (!this.isInBetterPlace && !isTest) {
       if (this.betterPlaceX === undefined || this.betterPlaceY === undefined) {
-        const targetCenter = this.currentPlatform.getBaseCenterInWorld();
+        const targetCenter = this.currentPlatform.getBaseCenter();
 
         const { x, y } = getRandomPointInRadius(
           this.currentPlatform.buildingConfig.storageRadius,
@@ -48,12 +55,14 @@ export class Navigator {
         this.betterPlaceX = targetCenter.x + x;
         this.betterPlaceY = targetCenter.y + y;
       } else {
-        const result = this.move(
-          worker,
-          delta,
+        const result = worker.legs.moveCharacter(
+          worker.body,
           this.betterPlaceX,
           this.betterPlaceY,
+          movingSpeed,
+          delta,
         );
+
         if (result) {
           this.isInBetterPlace = true;
         }
@@ -88,57 +97,6 @@ export class Navigator {
     this.pathMovingPreparing();
 
     return resource;
-  }
-
-  private move(
-    worker: Worker,
-    delta: number,
-    moveToX: number,
-    moveToY: number,
-  ) {
-    let x = worker.x;
-    let y = worker.y;
-    let isReachedTarget = false;
-
-    if (isTest) {
-      x = moveToX;
-      y = moveToY;
-      isReachedTarget = true;
-    } else {
-      const dx = moveToX - x;
-      const dy = moveToY - y;
-
-      const targetAngle = Math.atan2(dy, dx) + Math.PI / 2;
-
-      const angleDiff = targetAngle - worker.rotation;
-
-      const normalizedAngleDiff = Math.atan2(
-        Math.sin(angleDiff),
-        Math.cos(angleDiff),
-      );
-
-      if (Math.abs(normalizedAngleDiff) > Navigator.rotationSpeed * delta) {
-        worker.rotation +=
-          Math.sign(normalizedAngleDiff) * Navigator.rotationSpeed * delta;
-      } else {
-        worker.rotation = targetAngle;
-
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance > 15) {
-          const vx = dx / distance;
-          const vy = dy / distance;
-
-          x += vx * Navigator.movingSpeed * delta;
-          y += vy * Navigator.movingSpeed * delta;
-        } else {
-          isReachedTarget = true;
-        }
-      }
-    }
-
-    worker.position.set(x, y);
-    return isReachedTarget;
   }
 
   private pathMovingPreparing() {

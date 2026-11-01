@@ -60,3 +60,26 @@ export function getRandomPointInRadius(radius: number) {
 
   return { x, y };
 }
+
+export function getAngleDifference(current: number, target: number) {
+  return Math.atan2(Math.sin(target - current), Math.cos(target - current));
+}
+
+export function rotatePointByCenter(
+  x: number,
+  y: number,
+  centerX: number,
+  centerY: number,
+  angle: number,
+) {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+
+  const dx = x - centerX;
+  const dy = y - centerY;
+
+  return {
+    x: centerX + dx * cos - dy * sin,
+    y: centerY + dx * sin + dy * cos,
+  };
+}

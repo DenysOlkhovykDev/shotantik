@@ -38,7 +38,7 @@ export function createAirCraftByScenario(scenario: AircraftScenario) {
 
   for (const worker of scenario.workers || []) {
     const newBuilding = buildingsMap.get(worker.buildingId);
-    const baseCenter = newBuilding.getBaseCenterInWorld();
+    const baseCenter = newBuilding.getBaseCenter();
     aircraft.workers.addWorker(
       baseCenter.x,
       baseCenter.y,
