@@ -22,6 +22,8 @@ export class Legs extends Container {
 
   private distanceThreshold = 12;
 
+  private productionAnimationSpeed = 0.05;
+
   constructor() {
     super();
 
@@ -42,19 +44,29 @@ export class Legs extends Container {
     this.setToes();
   }
 
-  moveCharacter(
-    mainPart: Container,
+  public productionAnimation(delta: number) {
+    if (!isTest) {
+      if (this.standingLeg === "left") {
+        this.rightLeg.rotation -= this.productionAnimationSpeed * delta;
+      } else {
+        this.leftLeg.rotation -= this.productionAnimationSpeed * delta;
+      }
+    }
+  }
+
+  public moveCharacter(
+    body: Container,
     moveToX: number,
     moveToY: number,
     movingSpeed: number,
     delta: number,
   ) {
-    const x = mainPart.x;
-    const y = mainPart.y;
+    const x = body.x;
+    const y = body.y;
     let isReachedTarget = false;
 
     if (isTest) {
-      mainPart.position.set(moveToX, moveToY);
+      body.position.set(moveToX, moveToY);
 
       this.leftLeg.position.set(moveToX - Legs.params.offset, moveToY);
       this.rightLeg.position.set(moveToX + Legs.params.offset, moveToY);
@@ -70,7 +82,7 @@ export class Legs extends Container {
           this.moveBodyAndLegs(
             this.leftLeg,
             this.rightLeg,
-            mainPart,
+            body,
             moveToX,
             moveToY,
             movingSpeed,
@@ -80,7 +92,7 @@ export class Legs extends Container {
           this.moveBodyAndLegs(
             this.rightLeg,
             this.leftLeg,
-            mainPart,
+            body,
             moveToX,
             moveToY,
             movingSpeed,

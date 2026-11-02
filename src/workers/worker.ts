@@ -106,6 +106,7 @@ export class Worker extends Container {
   private handleStaying(delta: number) {
     if (this.tasks.profession === "production") {
       this.tasks.handleProductionLogic(delta);
+      this.legs.productionAnimation(delta);
     } else {
       this.handleStoreOrGiveResource();
 
