@@ -49,7 +49,6 @@ export class Task {
     reserve: boolean,
   ): [Building[], Resource | undefined, number | undefined] {
     const { distances, previous } = dijkstra(start);
-    const { distances: distancesToTarget } = dijkstra(this.target);
 
     let bestBuilding: Building | undefined = undefined;
     let bestDistance = Infinity;
@@ -62,7 +61,10 @@ export class Task {
 
       if (resource) {
         const distanceToResource = distances.get(building);
-        const distanceFromResourceToTarget = distancesToTarget.get(building);
+        const { distances: distancesFromResource } = dijkstra(building);
+        const distanceFromResourceToTarget = distancesFromResource.get(
+          this.target,
+        );
 
         if (
           distanceToResource === undefined ||

@@ -88,6 +88,19 @@ export class Worker extends Container {
     }
   }
 
+  public stopDoingTask() {
+    if (this.inventory.storage) {
+      this.navigator.currentPlatform.tryToAddResource(this.inventory.storage);
+      this.inventory.storage.isReserved = false;
+      this.inventory.storage = undefined;
+    }
+    if (this.tasks.task) {
+      this.tasks.task.status = "available";
+      this.tasks.task.releaseResourceReservation();
+      this.tasks.task = undefined;
+    }
+  }
+
   private pickTaskAndPath() {
     this.tasks.pickTask(this.navigator.currentPlatform);
     if (this.tasks.task) {
@@ -110,7 +123,7 @@ export class Worker extends Container {
     } else {
       this.handleStoreOrGiveResource();
 
-      if (this.tasks.task) {
+      if (this.tasks.task && this.inventory.storage) {
         this.navigator.pickPathToBuilding(this.tasks.task);
       }
     }
@@ -118,9 +131,9 @@ export class Worker extends Container {
 
   private handleStoreOrGiveResource() {
     if (this.inventory.storage) {
-      this.tasks.giveResource(this.inventory.storage);
-
-      this.inventory.removeResource();
+      if (this.tasks.giveResource(this.inventory.storage)) {
+        this.inventory.removeResource();
+      }
     } else {
       const result = this.tasks.takeResource(this.navigator.currentPlatform);
 

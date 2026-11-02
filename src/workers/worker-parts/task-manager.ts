@@ -75,12 +75,11 @@ export class TaskManager {
   }
 
   public takeResource(currentPlatform: Building) {
-    if (this.task?.reservedResource) {
-      const resource = currentPlatform.takeResourceByType(
-        this.task?.reservedResource,
-      );
-
-      return resource;
+    if (
+      this.task?.reservedResource &&
+      this.task.reservedAt === currentPlatform
+    ) {
+      return currentPlatform.takeResourceByType(this.task.reservedResource);
     }
   }
 
@@ -95,9 +94,11 @@ export class TaskManager {
 
       if (!wasAdded) {
         this.task.status = TaskStatus.inProgress;
-      } else {
-        this.task = undefined;
+        return false;
       }
+
+      this.task = undefined;
+      return true;
     }
   }
 }
