@@ -21,6 +21,7 @@ export class Inventory extends Container {
   public removeResource() {
     if (this.storage) {
       this.removeChild(this.storage);
+      this.storage = undefined;
     }
   }
 }

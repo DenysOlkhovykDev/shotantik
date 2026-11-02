@@ -134,8 +134,8 @@ class CameraSettings extends Container {
     }
 
     if (this.isPanning && this.pointers.size < 2) {
-      this.offsetX -= deltaX;
-      this.offsetY -= deltaY;
+      this.offsetX -= deltaX / this.zoom;
+      this.offsetY -= deltaY / this.zoom;
     }
 
     this.lastPanX = clientX;

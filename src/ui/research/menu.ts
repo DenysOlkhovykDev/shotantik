@@ -4,7 +4,7 @@ import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
 
 import { Road } from "@roads/road";
-import { Navigator } from "@workers/worker-parts/navigator";
+import { Worker } from "@workers/worker";
 
 import { menuItems, type MenuItem } from "@utils/menu-items";
 import { getConstructionMenuPosition } from "@utils/ui-config";
@@ -292,10 +292,10 @@ export class ResearchMenu extends Container {
         item.level++;
 
         if (item.label === "Road") {
-          const baseSpeed = 2;
-          const maxSpeed = 5;
+          const baseSpeed = 1;
+          const maxSpeed = 3;
 
-          Navigator.speed =
+          Worker.movingSpeed =
             maxSpeed - (maxSpeed - baseSpeed) / (1 + (item.level - 1) * 0.1);
         } else if (item.label === "Engine") {
           const EngineClass = buildingMap["Engine"];

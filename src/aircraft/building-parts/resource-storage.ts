@@ -5,6 +5,8 @@ import { aircraft } from "@aircraft/aircraft";
 import { type Resource } from "@resources/resource";
 import { type Task } from "@dashboard/task";
 
+import { getRandomPointInRadius } from "@utils/basic-geometry";
+
 type ResourceListener = (task: Task, resource: Resource) => void;
 
 export class ResourceStorage extends Container {
@@ -33,11 +35,7 @@ export class ResourceStorage extends Container {
     let tries = 0;
 
     while (tries < 50) {
-      const angle = Math.random() * Math.PI * 2;
-      const distanceFromCenter = Math.sqrt(Math.random()) * radius;
-
-      const x = Math.cos(angle) * distanceFromCenter;
-      const y = Math.sin(angle) * distanceFromCenter;
+      const { x, y } = getRandomPointInRadius(radius);
 
       const isValid = this.resources.every((other) => {
         if (other === resource) return true;

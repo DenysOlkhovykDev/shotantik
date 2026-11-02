@@ -74,20 +74,7 @@ export class TaskManager {
     this.productionProgress = 0;
   }
 
-  public handleResourceLogic(
-    currentPlatform: Building,
-    inventoryResource?: Resource,
-  ) {
-    const result = this.takeResource(currentPlatform);
-
-    if (result) {
-      return result;
-    } else {
-      this.giveResource(inventoryResource);
-    }
-  }
-
-  private takeResource(currentPlatform: Building) {
+  public takeResource(currentPlatform: Building) {
     if (this.task?.reservedResource) {
       const resource = currentPlatform.takeResourceByType(
         this.task?.reservedResource,
@@ -96,7 +83,8 @@ export class TaskManager {
       return resource;
     }
   }
-  private giveResource(inventoryResource?: Resource) {
+
+  public giveResource(inventoryResource?: Resource) {
     if (this.task && inventoryResource) {
       this.task.status = TaskStatus.completed;
 

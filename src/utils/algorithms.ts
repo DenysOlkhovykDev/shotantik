@@ -123,8 +123,8 @@ export function aStar(start: Building, goal: Building) {
 }
 
 export function getDistanceBetweenBuildings(a: Building, b: Building): number {
-  const aCenter = a.getBaseCenterInWorld();
-  const bCenter = b.getBaseCenterInWorld();
+  const aCenter = a.getBaseCenter();
+  const bCenter = b.getBaseCenter();
 
   return Math.hypot(aCenter.x - bCenter.x, aCenter.y - bCenter.y);
 }

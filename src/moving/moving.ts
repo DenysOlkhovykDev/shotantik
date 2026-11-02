@@ -2,7 +2,9 @@ import { type Container } from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
 import { Engine } from "@aircraft/modules/engine";
+
 import { getGameScreenCenter } from "@utils/ui-config";
+import { rotatePointByCenter } from "@utils/basic-geometry";
 
 export function moveWorld(
   delta: number,
@@ -27,11 +29,17 @@ export function moveWorld(
   thrustShip(delta, thrustInput);
   turnShip(delta, turnInput);
 
-  cameraLayer.pivot.set(aircraft.x + offsetX, aircraft.y + offsetY);
+  const { x: newX, y: newY } = rotatePointByCenter(
+    offsetX,
+    offsetY,
+    0,
+    0,
+    aircraft.rotation,
+  );
+
+  cameraLayer.pivot.set(aircraft.x + newX, aircraft.y + newY);
   cameraLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
-  if (offsetX === 0 && offsetY === 0) {
-    cameraLayer.rotation = -aircraft.rotation;
-  }
+  cameraLayer.rotation = -aircraft.rotation;
   cameraLayer.scale.set(zoom);
 
   return thrustInput === 0 ? undefined : Math.atan2(thrustInput, 0);

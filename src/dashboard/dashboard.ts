@@ -10,58 +10,60 @@ export function getAvailableTaskWithHighestPriority(
   currentBuilding: Building,
   jobType: JobType,
 ) {
-  const { distances } = dijkstra(currentBuilding);
+  if (dashboard.length > 0) {
+    const { distances } = dijkstra(currentBuilding);
 
-  let bestTask: Task | undefined;
-  let bestPriority = -Infinity;
-  let bestDistance = Infinity;
+    let bestTask: Task | undefined;
+    let bestPriority = -Infinity;
+    let bestDistance = Infinity;
 
-  for (const task of dashboard) {
-    if (task.jobType !== jobType || task.status !== "available") continue;
+    for (const task of dashboard) {
+      if (task.jobType !== jobType || task.status !== "available") continue;
 
-    let totalDistance: number;
+      let totalDistance: number;
 
-    if (jobType === JobType.building || jobType === JobType.delivering) {
-      const [path, resource, distance] = task.getRouteForResource(
-        currentBuilding,
-        false,
-      );
+      if (jobType === JobType.building || jobType === JobType.delivering) {
+        const [path, resource, distance] = task.getRouteForResource(
+          currentBuilding,
+          false,
+        );
 
-      const freeSpace =
-        task.target.buildingConfig.inventorySize -
-        task.target.resourceStorage.resources.length;
-      const notCompletedTasks = task.blueprint?.tasks.length ?? 0;
+        const freeSpace =
+          task.target.buildingConfig.inventorySize -
+          task.target.resourceStorage.resources.length;
+        const notCompletedTasks = task.blueprint?.tasks.length ?? 0;
+
+        if (
+          path.length === 0 ||
+          resource === undefined ||
+          distance === undefined ||
+          freeSpace < notCompletedTasks
+        ) {
+          continue;
+        }
+
+        totalDistance = distance;
+      } else {
+        const distanceToTask = distances.get(task.target);
+        if (distanceToTask === undefined || !Number.isFinite(distanceToTask)) {
+          continue;
+        }
+
+        totalDistance = distanceToTask;
+      }
+
+      const effectivePriority = task.getEffectivePriority();
 
       if (
-        path.length === 0 ||
-        resource === undefined ||
-        distance === undefined ||
-        freeSpace < notCompletedTasks
+        effectivePriority > bestPriority ||
+        (effectivePriority === bestPriority && totalDistance < bestDistance)
       ) {
-        continue;
+        bestPriority = effectivePriority;
+        bestDistance = totalDistance;
+        bestTask = task;
       }
-
-      totalDistance = distance;
-    } else {
-      const distanceToTask = distances.get(task.target);
-      if (distanceToTask === undefined || !Number.isFinite(distanceToTask)) {
-        continue;
-      }
-
-      totalDistance = distanceToTask;
     }
 
-    const effectivePriority = task.getEffectivePriority();
-
-    if (
-      effectivePriority > bestPriority ||
-      (effectivePriority === bestPriority && totalDistance < bestDistance)
-    ) {
-      bestPriority = effectivePriority;
-      bestDistance = totalDistance;
-      bestTask = task;
-    }
+    return bestTask;
   }
-
-  return bestTask;
 }

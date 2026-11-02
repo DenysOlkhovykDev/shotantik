@@ -3,51 +3,70 @@ import { type Building } from "@aircraft/building";
 import { type Task } from "@dashboard/task";
 import { type Worker } from "@workers/worker";
 
+import { getRandomPointInRadius } from "@utils/basic-geometry";
+
 const isTest = import.meta.env.MODE === "test";
 
 export class Navigator {
-  static speed = 2;
-
   private path: Building[] = [];
   state: string;
 
+  private isInBetterPlace = false;
+  private betterPlaceX: number | undefined;
+  private betterPlaceY: number | undefined;
+
   constructor(public currentPlatform: Building) {
-    this.state = "idle";
+    this.state = "stay";
   }
 
-  public move(worker: Worker, delta: number) {
+  public moveToTargetBuilding(
+    worker: Worker,
+    movingSpeed: number,
+    delta: number,
+  ) {
     if (this.path.length > 0) {
-      const targetCenter = this.path[0].getBaseCenterInWorld();
+      const targetCenter = this.path[0].getBaseCenter();
 
-      let x = worker.x;
-      let y = worker.y;
+      const result = worker.legs.moveCharacter(
+        worker.body,
+        targetCenter.x,
+        targetCenter.y,
+        movingSpeed,
+        delta,
+      );
 
-      if (isTest) {
-        x = targetCenter.x;
-        y = targetCenter.y;
+      if (result) {
         this.onReachTargetBuilding();
-      } else {
-        const dx = targetCenter.x - x;
-        const dy = targetCenter.y - y;
-
-        const angle = Math.atan2(dy, dx);
-        worker.rotation = angle + Math.PI / 2;
-
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance > 15) {
-          const vx = dx / distance;
-          const vy = dy / distance;
-
-          x += vx * Navigator.speed * delta;
-          y += vy * Navigator.speed * delta;
-        } else {
-          this.onReachTargetBuilding();
-        }
       }
-
-      worker.position.set(x, y);
     } else {
       this.state = "stay";
+    }
+  }
+
+  public moveToBetterPlace(worker: Worker, movingSpeed: number, delta: number) {
+    if (!this.isInBetterPlace && !isTest) {
+      if (this.betterPlaceX === undefined || this.betterPlaceY === undefined) {
+        const targetCenter = this.currentPlatform.getBaseCenter();
+
+        const { x, y } = getRandomPointInRadius(
+          this.currentPlatform.buildingConfig.storageRadius,
+        );
+
+        this.betterPlaceX = targetCenter.x + x;
+        this.betterPlaceY = targetCenter.y + y;
+      } else {
+        const result = worker.legs.moveCharacter(
+          worker.body,
+          this.betterPlaceX,
+          this.betterPlaceY,
+          movingSpeed,
+          delta,
+        );
+
+        if (result) {
+          this.isInBetterPlace = true;
+        }
+      }
     }
   }
 
@@ -59,10 +78,6 @@ export class Navigator {
     if (this.path.length === 0) {
       this.state = "stay";
     }
-  }
-
-  public doesHaveActiveTargetBuilding() {
-    return this.path.length > 0;
   }
 
   public pickPathToBuilding(task: Task) {
@@ -88,5 +103,8 @@ export class Navigator {
     this.path.shift();
 
     this.state = "moving";
+    this.isInBetterPlace = false;
+    this.betterPlaceX = undefined;
+    this.betterPlaceY = undefined;
   }
 }

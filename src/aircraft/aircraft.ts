@@ -454,7 +454,7 @@ class Aircraft extends Container {
               : building.roads[0].from;
 
           this.workers.workers[i].navigator.currentPlatform = newBuilding;
-          this.workers.workers[i].position.set(newBuilding.x, newBuilding.y);
+          this.workers.workers[i].teleportTo(newBuilding.x, newBuilding.y);
         } else {
           this.workers.workers[i].destroy();
           this.workers.workers.slice(i, 1);

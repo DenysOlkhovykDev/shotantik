@@ -170,12 +170,12 @@ export abstract class Building extends Container {
     this.geometry.orientByBuildDirection(from);
   }
 
-  public getBaseCenterInWorld() {
-    return this.geometry.getBaseCenterInWorld();
+  public getBaseCenter() {
+    return this.geometry.getBaseCenter();
   }
 
-  public getBoundsCenterInWorld() {
-    return this.geometry.getBoundsCenterInWorld();
+  public getBoundsCenter() {
+    return this.geometry.getBoundsCenter();
   }
 
   addRoad(road: Road) {

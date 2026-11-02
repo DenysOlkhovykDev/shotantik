@@ -3,19 +3,23 @@ import { Graphics, Container } from "pixi.js";
 import { type Building } from "@aircraft/building";
 
 import { Inventory } from "@workers/worker-parts/inventory";
-import { LegCoordinator } from "@workers/worker-parts/leg-coordinator";
 import { TaskManager } from "@workers/worker-parts/task-manager";
 import { Navigator } from "@workers/worker-parts/navigator";
+import { Legs } from "@workers/worker-parts/legs";
 
 export class Worker extends Container {
-  private body: Graphics = new Graphics();
+  public body = new Container();
+  public head: Graphics = new Graphics();
+  private inventory: Inventory = new Inventory();
+
+  public legs: Legs = new Legs();
+
+  private tasks: TaskManager;
+  navigator: Navigator;
 
   private mainColor = "#000000";
 
-  private inventory: Inventory = new Inventory();
-  private legs: LegCoordinator = new LegCoordinator();
-  private tasks: TaskManager;
-  navigator: Navigator;
+  static movingSpeed = 1;
 
   constructor(
     x: number,
@@ -28,25 +32,26 @@ export class Worker extends Container {
     this.navigator = new Navigator(currentPlatform);
     this.tasks = new TaskManager(profession);
 
-    this.legs.draw();
     this.draw();
     this.initEvents();
 
     this.addChild(this.legs);
     this.addChild(this.body);
-    this.addChild(this.inventory);
+    this.body.addChild(this.head);
+    this.body.addChild(this.inventory);
 
-    this.position.set(x, y);
+    this.position.set(0, 0);
+    this.teleportTo(x, y);
   }
 
   private draw() {
-    this.body
+    this.head
       .circle(0, 0, 8)
       .stroke({ width: 3, color: "#000000" })
       .fill(this.mainColor);
 
-    this.body.circle(-5, -4, 2).fill("#ffffff");
-    this.body.circle(5, -4, 2).fill("#ffffff");
+    this.head.circle(-5, -4, 2).fill("#ffffff");
+    this.head.circle(5, -4, 2).fill("#ffffff");
 
     let jobColor = "#000000";
     if (this.tasks.profession === "building") {
@@ -57,16 +62,25 @@ export class Worker extends Container {
       jobColor = "#2ccb1a";
     }
 
-    this.body.circle(0, 3, 4).fill(jobColor);
+    this.head.circle(0, 3, 4).fill(jobColor);
   }
 
   private initEvents() {
     this.eventMode = "none";
   }
 
+  public teleportTo(x: number, y: number) {
+    this.body.position.set(x, y);
+    this.body.rotation = 0;
+    this.legs.setWorkerPosition(x, y);
+  }
+
   public moveWorker(delta: number) {
     if (!this.tasks.task) {
       this.pickTaskAndPath();
+      if (this.tasks.task === undefined) {
+        this.navigator.moveToBetterPlace(this, Worker.movingSpeed, delta);
+      }
     } else if (this.navigator.state === "moving") {
       this.handleMoving(delta);
     } else if (this.navigator.state === "stay") {
@@ -86,31 +100,32 @@ export class Worker extends Container {
   }
 
   private handleMoving(delta: number) {
-    this.legs.startMoving();
-    this.legs.update(delta);
-
-    this.navigator.move(this, delta);
+    this.navigator.moveToTargetBuilding(this, Worker.movingSpeed, delta);
   }
 
   private handleStaying(delta: number) {
-    this.legs.stopMoving();
-
     if (this.tasks.profession === "production") {
       this.tasks.handleProductionLogic(delta);
+      this.legs.productionAnimation(delta);
     } else {
-      const result = this.tasks.handleResourceLogic(
-        this.navigator.currentPlatform,
-        this.inventory.storage,
-      );
-
-      if (result) {
-        this.inventory.storeResource(result);
-      } else {
-        this.inventory.removeResource();
-      }
+      this.handleStoreOrGiveResource();
 
       if (this.tasks.task) {
         this.navigator.pickPathToBuilding(this.tasks.task);
+      }
+    }
+  }
+
+  private handleStoreOrGiveResource() {
+    if (this.inventory.storage) {
+      this.tasks.giveResource(this.inventory.storage);
+
+      this.inventory.removeResource();
+    } else {
+      const result = this.tasks.takeResource(this.navigator.currentPlatform);
+
+      if (result) {
+        this.inventory.storeResource(result);
       }
     }
   }

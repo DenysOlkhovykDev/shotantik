@@ -4,10 +4,10 @@ import { type Building } from "@aircraft/building";
 
 export class Road {
   private static params = {
-    strokeWidth: 10,
+    strokeWidth: 16,
     strokeColor: "#000000",
 
-    baseWidth: 6,
+    baseWidth: 12,
     baseColor: "#737675",
   };
 
@@ -31,8 +31,8 @@ export class Road {
   }
 
   draw(from: Building, to: Building) {
-    const fromCenter = from.getBaseCenterInWorld();
-    const toCenter = to.getBaseCenterInWorld();
+    const fromCenter = from.getBaseCenter();
+    const toCenter = to.getBaseCenter();
 
     this.graphic
       .moveTo(fromCenter.x, fromCenter.y)
