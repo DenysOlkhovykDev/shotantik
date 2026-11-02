@@ -1,5 +1,7 @@
 import { type Building } from "@aircraft/building";
 
+import { aircraft } from "@aircraft/aircraft";
+
 import { type Task } from "@dashboard/task";
 import { type Worker } from "@workers/worker";
 
@@ -25,6 +27,15 @@ export class Navigator {
     delta: number,
   ) {
     if (this.path.length > 0) {
+      const isExist = aircraft.buildings.indexOf(this.path[0]);
+
+      if (isExist === -1) {
+        worker.stopDoingTask();
+        this.path = [];
+
+        return;
+      }
+
       const targetCenter = this.path[0].getBaseCenter();
 
       const result = worker.legs.moveCharacter(
