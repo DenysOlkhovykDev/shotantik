@@ -42,7 +42,7 @@ export class TaskManager {
 
         const duration =
           this.task.target.craftRecipe?.duration === undefined
-            ? 60
+            ? 120
             : this.task.target.craftRecipe?.duration;
 
         if (this.productionProgress > duration) {

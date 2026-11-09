@@ -36,10 +36,6 @@ export class Task {
     public blueprint?: Blueprint,
   ) {}
 
-  public getEffectivePriority() {
-    return this.priority - this.target.resourceStorage.resources.length;
-  }
-
   public getRouteForTarget(current: Building): Building[] {
     return aStar(current, this.target);
   }

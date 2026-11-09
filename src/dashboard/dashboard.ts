@@ -15,7 +15,7 @@ export function getAvailableTaskWithHighestPriority(
 
     let bestTask: Task | undefined;
     let bestPriority = -Infinity;
-    let bestDistance = Infinity;
+    let bestScore = Infinity;
 
     for (const task of dashboard) {
       if (task.jobType !== jobType || task.status !== "available") continue;
@@ -52,14 +52,17 @@ export function getAvailableTaskWithHighestPriority(
         totalDistance = distanceToTask;
       }
 
-      const effectivePriority = task.getEffectivePriority();
+      const priority = task.priority;
+      const storage = task.target.resourceStorage.resources.length;
+
+      const score = totalDistance + storage * 300;
 
       if (
-        effectivePriority > bestPriority ||
-        (effectivePriority === bestPriority && totalDistance < bestDistance)
+        priority > bestPriority ||
+        (priority === bestPriority && score < bestScore)
       ) {
-        bestPriority = effectivePriority;
-        bestDistance = totalDistance;
+        bestPriority = priority;
+        bestScore = score;
         bestTask = task;
       }
     }

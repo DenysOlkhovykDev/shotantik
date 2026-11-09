@@ -29,7 +29,7 @@ export class Farm extends Building {
   static craftRecipe = {
     ingredients: [],
     result: "Organic",
-    duration: 60,
+    duration: 120,
   };
 
   private static kelpsParams = {
