@@ -32,7 +32,6 @@ export class Gum extends Resource {
     const baseGraphics = new Graphics();
 
     baseGraphics
-      .circle(-Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
       .circle(Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
       .rect(
         -Gum.params.rectWidth / 2,
@@ -45,6 +44,14 @@ export class Gum extends Resource {
         color: Gum.params.strokeColor,
       })
       .fill(Gum.params.baseColor);
+
+    baseGraphics
+      .circle(-Gum.params.ballsX, Gum.params.ballsY, Gum.params.ballsRadius)
+      .stroke({
+        width: Gum.params.strokeWidth,
+        color: Gum.params.strokeColor,
+      })
+      .fill("#d46883");
 
     Gum.baseTexture = generateTextureFromOrigin(baseGraphics);
   }

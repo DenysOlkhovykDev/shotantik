@@ -36,18 +36,21 @@ export class Farm extends Building {
     amount: 4,
     leavesSize: 16,
     leavesWidth: 20,
+    leavesBackgroundWidth: 24,
     leafSegments: 6,
     movingSpeed: 0.05,
     maxAmplitude: 3,
     trunksColor: "#34612c",
     leavesColor: "#559c48",
+    leavesBackgroundColor: "#1b3117",
   };
 
   private static buildingParams = {
     groundRingColor: "#a3791f",
     baseColor: "#b0ca75",
-    plantCenterColor: "#77c06a",
-    plantLeavesColor: "#67a75c",
+    centerStrokeWidth: 20,
+    centerColor: "#77c06a",
+    centerStrokeColor: "#67a75c",
   };
 
   // contentContainer
@@ -159,37 +162,41 @@ export class Farm extends Building {
   }
 
   private createDecorativePlant(baseGraphics: Graphics) {
-    makeBasicCircle(
-      baseGraphics,
-      Farm.buildingConfig.baseGraphicalSize - 18,
-      Farm.buildingParams.plantCenterColor,
-      false,
+    const { x: x1, y: y1 } = getRadialPoint(
+      0,
+      4,
+      Farm.buildingConfig.baseGraphicalSize - 20,
     );
 
-    for (let i = 0; i < 5; i++) {
-      const { x: x1, y: y1 } = getRadialPoint(
-        i * 5 - 1,
-        5 * 5,
-        Farm.buildingConfig.baseGraphicalSize - 20,
-      );
+    const { x: x2, y: y2 } = getRadialPoint(
+      1,
+      4,
+      Farm.buildingConfig.baseGraphicalSize - 20,
+    );
 
-      baseGraphics.circle(x1, y1, 8).fill(Farm.buildingParams.plantLeavesColor);
+    const { x: x3, y: y3 } = getRadialPoint(
+      2,
+      4,
+      Farm.buildingConfig.baseGraphicalSize - 20,
+    );
 
-      const { x: x2, y: y2 } = getRadialPoint(
-        i * 5 + 1,
-        5 * 5,
-        Farm.buildingConfig.baseGraphicalSize - 20,
-      );
+    const { x: x4, y: y4 } = getRadialPoint(
+      3,
+      4,
+      Farm.buildingConfig.baseGraphicalSize - 20,
+    );
 
-      baseGraphics.circle(x2, y2, 8).fill(Farm.buildingParams.plantLeavesColor);
-
-      baseGraphics
-        .moveTo(0, 0)
-        .lineTo(x1, y1)
-        .lineTo(x2, y2)
-        .closePath()
-        .fill(Farm.buildingParams.plantLeavesColor);
-    }
+    baseGraphics
+      .moveTo(x1, y1)
+      .lineTo(x2, y2)
+      .lineTo(x3, y3)
+      .lineTo(x4, y4)
+      .closePath()
+      .stroke({
+        width: Farm.buildingParams.centerStrokeWidth,
+        color: Farm.buildingParams.centerStrokeColor,
+      })
+      .fill(Farm.buildingParams.centerColor);
   }
 
   animation(delta: number) {
@@ -197,6 +204,26 @@ export class Farm extends Building {
 
     for (let i = 0; i < Farm.kelpsParams.amount; i++) {
       this.kelpLeavesGraphics[i].clear();
+
+      this.makeLeaf(
+        this.kelpLeavesGraphics[i],
+        i,
+        this.kelpLeavesPoints[i].xRight,
+        this.kelpLeavesPoints[i].yRight,
+      );
+      this.makeLeaf(
+        this.kelpLeavesGraphics[i],
+        i,
+        this.kelpLeavesPoints[i].xLeft,
+        this.kelpLeavesPoints[i].yLeft,
+      );
+
+      this.kelpLeavesGraphics[i].stroke({
+        width: Farm.kelpsParams.leavesBackgroundWidth,
+        color: Farm.kelpsParams.leavesBackgroundColor,
+        cap: "round",
+        join: "round",
+      });
 
       this.makeLeaf(
         this.kelpLeavesGraphics[i],

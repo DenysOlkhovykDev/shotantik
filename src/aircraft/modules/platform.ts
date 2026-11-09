@@ -31,8 +31,8 @@ export class Platform extends Building {
   ];
 
   private static buildingParams = {
-    baseColor: "#cccbcb",
-    centerColor: "#a9a9a9",
+    baseColor: "#d2c7a7",
+    centerColor: "#c3b497",
   };
 
   constructor(x: number, y: number, isDecorative = false) {

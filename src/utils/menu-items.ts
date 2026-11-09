@@ -30,7 +30,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Platform",
-    color: "#acacac",
+    color: "#b8b09f",
   },
   {
     label: "Engine",
