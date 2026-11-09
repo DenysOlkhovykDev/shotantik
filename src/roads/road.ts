@@ -4,10 +4,10 @@ import { type Building } from "@aircraft/building";
 
 export class Road {
   private static params = {
-    strokeWidth: 16,
+    strokeWidth: 12,
     strokeColor: "#000000",
 
-    baseWidth: 12,
+    baseWidth: 8,
     baseColor: "#737675",
   };
 
@@ -50,11 +50,72 @@ export class Road {
       color: Road.params.baseColor,
     });
 
+    const start = this.getIntersectionPoint(to, from);
+    const end = this.getIntersectionPoint(from, to);
+
+    for (const point of [start, end]) {
+      if (!point) continue;
+
+      this.graphic
+        .circle(point.x, point.y, 7)
+        .stroke({
+          width: 4,
+          color: Road.params.strokeColor,
+        })
+        .fill({
+          color: Road.params.baseColor,
+        });
+    }
+
     this.graphic.eventMode = "static";
 
     this.graphic.on("pointerdown", (e) => {
       e.stopPropagation();
     });
+  }
+
+  private getIntersectionPoint(from: Building, to: Building) {
+    const fromCenter = from.getBaseCenter();
+    const toCenter = to.getBaseCenter();
+
+    const dx = toCenter.x - fromCenter.x;
+    const dy = toCenter.y - fromCenter.y;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance === 0) return undefined;
+
+    const dirX = dx / distance;
+    const dirY = dy / distance;
+
+    const radius = to.buildingConfig.baseGraphicalSize;
+
+    const decorationCenter = to.getBoundsCenter();
+
+    const decorationDx = decorationCenter.x - fromCenter.x;
+    const decorationDy = decorationCenter.y - fromCenter.y;
+
+    const projection = decorationDx * dirX + decorationDy * dirY;
+
+    const perpendicularDistanceSquared =
+      decorationDx * decorationDx +
+      decorationDy * decorationDy -
+      projection * projection;
+
+    const radiusSquared = radius * radius;
+
+    if (perpendicularDistanceSquared > radiusSquared) {
+      return undefined;
+    }
+
+    const offset = Math.sqrt(radiusSquared - perpendicularDistanceSquared);
+
+    const intersectionDistance = projection - offset;
+
+    return {
+      x: fromCenter.x + dirX * intersectionDistance,
+      y: fromCenter.y + dirY * intersectionDistance,
+    };
   }
 
   static crateRoadImage(x: number, y: number) {
