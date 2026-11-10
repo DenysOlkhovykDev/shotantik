@@ -36,7 +36,7 @@ export class Mixer extends Building {
       { resourceName: "Water", amount: 2 },
     ],
     result: "Gum",
-    duration: 60,
+    duration: 120,
   };
 
   private static satellitesParams = {

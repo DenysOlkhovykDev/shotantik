@@ -311,7 +311,7 @@ export class ResearchMenu extends Container {
           const BuildingClass = buildingMap[item.label] || Platform;
 
           if (BuildingClass.craftRecipe) {
-            const defaultDuration = 60;
+            const defaultDuration = 120;
 
             BuildingClass.craftRecipe.duration =
               defaultDuration / (1 + (item.level - 1) * 0.25);

@@ -36,7 +36,7 @@ export class Grinder extends Building {
       { resourceName: "Organic", amount: 2 },
     ],
     result: "Gear",
-    duration: 60,
+    duration: 120,
   };
 
   private static buildingParams = {

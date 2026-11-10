@@ -35,7 +35,7 @@ export class Assembler extends Building {
       { resourceName: "Metal", amount: 2 },
     ],
     result: "Truss",
-    duration: 60,
+    duration: 120,
   };
 
   private static manipulatorsParams = {
