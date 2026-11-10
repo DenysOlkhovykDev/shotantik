@@ -4,7 +4,7 @@ import { type BuildingClass, aircraft } from "@aircraft/aircraft";
 import { type RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
 
 import { type Resource } from "@resources/resource";
-import { type Task, TaskStatus } from "@dashboard/task";
+import { type Task, TaskStatus } from "@tasks/task";
 
 import { getDistance } from "@utils/basic-geometry";
 

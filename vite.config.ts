@@ -6,13 +6,14 @@ export default defineConfig(({ mode }) => ({
 
   resolve: {
     alias: {
-      "@aircraft": path.resolve(__dirname, "src/aircraft"),
-      "@background": path.resolve(__dirname, "src/background"),
-      "@moving": path.resolve(__dirname, "src/moving"),
-      "@dashboard": path.resolve(__dirname, "src/dashboard"),
-      "@islands": path.resolve(__dirname, "src/islands"),
-      "@on-ground": path.resolve(__dirname, "src/on-ground"),
-      "@resources": path.resolve(__dirname, "src/resources"),
+      //Player
+      "@aircraft": path.resolve(__dirname, "src/player/aircraft"),
+      "@tasks": path.resolve(__dirname, "src/player/tasks"),
+      "@moving": path.resolve(__dirname, "src/player/moving"),
+      "@resources": path.resolve(__dirname, "src/player/resources"),
+      "@roads": path.resolve(__dirname, "src/player/roads"),
+      "@workers": path.resolve(__dirname, "src/player/workers"),
+      //Ui
       "@camera": path.resolve(__dirname, "src/ui/camera"),
       "@compass": path.resolve(__dirname, "src/ui/compass"),
       "@construction": path.resolve(__dirname, "src/ui/construction"),
@@ -22,11 +23,15 @@ export default defineConfig(({ mode }) => ({
       "@speed": path.resolve(__dirname, "src/ui/speed"),
       "@research": path.resolve(__dirname, "src/ui/research"),
       "@tutorial": path.resolve(__dirname, "src/ui/tutorial"),
-      "@roads": path.resolve(__dirname, "src/roads"),
+      //World
+      "@background": path.resolve(__dirname, "src/world/background"),
+      "@islands": path.resolve(__dirname, "src/world/islands"),
+      "@objects": path.resolve(__dirname, "src/world/objects"),
+      //Other
       "@utils": path.resolve(__dirname, "src/utils"),
-      "@workers": path.resolve(__dirname, "src/workers"),
       "@test-situations": path.resolve(__dirname, "src/test-situations"),
       "@test-scenarios": path.resolve(__dirname, "tests/scenarios"),
+      "@test-infra": path.resolve(__dirname, "tests/test-infra"),
     },
   },
 }));

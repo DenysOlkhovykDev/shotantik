@@ -1,6 +1,6 @@
 import { aircraft } from "@aircraft/aircraft";
 
-import { JobType } from "@dashboard/task";
+import { JobType } from "@tasks/task";
 import { createResource } from "@resources/create-resources";
 
 import { type AircraftScenario } from "@test-situations/test-situation";

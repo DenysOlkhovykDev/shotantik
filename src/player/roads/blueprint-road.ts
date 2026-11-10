@@ -4,7 +4,7 @@ import { aircraft } from "@aircraft/aircraft";
 import { type Building } from "@aircraft/building";
 
 import { type Resource } from "@resources/resource";
-import { type Task, TaskStatus } from "@dashboard/task";
+import { type Task, TaskStatus } from "@tasks/task";
 
 export class BlueprintRoad {
   private static params = {

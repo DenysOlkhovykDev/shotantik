@@ -1,6 +1,6 @@
 import { aircraft } from "@aircraft/aircraft";
 
-import { onGroundObjects } from "@on-ground/objects";
+import { onGroundObjects } from "@objects/research-points";
 
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";

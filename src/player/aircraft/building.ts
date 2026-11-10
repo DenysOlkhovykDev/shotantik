@@ -17,7 +17,7 @@ import { GeometryCalculator } from "@aircraft/building-parts/geometry-calculator
 import { shadowFilter } from "@aircraft/building-parts/shadow-filter";
 
 import { type Road } from "@roads/road";
-import { type Task } from "@dashboard/task";
+import { type Task } from "@tasks/task";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "@research/manager";

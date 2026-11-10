@@ -6,13 +6,14 @@
     "strict": true,
     "types": ["node"],
     "paths": {
-      "@aircraft/*": ["./src/aircraft/*"],
-      "@background/*": ["./src/background/*"],
-      "@moving/*": ["./src/moving/*"],
-      "@dashboard/*": ["./src/dashboard/*"],
-      "@islands/*": ["./src/islands/*"],
-      "@on-ground/*": ["./src/on-ground/*"],
-      "@resources/*": ["./src/resources/*"],
+      //Player
+      "@aircraft/*": ["./src/player/aircraft/*"],
+      "@tasks/*": ["./src/player/tasks/*"],
+      "@moving/*": ["./src/player/moving/*"],
+      "@resources/*": ["./src/player/resources/*"],
+      "@roads/*": ["./src/player/roads/*"],
+      "@workers/*": ["./src/player/workers/*"],
+      //Ui
       "@camera/*": ["./src/ui/camera/*"],
       "@compass/*": ["./src/ui/compass/*"],
       "@construction/*": ["./src/ui/construction/*"],
@@ -22,9 +23,12 @@
       "@speed/*": ["./src/ui/speed/*"],
       "@research/*": ["./src/ui/research/*"],
       "@tutorial/*": ["./src/ui/tutorial/*"],
-      "@roads/*": ["./src/roads/*"],
+      //World
+      "@background/*": ["./src/world/background/*"], 
+      "@islands/*": ["./src/world/islands/*"],
+      "@objects/*": ["./src/world/objects/*"],
+      //Other
       "@utils/*": ["./src/utils/*"],
-      "@workers/*": ["./src/workers/*"],
       "@test-situations/*": ["./src/test-situations/*"],
       "@test-scenarios/*": ["./tests/scenarios/*"],
       "@test-infra/*": ["./tests/test-infra/*"],
