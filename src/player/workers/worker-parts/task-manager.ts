@@ -1,7 +1,7 @@
 import { type Building } from "@aircraft/building";
 
-import { type Task, JobType, TaskStatus } from "@dashboard/task";
-import { getAvailableTaskWithHighestPriority } from "@dashboard/dashboard";
+import { type Task, JobType, TaskStatus } from "@tasks/task";
+import { getAvailableTaskWithHighestPriority } from "@tasks/dashboard";
 import { type Resource } from "@resources/resource";
 
 const isTest = import.meta.env.MODE === "test";

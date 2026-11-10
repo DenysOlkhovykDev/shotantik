@@ -23,8 +23,8 @@ import { Researcher } from "@aircraft/modules/researcher";
 import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
 
-import { Workers } from "@workers/_workers";
-import { JobType, type Task, TaskStatus } from "@dashboard/task";
+import { Workers } from "@workers/manager";
+import { JobType, type Task, TaskStatus } from "@tasks/task";
 import { type Resource } from "@resources/resource";
 
 import { researchManager } from "@research/manager";
@@ -32,7 +32,7 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { header } from "@header/manager";
 
-import { onGroundObjects } from "@on-ground/objects";
+import { onGroundObjects } from "@objects/research-points";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;

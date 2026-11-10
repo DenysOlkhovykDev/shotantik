@@ -1,6 +1,6 @@
 import type { Building } from "@aircraft/building";
 
-import { type Task, JobType } from "@dashboard/task";
+import { type Task, JobType } from "@tasks/task";
 
 import { dijkstra } from "@utils/algorithms";
 

@@ -9,7 +9,7 @@ import { aircraft } from "@aircraft/aircraft";
 
 import { BackgroundManager } from "@background/manager";
 import { BackgroundTile } from "@background/tile";
-import { onGroundObjects } from "@on-ground/objects";
+import { onGroundObjects } from "@objects/research-points";
 import { createTestSituation } from "@test-situations/test-situation";
 import { moveWorld } from "@moving/moving";
 
