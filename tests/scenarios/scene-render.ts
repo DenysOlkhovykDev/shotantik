@@ -29,9 +29,11 @@ export const sceneRender: Scenario = {
 
       { from: "p7", id: "p8", type: "Platform", x: 0, y: 300 },
       { from: "p8", id: "grinder", type: "Grinder", x: -100, y: 300 },
+      { from: "p8", id: "canon", type: "Canon", x: 200, y: 300 },
 
       { from: "p8", id: "p9", type: "Platform", x: 0, y: 400 },
       { from: "p9", id: "portal", type: "Portal", x: 100, y: 400 },
+      { from: "p9", id: "canon", type: "Canon", x: -200, y: 400 },
 
       { from: "p9", id: "p10", type: "Platform", x: 0, y: 500 },
       { from: "p10", id: "researcher", type: "Researcher", x: -100, y: 500 },
