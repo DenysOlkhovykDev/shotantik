@@ -9,7 +9,7 @@ import { aircraft } from "@aircraft/aircraft";
 
 import { BackgroundManager } from "@background/manager";
 import { BackgroundTile } from "@background/tile";
-import { onGroundObjects } from "@objects/research-points";
+import { onGroundObjects } from "@objects/research-points/research-points";
 import { createTestSituation } from "@test-situations/test-situation";
 import { moveWorld } from "@moving/moving";
 
@@ -22,6 +22,7 @@ import { tutorials } from "@tutorial/manager";
 import { header } from "@header/manager";
 import { researchManager } from "@research/manager";
 import { cameraSettings } from "@camera/manager";
+import { shootingManager } from "@shooting/manager";
 
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import {
@@ -30,6 +31,8 @@ import {
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
 import { getGameScreenCenter } from "@utils/ui-config";
+import { targetsManager } from "@objects/targets/manager";
+import { bulletPool } from "@objects/bullets/pool";
 import { logo } from "@utils/logo";
 
 export const app = new Application();
@@ -75,6 +78,7 @@ constructionManager.initialize();
 UIcontainer.addChild(constructionManager);
 researchManager.initialize();
 UIcontainer.addChild(researchManager);
+UIcontainer.addChild(shootingManager);
 UIcontainer.addChild(header);
 UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
@@ -90,6 +94,9 @@ worldLayer.addChild(backgroundManager);
 
 createTestSituation(worldLayer);
 aircraft.initializeAircraft(worldLayer);
+
+worldLayer.addChild(targetsManager);
+worldLayer.addChild(bulletPool);
 
 app.stage.addChild(worldLayer);
 app.stage.addChild(UIcontainer);
@@ -111,7 +118,12 @@ app.stage.on(
 app.stage.on("pointerdown", (event) => {
   cameraSettings.onPointerDown(event);
 
-  clickToBuild(event);
+  if (shootingManager.getIsSelectingTargetMode()) {
+    const position = targetsManager.toLocal(event.global);
+    shootingManager.selectTarget(position.x, position.y);
+  } else {
+    clickToBuild(event);
+  }
 });
 
 app.stage.on("pointermove", (event) => {
@@ -174,9 +186,15 @@ app.ticker.add((delta) => {
     const frameTime = now - previousFrameTime;
     previousFrameTime = now;
 
+    shootingManager.getIsSelectingTargetMode();
+
+    const speedModifier =
+      speedButton.getSpeedModifier() *
+      (shootingManager.getIsSelectingTargetMode() ? 0.2 : 1);
+
     const deltaTime = isTest
-      ? 1 * speedButton.getSpeedModifier()
-      : delta.deltaTime * speedButton.getSpeedModifier();
+      ? 1 * speedModifier
+      : delta.deltaTime * speedModifier;
 
     updateAlways();
 
@@ -226,6 +244,8 @@ function updateGame(deltaTime: number) {
 
     onGroundObjects.deleteOldAndCreateNewTarget();
   }
+
+  bulletPool.moveActiveBullets(deltaTime);
 
   compasses.updateCompasses();
 

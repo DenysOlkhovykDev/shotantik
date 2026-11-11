@@ -1,7 +1,7 @@
 import { type Container } from "pixi.js";
 
 import { allIslands } from "@islands/all-islands";
-import { onGroundObjects } from "@objects/research-points";
+import { onGroundObjects } from "@objects/research-points/research-points";
 
 import { type WorldObjects } from "@test-situations/test-situation";
 

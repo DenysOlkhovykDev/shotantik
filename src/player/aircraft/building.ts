@@ -25,6 +25,7 @@ import { cameraSettings } from "@camera/manager";
 import { type Resource } from "@resources/resource";
 
 import { getRadialPoint } from "@utils/basic-geometry";
+import { shootingManager } from "@shooting/manager";
 
 export interface BuildingConfig {
   storageCenter: {
@@ -158,6 +159,8 @@ export abstract class Building extends Container {
     constructionManager.hideMenu();
 
     researchManager.hideMenu();
+
+    shootingManager.setIsSelectingTargetMode(false);
 
     if (needResetConstructionSettings) {
       aircraft.resetConstructionSource();
