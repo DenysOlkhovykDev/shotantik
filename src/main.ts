@@ -30,6 +30,7 @@ import {
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
 import { getGameScreenCenter } from "@utils/ui-config";
+import { logo } from "@utils/logo";
 
 export const app = new Application();
 
@@ -92,6 +93,10 @@ aircraft.initializeAircraft(worldLayer);
 
 app.stage.addChild(worldLayer);
 app.stage.addChild(UIcontainer);
+
+if (import.meta.env.VITE_IS_DEBUG === "true") {
+  app.stage.addChild(logo);
+}
 
 app.stage.on(
   "wheel",
