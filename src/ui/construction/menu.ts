@@ -39,7 +39,8 @@ export class ConstructionMenu extends Container {
 
     backgroundColor: "#cfcbc8",
 
-    buildingLabelY: 18,
+    buildingLabelX: 10,
+    buildingLabelY: 10,
   };
 
   private centerBottom = {
@@ -161,13 +162,11 @@ export class ConstructionMenu extends Container {
       text: label,
       style: {
         fill: "#000000",
-        fontSize: 20,
+        fontSize: 15,
       },
     });
 
-    text.anchor.set(0.5);
-
-    text.x = ConstructionMenu.params.columnWidth / 2;
+    text.x = ConstructionMenu.params.buildingLabelX;
     text.y = ConstructionMenu.params.buildingLabelY;
 
     text.eventMode = "none";
