@@ -1,4 +1,5 @@
-import { Container } from "pixi.js";
+import { Container, type FederatedPointerEvent } from "pixi.js";
+
 import { resetButton } from "./reset-button";
 
 class CameraSettings extends Container {
@@ -9,6 +10,8 @@ class CameraSettings extends Container {
 
   private pointers = new Map();
   private lastPinchDistance = 0;
+  private hadMultiTouchGesture = false;
+  private hadPanGesture = false;
 
   private isZoomAllowed = true;
 
@@ -54,17 +57,35 @@ class CameraSettings extends Container {
     this.setZoom(this.zoom * Math.exp(delta * this.zoomSpeed));
   }
 
+  public onPointerDown(event: FederatedPointerEvent) {
+    if (event.pointerType === "touch") {
+      this.startChangingZoomByTouch(
+        event.pointerId,
+        event.clientX,
+        event.clientY,
+      );
+    }
+
+    this.startPanning(event.pointerId, event.clientX, event.clientY);
+  }
+
   public startChangingZoomByTouch(
     pointerId: number,
     clientX: number,
     clientY: number,
   ) {
+    if (this.pointers.size === 0) {
+      this.hadMultiTouchGesture = false;
+      this.hadPanGesture = false;
+    }
+
     this.pointers.set(pointerId, {
       x: clientX,
       y: clientY,
     });
 
     if (this.pointers.size === 2) {
+      this.hadMultiTouchGesture = true;
       this.lastPinchDistance = this.getPinchDistance();
     }
   }
@@ -111,6 +132,11 @@ class CameraSettings extends Container {
   public startPanning(pointerId: number, clientX: number, clientY: number) {
     if (this.pointers.size >= 2) return;
 
+    if (this.pointers.size === 0) {
+      this.hadMultiTouchGesture = false;
+      this.hadPanGesture = false;
+    }
+
     this.panPointerId = pointerId;
     this.lastPanX = clientX;
     this.lastPanY = clientY;
@@ -131,11 +157,14 @@ class CameraSettings extends Container {
         this.dragThreshold
     ) {
       this.isPanning = true;
+      this.hadPanGesture = true;
     }
 
+    const sensitivity = navigator.maxTouchPoints > 0 ? 1.8 : 1;
+
     if (this.isPanning && this.pointers.size < 2) {
-      this.offsetX -= deltaX / this.zoom;
-      this.offsetY -= deltaY / this.zoom;
+      this.offsetX -= (deltaX * sensitivity) / this.zoom;
+      this.offsetY -= (deltaY * sensitivity) / this.zoom;
     }
 
     this.lastPanX = clientX;
@@ -151,6 +180,15 @@ class CameraSettings extends Container {
 
   public getIsPanning() {
     return this.isPanning;
+  }
+
+  public isPointerGesture() {
+    return (
+      this.isPanning ||
+      this.hadPanGesture ||
+      this.pointers.size > 1 ||
+      this.hadMultiTouchGesture
+    );
   }
 
   private setZoom(value: number) {
