@@ -27,26 +27,40 @@ export class RecipeSign extends Container {
 
     unavailableResource: 0.45,
     spacing: 15,
-    padding: 10,
+    padding: 12,
+
+    borderRadius: 8,
   };
 
   private static horizontalMode = {
     height: 20,
+    recipeResultBackgroundWidth: 24,
+    recipeResultBackgroundColor: "#f7f3d6",
   };
 
   private static verticalMode = {
     width: 30,
-    textPositionX: 4,
-    textPositionY: 2,
-    resourcePositionX: 21,
-    resourcePositionY: 10,
+    textPositionX: 3,
+    textPositionY: 4,
+    resourcePositionX: 20,
+    resourcePositionY: 12,
   };
 
   private static arrowParams = {
-    x: 0,
+    x: -3,
     y: 0,
-    width: 10,
-    height: 10,
+    width: 6,
+    height: 8,
+
+    strokeWidth: 2,
+    strokeColor: "#000000",
+  };
+
+  private static plusParams = {
+    x: 15,
+    y: -10,
+    width: 14,
+    height: 14,
 
     strokeWidth: 2,
     strokeColor: "#000000",
@@ -123,17 +137,34 @@ export class RecipeSign extends Container {
       RecipeSign.signParams.padding * 2;
 
     const background = new Graphics()
-      .rect(
+      .roundRect(
         -width / 2,
         -RecipeSign.horizontalMode.height / 2,
         width,
         RecipeSign.horizontalMode.height,
+        RecipeSign.signParams.borderRadius,
       )
       .fill(RecipeSign.signParams.backgroundColor)
       .stroke({
         width: RecipeSign.signParams.strokeWidth,
         color: RecipeSign.signParams.strokeColor,
       });
+
+    if (recipe.result) {
+      background
+        .roundRect(
+          width / 2 - RecipeSign.horizontalMode.recipeResultBackgroundWidth,
+          -RecipeSign.horizontalMode.height / 2,
+          RecipeSign.horizontalMode.recipeResultBackgroundWidth,
+          RecipeSign.horizontalMode.height,
+          RecipeSign.signParams.borderRadius,
+        )
+        .fill(RecipeSign.horizontalMode.recipeResultBackgroundColor)
+        .stroke({
+          width: RecipeSign.signParams.strokeWidth,
+          color: RecipeSign.signParams.strokeColor,
+        });
+    }
 
     this.addChild(background);
 
@@ -146,9 +177,32 @@ export class RecipeSign extends Container {
   private drawVertical(ingredients: RecipeIngredient[]) {
     if (ingredients.length === 0) return;
 
-    const height = ingredients.length * RecipeSign.signParams.spacing + 5;
+    const paddingForRecipeSymbol = 15;
+    const height = ingredients.length * RecipeSign.signParams.spacing + 9;
     const background = new Graphics()
-      .rect(0, 0, RecipeSign.verticalMode.width, height)
+      .roundRect(
+        0,
+        -paddingForRecipeSymbol,
+        RecipeSign.verticalMode.width,
+        height + paddingForRecipeSymbol,
+        RecipeSign.signParams.borderRadius,
+      )
+      .fill(RecipeSign.signParams.backgroundColor)
+      .stroke({
+        width: RecipeSign.signParams.strokeWidth,
+        color: RecipeSign.signParams.strokeColor,
+      });
+
+    const recipeSymbolBackgroundHeight = 25;
+
+    background
+      .roundRect(
+        0,
+        -recipeSymbolBackgroundHeight + 2,
+        RecipeSign.verticalMode.width,
+        recipeSymbolBackgroundHeight,
+        RecipeSign.signParams.borderRadius,
+      )
       .fill(RecipeSign.signParams.backgroundColor)
       .stroke({
         width: RecipeSign.signParams.strokeWidth,
@@ -156,6 +210,15 @@ export class RecipeSign extends Container {
       });
 
     this.addChild(background);
+
+    this.addChild(
+      this.createPlus(
+        RecipeSign.plusParams.x,
+        RecipeSign.plusParams.y,
+        RecipeSign.plusParams.width,
+        RecipeSign.plusParams.height,
+      ),
+    );
 
     ingredients.forEach((ingredient, index) => {
       const resource = createResource(ingredient.resourceName);
@@ -203,6 +266,18 @@ export class RecipeSign extends Container {
         width: RecipeSign.arrowParams.strokeWidth,
         color: RecipeSign.arrowParams.strokeColor,
         cap: "round",
+      });
+  }
+
+  private createPlus(x: number, y: number, width: number, height: number) {
+    return new Graphics()
+      .moveTo(x - width / 2, y)
+      .lineTo(x + width / 2, y)
+      .moveTo(x, y - height / 2)
+      .lineTo(x, y + height / 2)
+      .stroke({
+        width: RecipeSign.plusParams.strokeWidth,
+        color: RecipeSign.plusParams.strokeColor,
       });
   }
 }
