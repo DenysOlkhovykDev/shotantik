@@ -21,6 +21,7 @@ import { type Task } from "@tasks/task";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "@research/manager";
+import { cameraSettings } from "@camera/manager";
 import { type Resource } from "@resources/resource";
 
 import { getRadialPoint } from "@utils/basic-geometry";
@@ -131,9 +132,15 @@ export abstract class Building extends Container {
 
   protected initEvents() {
     this.eventMode = "static";
-    this.on("pointerdown", (event: FederatedPointerEvent) =>
-      this.onClick(event),
-    );
+    this.on("pointerdown", (event: FederatedPointerEvent) => {
+      cameraSettings.onPointerDown(event);
+      event.stopPropagation();
+    });
+    this.on("pointertap", (event: FederatedPointerEvent) => {
+      if (cameraSettings.isPointerGesture()) return;
+
+      this.onClick(event);
+    });
   }
 
   protected onClick(

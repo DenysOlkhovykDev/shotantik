@@ -109,15 +109,7 @@ app.stage.on(
 );
 
 app.stage.on("pointerdown", (event) => {
-  if (event.pointerType === "touch") {
-    cameraSettings.startChangingZoomByTouch(
-      event.pointerId,
-      event.clientX,
-      event.clientY,
-    );
-  }
-
-  cameraSettings.startPanning(event.pointerId, event.clientX, event.clientY);
+  cameraSettings.onPointerDown(event);
 
   clickToBuild(event);
 });
