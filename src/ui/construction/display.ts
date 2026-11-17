@@ -7,7 +7,6 @@ import { Road } from "@roads/road";
 
 import { constructionManager } from "@construction/manager";
 
-import { getConstructionDisplayPosition } from "@utils/ui-config";
 import { menuItems } from "@utils/menu-items";
 
 export class ConstructionDisplay extends Container {
@@ -30,11 +29,6 @@ export class ConstructionDisplay extends Container {
 
   constructor() {
     super();
-
-    this.position.set(
-      getConstructionDisplayPosition().x,
-      getConstructionDisplayPosition().y,
-    );
   }
 
   public displayBuildingType(buildingName: string | undefined) {

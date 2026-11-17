@@ -2,11 +2,18 @@ import { Container, type FederatedPointerEvent } from "pixi.js";
 
 import { resetButton } from "./reset-button";
 
+import { getCameraResetButtonPosition } from "@utils/ui-config";
+
 class CameraSettings extends Container {
   private zoom = 1;
   private minZoom = 0.5;
   private maxZoom = 5;
   private zoomSpeed = 0.001;
+
+  private buttonPosition = {
+    x: getCameraResetButtonPosition().x,
+    y: getCameraResetButtonPosition().y,
+  };
 
   private pointers = new Map();
   private lastPinchDistance = 0;
@@ -37,6 +44,8 @@ class CameraSettings extends Container {
       this.resetCamera();
       e.stopPropagation();
     });
+
+    this.resetButton.position.set(this.buttonPosition.x, this.buttonPosition.y);
 
     this.addChild(this.resetButton);
 

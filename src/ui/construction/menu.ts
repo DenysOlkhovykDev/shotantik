@@ -10,7 +10,6 @@ import {
 
 import { Road } from "@roads/road";
 
-import { getConstructionMenuPosition } from "@utils/ui-config";
 import { menuItems, type MenuItem } from "@utils/menu-items";
 
 export class ConstructionMenu extends Container {
@@ -43,24 +42,23 @@ export class ConstructionMenu extends Container {
     buildingLabelY: 10,
   };
 
-  private centerBottom = {
-    x: getConstructionMenuPosition().x,
-    y: getConstructionMenuPosition().y,
-  };
-
   private rows!: number;
   private columns = 3;
 
   private menuWidth!: number;
   private menuHeight!: number;
 
-  constructor(private setBuildingType: (type: string | undefined) => void) {
+  constructor(
+    private setBuildingType: (type: string | undefined) => void,
+    x: number,
+    y: number,
+  ) {
     super();
 
-    this.createMenu();
+    this.createMenu(x, y);
   }
 
-  public createMenu() {
+  public createMenu(x: number, y: number) {
     this.rows = Math.ceil(this.menuItems.length / this.columns);
 
     this.menuWidth =
@@ -75,9 +73,8 @@ export class ConstructionMenu extends Container {
 
     this.draw();
 
-    this.x =
-      this.centerBottom.x - this.menuWidth / 2 + ConstructionMenu.params.gap;
-    this.y = this.centerBottom.y - this.menuHeight;
+    this.x = x - this.menuWidth / 2 + ConstructionMenu.params.gap;
+    this.y = y - this.menuHeight;
   }
 
   private draw() {

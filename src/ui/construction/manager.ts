@@ -6,6 +6,11 @@ import { ConstructionDisplay } from "@construction/display";
 import { header } from "@header/manager";
 
 import { type MenuItem } from "@utils/menu-items";
+import {
+  getConstructionDisplayPosition,
+  getConstructionButtonPosition,
+  getConstructionMenuPosition,
+} from "@utils/ui-config";
 
 export class ConstructionManager extends Container {
   private button: ConstructionButton | undefined = undefined;
@@ -16,7 +21,11 @@ export class ConstructionManager extends Container {
 
   public initialize() {
     this.button = new ConstructionButton();
-    this.menu = new ConstructionMenu(this.setBuildingType);
+    this.menu = new ConstructionMenu(
+      this.setBuildingType,
+      getConstructionMenuPosition().x,
+      getConstructionMenuPosition().y,
+    );
     this.display = new ConstructionDisplay();
 
     this.button.eventMode = "static";
@@ -25,6 +34,11 @@ export class ConstructionManager extends Container {
       this.showMenu();
       e.stopPropagation();
     });
+
+    this.button.position.set(
+      getConstructionButtonPosition().x,
+      getConstructionButtonPosition().y,
+    );
 
     this.addChild(this.button);
 
@@ -39,6 +53,11 @@ export class ConstructionManager extends Container {
     this.hideMenu();
 
     this.addChild(this.menu);
+
+    this.display.position.set(
+      getConstructionDisplayPosition().x,
+      getConstructionDisplayPosition().y,
+    );
 
     this.addChild(this.display);
   }
@@ -67,7 +86,10 @@ export class ConstructionManager extends Container {
     if (this.menu) {
       this.menu.menuItems.push(newItem);
 
-      this.menu.createMenu();
+      this.menu.createMenu(
+        getConstructionMenuPosition().x,
+        getConstructionMenuPosition().y,
+      );
       this.hideMenu();
     }
   }

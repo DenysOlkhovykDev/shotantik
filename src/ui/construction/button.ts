@@ -1,7 +1,5 @@
 import { Container, Graphics } from "pixi.js";
 
-import { getConstructionButtonPosition } from "@utils/ui-config";
-
 export class ConstructionButton extends Container {
   private static plus = {
     size: 50,
@@ -15,63 +13,28 @@ export class ConstructionButton extends Container {
 
   private graphic = new Graphics();
 
-  private buttonPosition = {
-    x: getConstructionButtonPosition().x,
-    y: getConstructionButtonPosition().y,
-  };
-
   constructor() {
     super();
 
     this.graphic = new Graphics();
 
-    this.graphic
-      .circle(
-        this.buttonPosition.x,
-        this.buttonPosition.y,
-        ConstructionButton.plus.size,
-      )
-      .fill({ alpha: 0 });
+    this.graphic.circle(0, 0, ConstructionButton.plus.size).fill({ alpha: 0 });
 
     this.graphic
-      .moveTo(
-        this.buttonPosition.x - ConstructionButton.plus.size / 2 - 2,
-        this.buttonPosition.y,
-      )
-      .lineTo(
-        this.buttonPosition.x + ConstructionButton.plus.size / 2 + 2,
-        this.buttonPosition.y,
-      )
-      .moveTo(
-        this.buttonPosition.x,
-        this.buttonPosition.y - ConstructionButton.plus.size / 2 - 2,
-      )
-      .lineTo(
-        this.buttonPosition.x,
-        this.buttonPosition.y + ConstructionButton.plus.size / 2 + 2,
-      )
+      .moveTo(-ConstructionButton.plus.size / 2 - 2, 0)
+      .lineTo(ConstructionButton.plus.size / 2 + 2, 0)
+      .moveTo(0, -ConstructionButton.plus.size / 2 - 2)
+      .lineTo(0, ConstructionButton.plus.size / 2 + 2)
       .stroke({
         width: ConstructionButton.plus.strokeWidth,
         color: ConstructionButton.plus.strokeColor,
       });
 
     this.graphic
-      .moveTo(
-        this.buttonPosition.x - ConstructionButton.plus.size / 2,
-        this.buttonPosition.y,
-      )
-      .lineTo(
-        this.buttonPosition.x + ConstructionButton.plus.size / 2,
-        this.buttonPosition.y,
-      )
-      .moveTo(
-        this.buttonPosition.x,
-        this.buttonPosition.y - ConstructionButton.plus.size / 2,
-      )
-      .lineTo(
-        this.buttonPosition.x,
-        this.buttonPosition.y + ConstructionButton.plus.size / 2,
-      )
+      .moveTo(-ConstructionButton.plus.size / 2, 0)
+      .lineTo(ConstructionButton.plus.size / 2, 0)
+      .moveTo(0, -ConstructionButton.plus.size / 2)
+      .lineTo(0, ConstructionButton.plus.size / 2)
       .stroke({
         width: ConstructionButton.plus.baseWidth,
         color: ConstructionButton.plus.baseColor,
