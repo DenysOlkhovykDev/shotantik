@@ -1,7 +1,5 @@
 import { Container, Graphics } from "pixi.js";
 
-import { getCameraResetButtonPosition } from "@utils/ui-config";
-
 export class resetButton extends Container {
   private static symbol = {
     size: 30,
@@ -16,15 +14,8 @@ export class resetButton extends Container {
 
   private graphic = new Graphics();
 
-  private buttonPosition = {
-    x: getCameraResetButtonPosition().x,
-    y: getCameraResetButtonPosition().y,
-  };
-
   constructor() {
     super();
-
-    this.position.set(this.buttonPosition.x, this.buttonPosition.y);
 
     this.graphic = new Graphics();
 

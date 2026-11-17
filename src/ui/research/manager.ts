@@ -2,6 +2,8 @@ import { Container } from "pixi.js";
 
 import { ResearchMenu } from "@research/menu";
 
+import { getConstructionMenuPosition } from "@utils/ui-config";
+
 export class ResearchManager extends Container {
   private menu: ResearchMenu | undefined = undefined;
 
@@ -17,7 +19,11 @@ export class ResearchManager extends Container {
   };
 
   public initialize() {
-    this.menu = new ResearchMenu(() => this.useOneUpgradePoint());
+    this.menu = new ResearchMenu(
+      () => this.useOneUpgradePoint(),
+      getConstructionMenuPosition().x,
+      getConstructionMenuPosition().y,
+    );
 
     this.menu.eventMode = "static";
 

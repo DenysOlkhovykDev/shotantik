@@ -7,7 +7,6 @@ import { Road } from "@roads/road";
 import { Worker } from "@workers/worker";
 
 import { menuItems, type MenuItem } from "@utils/menu-items";
-import { getConstructionMenuPosition } from "@utils/ui-config";
 
 interface ResearchMenuItem extends MenuItem {
   level: number;
@@ -50,11 +49,6 @@ export class ResearchMenu extends Container {
     backgroundColor: "#cfcbc8",
   };
 
-  private centerBottom = {
-    x: getConstructionMenuPosition().x,
-    y: getConstructionMenuPosition().y,
-  };
-
   private menuWidth =
     ResearchMenu.params.columnWidth + 2 * ResearchMenu.params.gap;
   private menuHeight =
@@ -62,15 +56,19 @@ export class ResearchMenu extends Container {
     (this.rows - 1) * ResearchMenu.params.gap +
     2 * ResearchMenu.params.gap;
 
-  constructor(private useOneUpgradePoint: () => boolean) {
+  constructor(
+    private useOneUpgradePoint: () => boolean,
+    x: number,
+    y: number,
+  ) {
     super();
 
     this.draw();
 
     this.eventMode = "static";
 
-    this.x = this.centerBottom.x - this.menuWidth / 2 + ResearchMenu.params.gap;
-    this.y = this.centerBottom.y - this.menuHeight;
+    this.x = x - this.menuWidth / 2 + ResearchMenu.params.gap;
+    this.y = y - this.menuHeight;
   }
 
   private draw() {
