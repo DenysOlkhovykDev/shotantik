@@ -396,10 +396,17 @@ export class Blueprint extends Building {
         })),
       },
       {
+        layout: "vertical",
         availableResources: this.reservedBuildResources.map(
           (resource) => resource.resourceType,
         ),
       },
+    );
+
+    this.recipeSign.position.set(
+      this.buildingConfig.boundsCenter.x + this.buildingConfig.boundsRadius + 6,
+      this.buildingConfig.boundsCenter.y -
+        (this.buildResources.length * 15 - 7) / 2,
     );
   }
 
