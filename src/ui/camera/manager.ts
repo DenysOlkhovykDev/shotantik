@@ -56,6 +56,7 @@ class CameraSettings extends Container {
     this.setZoom(1);
     this.offsetX = 0;
     this.offsetY = 0;
+    this.resetPointerState();
   }
 
   public getZoom() {
@@ -66,8 +67,17 @@ class CameraSettings extends Container {
     this.setZoom(this.zoom * Math.exp(delta * this.zoomSpeed));
   }
 
+  public getPointersAmount() {
+    return this.pointers.size;
+  }
+
   public onPointerDown(event: FederatedPointerEvent) {
     if (event.pointerType === "touch") {
+      if (this.pointers.size >= 2) {
+        this.resetPointerState();
+        return;
+      }
+
       this.startChangingZoomByTouch(
         event.pointerId,
         event.clientX,
@@ -174,6 +184,12 @@ class CameraSettings extends Container {
     if (this.isPanning && this.pointers.size < 2) {
       this.offsetX -= (deltaX * sensitivity) / this.zoom;
       this.offsetY -= (deltaY * sensitivity) / this.zoom;
+
+      if (this.offsetX === 0 && this.offsetY === 0) {
+        this.hideResetButton();
+      } else {
+        this.showResetButton();
+      }
     }
 
     this.lastPanX = clientX;
@@ -185,6 +201,19 @@ class CameraSettings extends Container {
 
     this.panPointerId = null;
     this.isPanning = false;
+  }
+
+  private resetPointerState() {
+    this.pointers.clear();
+    this.lastPinchDistance = 0;
+    this.panPointerId = null;
+    this.lastPanX = 0;
+    this.lastPanY = 0;
+    this.panStartX = 0;
+    this.panStartY = 0;
+    this.isPanning = false;
+    this.hadMultiTouchGesture = false;
+    this.hadPanGesture = false;
   }
 
   public getIsPanning() {

@@ -136,11 +136,6 @@ app.stage.on("pointerupoutside", (event) => {
   cameraSettings.stopPanning(event.pointerId);
 });
 
-app.stage.on("pointercancel", (event) => {
-  cameraSettings.stopChangingZoomByTouch(event.pointerId);
-  cameraSettings.stopPanning(event.pointerId);
-});
-
 function clickToBuild(event: FederatedPointerEvent) {
   const buildingType = constructionManager.getBuildingType();
 
@@ -183,7 +178,7 @@ app.ticker.add((delta) => {
     if (import.meta.env.VITE_IS_DEBUG === "true") {
       DEBUG_INFO.position.set(100, 100);
 
-      DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS.toFixed(1)}, \ndeltaMC: ${delta.deltaMS.toFixed(1)}`;
+      DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, \nFPS: ${delta.FPS.toFixed(1)}, \ndeltaMC: ${delta.deltaMS.toFixed(1)}, pointers: ${cameraSettings.getPointersAmount()}`;
     }
 
     if (!pauseButton.isPaused()) {
