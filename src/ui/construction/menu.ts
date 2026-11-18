@@ -232,9 +232,10 @@ export class ConstructionMenu extends Container {
       },
       { layout: "vertical" },
     );
+
     recipeSign.position.set(
-      ConstructionMenu.params.columnWidth - 31,
-      ConstructionMenu.params.rowHeight - 90,
+      ConstructionMenu.params.columnWidth - 25,
+      ConstructionMenu.params.rowHeight - 100,
     );
 
     container.addChild(recipeSign);

@@ -1,4 +1,4 @@
-import { Container, Graphics, Text } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 
 import { createResource } from "@resources/create-resources";
 
@@ -39,11 +39,11 @@ export class RecipeSign extends Container {
   };
 
   private static verticalMode = {
-    width: 30,
+    width: 20,
     textPositionX: 3,
     textPositionY: 4,
-    resourcePositionX: 20,
-    resourcePositionY: 12,
+    resourcePositionX: 10,
+    resourcePositionY: 10,
   };
 
   private static arrowParams = {
@@ -57,10 +57,10 @@ export class RecipeSign extends Container {
   };
 
   private static plusParams = {
-    x: 15,
-    y: -10,
-    width: 14,
-    height: 14,
+    x: 10,
+    y: -7,
+    width: 7,
+    height: 7,
 
     strokeWidth: 2,
     strokeColor: "#000000",
@@ -79,7 +79,7 @@ export class RecipeSign extends Container {
     this.hide();
 
     if (options.layout === "vertical") {
-      this.drawVertical(recipe.ingredients);
+      this.drawVertical(recipe.ingredients, options);
     } else {
       this.drawHorizontal(recipe, options);
     }
@@ -90,27 +90,7 @@ export class RecipeSign extends Container {
   }
 
   private drawHorizontal(recipe: Recipe, options: RecipeSignOptions) {
-    const elements: Container[] = [];
-    const availableCounts = options.availableResources
-      ? this.countResources(options.availableResources)
-      : undefined;
-
-    for (const ingredient of recipe.ingredients) {
-      for (let i = 0; i < ingredient.amount; i++) {
-        const resource = createResource(ingredient.resourceName);
-        const availableCount = availableCounts
-          ? (availableCounts.get(ingredient.resourceName) ?? 0)
-          : ingredient.amount;
-
-        if (availableCounts && availableCount > 0) {
-          availableCounts.set(ingredient.resourceName, availableCount - 1);
-        } else if (availableCounts) {
-          resource.alpha = RecipeSign.signParams.unavailableResource;
-        }
-
-        elements.push(resource);
-      }
-    }
+    const elements = this.getResourcesWithAlpha(recipe.ingredients, options);
 
     if (recipe.result) {
       elements.push(
@@ -174,11 +154,16 @@ export class RecipeSign extends Container {
     });
   }
 
-  private drawVertical(ingredients: RecipeIngredient[]) {
+  private drawVertical(
+    ingredients: RecipeIngredient[],
+    options: RecipeSignOptions,
+  ) {
     if (ingredients.length === 0) return;
 
+    const elements = this.getResourcesWithAlpha(ingredients, options);
+
     const paddingForRecipeSymbol = 15;
-    const height = ingredients.length * RecipeSign.signParams.spacing + 9;
+    const height = elements.length * RecipeSign.signParams.spacing + 5;
     const background = new Graphics()
       .roundRect(
         0,
@@ -193,12 +178,12 @@ export class RecipeSign extends Container {
         color: RecipeSign.signParams.strokeColor,
       });
 
-    const recipeSymbolBackgroundHeight = 25;
+    const recipeSymbolBackgroundHeight = 15;
 
     background
       .roundRect(
         0,
-        -recipeSymbolBackgroundHeight + 2,
+        -recipeSymbolBackgroundHeight,
         RecipeSign.verticalMode.width,
         recipeSymbolBackgroundHeight,
         RecipeSign.signParams.borderRadius,
@@ -220,27 +205,14 @@ export class RecipeSign extends Container {
       ),
     );
 
-    ingredients.forEach((ingredient, index) => {
-      const resource = createResource(ingredient.resourceName);
-      resource.position.set(
+    elements.forEach((ingredient, index) => {
+      ingredient.position.set(
         RecipeSign.verticalMode.resourcePositionX,
         RecipeSign.verticalMode.resourcePositionY +
           index * RecipeSign.signParams.spacing,
       );
 
-      const amount = new Text({
-        text: ingredient.amount,
-        style: {
-          fill: "#000000",
-          fontSize: 14,
-        },
-        x: RecipeSign.verticalMode.textPositionX,
-        y:
-          RecipeSign.verticalMode.textPositionY +
-          index * RecipeSign.signParams.spacing,
-      });
-
-      this.addChild(resource, amount);
+      this.addChild(ingredient);
     });
   }
 
@@ -279,5 +251,34 @@ export class RecipeSign extends Container {
         width: RecipeSign.plusParams.strokeWidth,
         color: RecipeSign.plusParams.strokeColor,
       });
+  }
+
+  private getResourcesWithAlpha(
+    ingredients: RecipeIngredient[],
+    options: RecipeSignOptions,
+  ) {
+    const elements: Container[] = [];
+    const availableCounts = options.availableResources
+      ? this.countResources(options.availableResources)
+      : undefined;
+
+    for (const ingredient of ingredients) {
+      for (let i = 0; i < ingredient.amount; i++) {
+        const resource = createResource(ingredient.resourceName);
+        const availableCount = availableCounts
+          ? (availableCounts.get(ingredient.resourceName) ?? 0)
+          : ingredient.amount;
+
+        if (availableCounts && availableCount > 0) {
+          availableCounts.set(ingredient.resourceName, availableCount - 1);
+        } else if (availableCounts) {
+          resource.alpha = RecipeSign.signParams.unavailableResource;
+        }
+
+        elements.push(resource);
+      }
+    }
+
+    return elements;
   }
 }
