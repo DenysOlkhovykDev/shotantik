@@ -19,6 +19,7 @@ import { Blueprint } from "@aircraft/blueprint";
 import { GlassMaker } from "@aircraft/modules/glassMaker";
 import { Portal } from "@aircraft/modules/portal";
 import { Researcher } from "@aircraft/modules/researcher";
+import { Canon } from "@aircraft/modules/canon";
 
 import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
@@ -32,7 +33,7 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { header } from "@header/manager";
 
-import { onGroundObjects } from "@objects/research-points";
+import { onGroundObjects } from "@objects/research-points/research-points";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -58,6 +59,7 @@ export const buildingMap: Record<string, BuildingClass> = {
   GlassMaker,
   Portal,
   Researcher,
+  Canon,
 };
 
 export type BuildingType = keyof typeof buildingMap;

@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => ({
       "@pause": path.resolve(__dirname, "src/ui/pause"),
       "@speed": path.resolve(__dirname, "src/ui/speed"),
       "@research": path.resolve(__dirname, "src/ui/research"),
+      "@shooting": path.resolve(__dirname, "src/ui/shooting"),
       "@tutorial": path.resolve(__dirname, "src/ui/tutorial"),
       //World
       "@background": path.resolve(__dirname, "src/world/background"),

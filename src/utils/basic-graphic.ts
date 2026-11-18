@@ -129,3 +129,31 @@ export function drawHex(
 
   graphic.closePath();
 }
+
+export function makeStar(
+  graphics: Graphics,
+  peaks: number,
+  innerRadius: number,
+  outerRadius: number,
+  baseColor: string,
+  strokeWidth: number,
+) {
+  const points: number[] = [];
+
+  for (let i = 0; i < peaks; i++) {
+    const baseAngle = (i / peaks) * Math.PI * 2;
+
+    const step = (Math.PI * 2) / peaks;
+
+    let angle = baseAngle;
+    points.push(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+
+    angle = baseAngle + step * 0.3;
+    points.push(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+  }
+
+  graphics
+    .poly(points)
+    .fill(baseColor)
+    .stroke({ width: strokeWidth, color: "#000000" });
+}

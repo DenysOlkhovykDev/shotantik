@@ -22,6 +22,7 @@
       "@pause/*": ["./src/ui/pause/*"],
       "@speed/*": ["./src/ui/speed/*"],
       "@research/*": ["./src/ui/research/*"],
+      "@shooting/*": ["./src/ui/shooting/*"],
       "@tutorial/*": ["./src/ui/tutorial/*"],
       //World
       "@background/*": ["./src/world/background/*"], 
