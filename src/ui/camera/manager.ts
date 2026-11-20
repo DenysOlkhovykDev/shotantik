@@ -27,7 +27,8 @@ class CameraSettings extends Container {
   public offsetX = 0;
   public offsetY = 0;
 
-  private panPointerId: number | null = null;
+  private panPointerId: number | undefined = undefined;
+  private panPointerType: string | undefined = undefined;
   private lastPanX = 0;
   private lastPanY = 0;
   private panStartX = 0;
@@ -85,7 +86,12 @@ class CameraSettings extends Container {
       );
     }
 
-    this.startPanning(event.pointerId, event.clientX, event.clientY);
+    this.startPanning(
+      event.pointerId,
+      event.clientX,
+      event.clientY,
+      event.pointerType,
+    );
   }
 
   public startChangingZoomByTouch(
@@ -148,7 +154,12 @@ class CameraSettings extends Container {
     this.isZoomAllowed = true;
   }
 
-  public startPanning(pointerId: number, clientX: number, clientY: number) {
+  public startPanning(
+    pointerId: number,
+    clientX: number,
+    clientY: number,
+    pointerType: string,
+  ) {
     if (this.pointers.size >= 2) return;
 
     if (this.pointers.size === 0) {
@@ -157,6 +168,7 @@ class CameraSettings extends Container {
     }
 
     this.panPointerId = pointerId;
+    this.panPointerType = pointerType;
     this.lastPanX = clientX;
     this.lastPanY = clientY;
     this.panStartX = clientX;
@@ -179,7 +191,7 @@ class CameraSettings extends Container {
       this.hadPanGesture = true;
     }
 
-    const sensitivity = navigator.maxTouchPoints > 0 ? 1.8 : 1;
+    const sensitivity = this.panPointerType === "touch" ? 1.8 : 1;
 
     if (this.isPanning && this.pointers.size < 2) {
       this.offsetX -= (deltaX * sensitivity) / this.zoom;
@@ -199,14 +211,15 @@ class CameraSettings extends Container {
   public stopPanning(pointerId: number) {
     if (this.panPointerId !== pointerId) return;
 
-    this.panPointerId = null;
+    this.panPointerId = undefined;
+    this.panPointerType = undefined;
     this.isPanning = false;
   }
 
   private resetPointerState() {
     this.pointers.clear();
     this.lastPinchDistance = 0;
-    this.panPointerId = null;
+    this.panPointerId = undefined;
     this.lastPanX = 0;
     this.lastPanY = 0;
     this.panStartX = 0;
