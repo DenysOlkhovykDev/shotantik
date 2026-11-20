@@ -175,14 +175,13 @@ app.ticker.add((delta) => {
 
     updateAlways();
 
-    if (import.meta.env.VITE_IS_DEBUG === "false") {
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
       DEBUG_INFO.position.set(100, 100);
 
       DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, 
 FPS: ${delta.FPS.toFixed(1)}, 
 deltaMC: ${delta.deltaMS.toFixed(1)}, 
-pointers: ${cameraSettings.getPointersAmount()}
-panPointerType: ${cameraSettings.panPointerType}`;
+pointers: ${cameraSettings.getPointersAmount()}`;
     }
 
     if (!pauseButton.isPaused()) {
