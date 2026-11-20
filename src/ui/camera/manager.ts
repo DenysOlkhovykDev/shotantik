@@ -28,7 +28,7 @@ class CameraSettings extends Container {
   public offsetY = 0;
 
   private panPointerId: number | undefined = undefined;
-  private panPointerType: string | undefined = undefined;
+  public panPointerType: string | undefined = undefined;
   private lastPanX = 0;
   private lastPanY = 0;
   private panStartX = 0;
