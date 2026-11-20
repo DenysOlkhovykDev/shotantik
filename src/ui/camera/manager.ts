@@ -28,7 +28,7 @@ class CameraSettings extends Container {
   public offsetY = 0;
 
   private panPointerId: number | undefined = undefined;
-  public panPointerType: string | undefined = undefined;
+  private panPointerType: string | undefined = undefined;
   private lastPanX = 0;
   private lastPanY = 0;
   private panStartX = 0;
@@ -191,7 +191,7 @@ class CameraSettings extends Container {
       this.hadPanGesture = true;
     }
 
-    const sensitivity = this.panPointerType === "touch" ? 1.8 : 1;
+    const sensitivity = this.panPointerType === "touch" ? 0.8 : 1;
 
     if (this.isPanning && this.pointers.size < 2) {
       this.offsetX -= (deltaX * sensitivity) / this.zoom;
@@ -220,6 +220,7 @@ class CameraSettings extends Container {
     this.pointers.clear();
     this.lastPinchDistance = 0;
     this.panPointerId = undefined;
+    this.panPointerType = undefined;
     this.lastPanX = 0;
     this.lastPanY = 0;
     this.panStartX = 0;
