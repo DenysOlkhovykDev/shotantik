@@ -67,6 +67,12 @@ const DEBUG_INFO = new Text({
   },
 });
 
+const rect = app.canvas.getBoundingClientRect();
+const scaleX = app.screen.width / rect.width;
+const scaleY = app.screen.height / rect.height;
+
+cameraSettings.setSensitivity(scaleX);
+
 UIcontainer.addChild(joystick);
 UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
@@ -181,7 +187,13 @@ app.ticker.add((delta) => {
       DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, 
 FPS: ${delta.FPS.toFixed(1)}, 
 deltaMC: ${delta.deltaMS.toFixed(1)}, 
-pointers: ${cameraSettings.getPointersAmount()}`;
+pointers: ${cameraSettings.getPointersAmount()}
+offsetX: ${cameraSettings.offsetX}
+offsetY: ${cameraSettings.offsetY}
+CSS canvas: ${rect.width.toFixed(0)}x${rect.height.toFixed(0)}
+Pixi screen: ${app.screen.width}x${app.screen.height}
+CSS→Pixi: ${scaleX.toFixed(2)}x${scaleY.toFixed(2)}
+Viewport: ${innerWidth}x${innerHeight}, DPR: ${devicePixelRatio}`;
     }
 
     if (!pauseButton.isPaused()) {

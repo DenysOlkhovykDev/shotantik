@@ -36,6 +36,8 @@ class CameraSettings extends Container {
   private isPanning = false;
   private dragThreshold = 5;
 
+  private sensitivity = 1;
+
   constructor() {
     super();
 
@@ -70,6 +72,10 @@ class CameraSettings extends Container {
 
   public getPointersAmount() {
     return this.pointers.size;
+  }
+
+  public setSensitivity(value: number) {
+    this.sensitivity = value;
   }
 
   public onPointerDown(event: FederatedPointerEvent) {
@@ -191,11 +197,9 @@ class CameraSettings extends Container {
       this.hadPanGesture = true;
     }
 
-    const sensitivity = this.panPointerType === "touch" ? 0.8 : 1;
-
     if (this.isPanning && this.pointers.size < 2) {
-      this.offsetX -= (deltaX * sensitivity) / this.zoom;
-      this.offsetY -= (deltaY * sensitivity) / this.zoom;
+      this.offsetX -= (deltaX * this.sensitivity) / this.zoom;
+      this.offsetY -= (deltaY * this.sensitivity) / this.zoom;
 
       if (this.offsetX === 0 && this.offsetY === 0) {
         this.hideResetButton();
