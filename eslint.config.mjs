@@ -24,7 +24,6 @@ export default tseslint.config(
 
       // TypeScript
       "@typescript-eslint/no-unused-vars": "error",
-      "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-non-null-assertion": "error",
 
       // JavaScript

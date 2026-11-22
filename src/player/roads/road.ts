@@ -1,6 +1,6 @@
 import { Graphics } from "pixi.js";
 
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 
 export class Road {
   private static params = {

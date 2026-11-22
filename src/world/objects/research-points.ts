@@ -1,10 +1,8 @@
 import { Container } from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 import { Researcher } from "@aircraft/modules/researcher";
-
-import { allIslands } from "@islands/all-islands";
 
 import { compasses } from "@compass/manager";
 import { researchManager } from "@research/manager";
@@ -139,8 +137,6 @@ class OnGroundObjects extends Container {
 
   public createNewTarget(x: number, y: number) {
     onGroundObjects.addResearcher(x, y);
-
-    allIslands.addIslandIfItNeeded(x, y);
 
     compasses.addCompass(x, y, () => {
       return !isCurrentTargetReached() && hasClosedResearchMenu();

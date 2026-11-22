@@ -1,6 +1,6 @@
 import { Graphics, Container } from "pixi.js";
 
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 
 import { Inventory } from "@workers/worker-parts/inventory";
 import { TaskManager } from "@workers/worker-parts/task-manager";

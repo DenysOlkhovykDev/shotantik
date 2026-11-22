@@ -5,7 +5,7 @@ import { ConstructionMenu } from "@construction/menu";
 import { ConstructionDisplay } from "@construction/display";
 import { header } from "@header/manager";
 
-import { type MenuItem } from "@utils/menu-items";
+import { MenuItem } from "@utils/menu-items";
 import {
   getConstructionDisplayPosition,
   getConstructionButtonPosition,

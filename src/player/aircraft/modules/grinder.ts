@@ -1,6 +1,6 @@
 import { Container, Graphics, Sprite } from "pixi.js";
 
-import { Building, type BuildingConfig } from "@aircraft/building";
+import { Building, BuildingConfig } from "@aircraft/building";
 
 import {
   generateTextureFromOrigin,

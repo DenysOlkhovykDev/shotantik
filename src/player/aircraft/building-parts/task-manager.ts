@@ -1,5 +1,5 @@
-import type { Building } from "@aircraft/building";
-import { type Blueprint } from "@aircraft/blueprint";
+import { Building } from "@aircraft/building";
+import { Blueprint } from "@aircraft/blueprint";
 
 import { Task, JobType, TaskStatus } from "@tasks/task";
 import { dashboard } from "@tasks/dashboard";

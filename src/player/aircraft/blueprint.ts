@@ -1,10 +1,10 @@
 import { Graphics, Text } from "pixi.js";
-import { Building, type BuildingConfig } from "@aircraft/building";
-import { type BuildingClass, aircraft } from "@aircraft/aircraft";
-import { type RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
+import { Building, BuildingConfig } from "@aircraft/building";
+import { BuildingClass, aircraft } from "@aircraft/aircraft";
+import { RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
 
-import { type Resource } from "@resources/resource";
-import { type Task, TaskStatus } from "@tasks/task";
+import { Resource } from "@resources/resource";
+import { Task, TaskStatus } from "@tasks/task";
 
 import { getDistance } from "@utils/basic-geometry";
 

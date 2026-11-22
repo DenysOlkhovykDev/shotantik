@@ -1,10 +1,7 @@
-import { Container, Graphics, type Texture } from "pixi.js";
+import { Container, Graphics, Texture } from "pixi.js";
 
-import { type Building, type BuildingConfig } from "@aircraft/building";
-import {
-  type Recipe,
-  type RecipeIngredient,
-} from "@aircraft/building-parts/recipe-sign";
+import { Building, BuildingConfig } from "@aircraft/building";
+import { Recipe, RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
 import { Platform } from "@aircraft/modules/platform";
 import { Assembler } from "@aircraft/modules/assembler";
 import { Collector } from "@aircraft/modules/collector";
@@ -24,8 +21,8 @@ import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
 
 import { Workers } from "@workers/manager";
-import { JobType, type Task, TaskStatus } from "@tasks/task";
-import { type Resource } from "@resources/resource";
+import { JobType, Task, TaskStatus } from "@tasks/task";
+import { Resource } from "@resources/resource";
 
 import { researchManager } from "@research/manager";
 import { constructionManager } from "@construction/manager";

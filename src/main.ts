@@ -1,17 +1,11 @@
-import {
-  Application,
-  Container,
-  type FederatedPointerEvent,
-  Text,
-} from "pixi.js";
+import { Application, Container, FederatedPointerEvent, Text } from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
 
-import { BackgroundManager } from "@background/manager";
-import { BackgroundTile } from "@background/tile";
 import { onGroundObjects } from "@objects/research-points";
 import { createTestSituation } from "@test-situations/test-situation";
 import { moveWorld } from "@moving/moving";
+import { ChunkManager } from "./world/chunks/manager";
 
 import { joystick } from "@joystick/joystick";
 import { pauseButton } from "@pause/button";
@@ -29,7 +23,6 @@ import {
   checkFirstTargetReached,
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
-import { getGameScreenCenter } from "@utils/ui-config";
 import { logo } from "@utils/logo";
 
 export const app = new Application();
@@ -86,13 +79,10 @@ UIcontainer.addChild(compasses);
 UIcontainer.addChild(tutorials);
 UIcontainer.addChild(DEBUG_INFO);
 
-BackgroundTile.initialize(app.renderer);
-
 const worldLayer = new Container();
-worldLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
 
-export const backgroundManager = new BackgroundManager();
-worldLayer.addChild(backgroundManager);
+export const chunkManager = new ChunkManager();
+worldLayer.addChild(chunkManager);
 
 createTestSituation(worldLayer);
 aircraft.initializeAircraft(worldLayer);
@@ -203,7 +193,7 @@ Viewport: ${innerWidth}x${innerHeight}, DPR: ${devicePixelRatio}`;
 });
 
 function updateAlways() {
-  backgroundManager.createNextChunk();
+  chunkManager.createNextChunk();
 }
 
 function updateGame(deltaTime: number) {
@@ -218,10 +208,9 @@ function updateGame(deltaTime: number) {
   );
 
   const shipPosition = getWorldCoordinates();
-  backgroundManager.update(
-    shipPosition.x,
-    shipPosition.y,
-    cameraSettings.getZoom(),
+  chunkManager.update(
+    shipPosition.x + cameraSettings.offsetX,
+    shipPosition.y + cameraSettings.offsetY,
   );
   onGroundObjects.checkCollision();
 

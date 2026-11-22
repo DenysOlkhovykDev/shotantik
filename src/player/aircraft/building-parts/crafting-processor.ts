@@ -1,4 +1,4 @@
-import type { Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 
 import { createResource } from "@resources/create-resources";
 

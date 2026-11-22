@@ -1,6 +1,6 @@
-import { type Container } from "pixi.js";
+import { Container } from "pixi.js";
 
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 
 import { Worker } from "@workers/worker";
 

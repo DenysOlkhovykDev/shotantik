@@ -1,5 +1,5 @@
-import { type FederatedPointerEvent, Graphics, Sprite } from "pixi.js";
-import { Building, type BuildingConfig } from "@aircraft/building";
+import { FederatedPointerEvent, Graphics, Sprite } from "pixi.js";
+import { Building, BuildingConfig } from "@aircraft/building";
 
 import { researchManager } from "@research/manager";
 

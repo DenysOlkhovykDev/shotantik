@@ -1,4 +1,4 @@
-import { type Scenario } from "@test-situations/test-situation";
+import { Scenario } from "@test-situations/test-situation";
 
 export const manyDeliverersOnSameTask: Scenario = {
   aircraft: {
