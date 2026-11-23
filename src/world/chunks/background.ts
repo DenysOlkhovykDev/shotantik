@@ -1,6 +1,10 @@
 import { Container, Particle, ParticleContainer, Texture } from "pixi.js";
 
 import { generateHexTexture, makeBrighterColor } from "@utils/basic-graphic";
+import {
+  getValueFromCoordinates,
+  transformCoordinatesByHexOddRows,
+} from "@utils/basic-geometry";
 
 export class Background extends Container {
   private static tileTexture: Texture;
@@ -40,12 +44,16 @@ export class Background extends Container {
 
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++) {
-        if (this.tilesValues[x][y] >= 72) {
+        if (this.tilesValues[y][x] >= 72) {
           continue;
         }
 
-        const tileY = y * offsetY;
-        const tileX = x * offsetX + (y % 2 === 0 ? 0 : offsetX / 2);
+        const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+          x,
+          y,
+          offsetX,
+          offsetY,
+        );
 
         const tile = new Particle({
           texture: Background.tileTexture,
@@ -64,7 +72,7 @@ export class Background extends Container {
           color = "#ff0000";
         }
 
-        const tint = makeBrighterColor(color, this.tilesValues[x][y]);
+        const tint = makeBrighterColor(color, this.tilesValues[y][x]);
         tile.tint = tint;
 
         this.tilesContainer.addParticle(tile);
@@ -83,8 +91,8 @@ export class Background extends Container {
   ) {
     const step = 12;
 
-    for (let x = 0; x < gridSize; x++) {
-      for (let y = 0; y < gridSize; y++) {
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
         const globalX = chunkX * gridSize + x;
         const globalY = chunkY * gridSize + y;
 
@@ -94,25 +102,19 @@ export class Background extends Container {
         const tx = (globalX - gx * step) / step;
         const ty = (globalY - gy * step) / step;
 
-        const topLeft = this.getValueFromCoordinates(gx, gy, seed);
-        const topRight = this.getValueFromCoordinates(gx + 1, gy, seed);
+        const topLeft = getValueFromCoordinates(gx, gy, seed);
+        const topRight = getValueFromCoordinates(gx + 1, gy, seed);
 
-        const bottomLeft = this.getValueFromCoordinates(gx, gy + 1, seed);
-        const bottomRight = this.getValueFromCoordinates(gx + 1, gy + 1, seed);
+        const bottomLeft = getValueFromCoordinates(gx, gy + 1, seed);
+        const bottomRight = getValueFromCoordinates(gx + 1, gy + 1, seed);
 
         const top = topLeft + (topRight - topLeft) * tx;
         const bottom = bottomLeft + (bottomRight - bottomLeft) * tx;
 
         const value = top + (bottom - top) * ty;
 
-        this.tilesValues[x][y] = 40 + value * 55;
+        this.tilesValues[y][x] = 40 + value * 55;
       }
     }
-  }
-
-  private getValueFromCoordinates(x: number, y: number, seed: number) {
-    const value = Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43758.5453;
-
-    return value - Math.floor(value);
   }
 }

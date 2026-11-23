@@ -79,36 +79,55 @@ export class ChunkManager extends Container {
 
     this.chunksToCreate.push(...newChunks);
 
-    for (const [key, tile] of this.chunks) {
+    for (const [key, chunk] of this.chunks) {
       if (!requiredChunks.has(key)) {
-        this.removeChild(tile);
-        tile.destroy();
+        this.removeChild(chunk);
+        chunk.destroy();
         this.chunks.delete(key);
       }
     }
   }
 
   createNextChunk() {
-    const chunk = this.chunksToCreate.shift();
+    const chunkToCreate = this.chunksToCreate.shift();
 
-    if (!chunk) {
+    if (!chunkToCreate) {
       return;
     }
 
-    const [x, y, key] = chunk;
+    const [x, y, key] = chunkToCreate;
 
     if (this.chunks.has(key)) {
       this.pendingChunks.delete(key);
       return;
     }
 
-    const tile = new Chunk(x, y, this.seed);
+    const chunk = new Chunk(x, y, this.seed);
 
-    tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
+    chunk.position.set(this.chunkWidth * x, this.chunkHeight * y);
 
-    this.chunks.set(key, tile);
-    this.addChild(tile);
+    this.chunks.set(key, chunk);
+    this.addChild(chunk);
 
     this.pendingChunks.delete(key);
+  }
+
+  public checkCollision(
+    rotation: number,
+    aircraftX: number,
+    aircraftY: number,
+  ) {
+    for (const chunk of this.chunks) {
+      const result = chunk[1].isCollideWithIsland(
+        rotation,
+        aircraftX,
+        aircraftY,
+      );
+
+      if (result) {
+        return result;
+      }
+    }
+    return false;
   }
 }

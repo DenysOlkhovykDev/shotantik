@@ -4,10 +4,15 @@ import {
   Rectangle,
   ParticleContainer,
   Texture,
+  Graphics,
 } from "pixi.js";
 import { DropShadowFilter } from "pixi-filters";
 
 import { generateHexTexture, makeBrighterColor } from "@utils/basic-graphic";
+import {
+  getValueFromCoordinates,
+  transformCoordinatesByHexOddRows,
+} from "@utils/basic-geometry";
 
 export class Island extends Container {
   private static tileTexture: Texture;
@@ -35,6 +40,11 @@ export class Island extends Container {
   });
 
   private tilesValues: number[][];
+
+  public mainColliderX = 0;
+  public mainColliderY = 0;
+  public mainColliderRadius = 0;
+  public colliders: { y: number; x: number }[] = [];
 
   constructor(
     chunkX: number,
@@ -64,13 +74,19 @@ export class Island extends Container {
 
     this.generateNoise(gridSize, chunkX, chunkY, seed);
 
+    this.setColliders(gridSize);
+
     for (let y = 0; y < gridSize; y++) {
       for (let x = 0; x < gridSize; x++) {
-        const value = this.tilesValues[x][y];
+        const value = this.tilesValues[y][x];
 
         if (value > 1) {
-          const tileY = y * offsetY;
-          const tileX = x * offsetX + (y % 2 === 0 ? 0 : offsetX / 2);
+          const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+            x,
+            y,
+            offsetX,
+            offsetY,
+          );
 
           const tile = new Particle({
             texture: Island.tileTexture,
@@ -103,9 +119,42 @@ export class Island extends Container {
     this.tilesContainer.update();
     this.addChild(this.tilesContainer);
     this.filters = this.basicShadowFilter;
+
+    if (import.meta.env.VITE_IS_DEBUG === "true") {
+      for (let i = 0; i < this.colliders.length; i++) {
+        const graphic = new Graphics();
+
+        const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+          this.colliders[i].x,
+          this.colliders[i].y,
+          offsetX,
+          offsetY,
+        );
+
+        graphic
+          .circle(tileX, tileY, cellSize / 2)
+          .stroke({ width: 4, color: "#ff0000" });
+        this.addChild(graphic);
+      }
+
+      const graphic = new Graphics();
+
+      const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+        this.mainColliderX,
+        this.mainColliderY,
+        offsetX,
+        offsetY,
+      );
+
+      graphic
+        .circle(tileX, tileY, 5)
+        .circle(tileX, tileY, this.mainColliderRadius * cellSize)
+        .stroke({ width: 4, color: "#ff0000" });
+      this.addChild(graphic);
+    }
   }
 
-  generateNoise(
+  private generateNoise(
     gridSize: number,
     chunkX: number,
     chunkY: number,
@@ -117,19 +166,19 @@ export class Island extends Container {
 
     const centerX =
       (gridSize - 1) / 2 +
-      (this.getValueFromCoordinates(chunkX, chunkY, seed) - 0.5) *
+      (getValueFromCoordinates(chunkX, chunkY, seed) - 0.5) *
         gridSize *
         maxAmplitude;
     const centerY =
       (gridSize - 1) / 2 +
-      (this.getValueFromCoordinates(chunkX + 100, chunkY + 100, seed) - 0.5) *
+      (getValueFromCoordinates(chunkX + 100, chunkY + 100, seed) - 0.5) *
         gridSize *
         maxAmplitude;
 
     const radius = gridSize * 0.38;
 
-    for (let x = 0; x < gridSize; x++) {
-      for (let y = 0; y < gridSize; y++) {
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
         const globalX = chunkX * gridSize + x;
         const globalY = chunkY * gridSize + y;
 
@@ -139,11 +188,11 @@ export class Island extends Container {
         const tx = (globalX - gx * step) / step;
         const ty = (globalY - gy * step) / step;
 
-        const topLeft = this.getValueFromCoordinates(gx, gy, seed);
-        const topRight = this.getValueFromCoordinates(gx + 1, gy, seed);
+        const topLeft = getValueFromCoordinates(gx, gy, seed);
+        const topRight = getValueFromCoordinates(gx + 1, gy, seed);
 
-        const bottomLeft = this.getValueFromCoordinates(gx, gy + 1, seed);
-        const bottomRight = this.getValueFromCoordinates(gx + 1, gy + 1, seed);
+        const bottomLeft = getValueFromCoordinates(gx, gy + 1, seed);
+        const bottomRight = getValueFromCoordinates(gx + 1, gy + 1, seed);
 
         const top = topLeft + (topRight - topLeft) * tx;
         const bottom = bottomLeft + (bottomRight - bottomLeft) * tx;
@@ -157,14 +206,86 @@ export class Island extends Container {
 
         const value = noise * smoothMask;
 
-        this.tilesValues[x][y] = value * 5;
+        this.tilesValues[y][x] = value * 5;
+
+        if (this.tilesValues[y][x] < 1) {
+          this.tilesValues[y][x] = 0;
+        }
       }
     }
   }
 
-  getValueFromCoordinates(x: number, y: number, seed: number) {
-    const value = Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43758.5453;
+  private setColliders(gridSize: number) {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
 
-    return value - Math.floor(value);
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        if (this.tilesValues[y][x] <= 0) continue;
+
+        const isOdd = y % 2 !== 0;
+
+        const neighbors = isOdd
+          ? [
+              [x - 1, y],
+              [x + 1, y],
+              [x, y - 1],
+              [x + 1, y - 1],
+              [x, y + 1],
+              [x + 1, y + 1],
+            ]
+          : [
+              [x - 1, y],
+              [x + 1, y],
+              [x - 1, y - 1],
+              [x, y - 1],
+              [x - 1, y + 1],
+              [x, y + 1],
+            ];
+
+        const isEdge = neighbors.some(([nx, ny]) => {
+          if (nx < 0 || nx >= gridSize || ny < 0 || ny >= gridSize) {
+            return true;
+          }
+
+          return this.tilesValues[ny][nx] <= 0;
+        });
+
+        if (isEdge) {
+          this.colliders.push({ x, y });
+
+          if (minX > x) {
+            minX = x;
+          }
+          if (maxX < x) {
+            maxX = x;
+          }
+          if (minY > y) {
+            minY = y;
+          }
+          if (maxY < y) {
+            maxY = y;
+          }
+        }
+      }
+    }
+
+    if (
+      minX !== Infinity &&
+      minY !== Infinity &&
+      maxX !== -Infinity &&
+      maxY !== -Infinity
+    ) {
+      const centerX = (minX + maxX) / 2;
+      const centerY = (minY + maxY) / 2;
+
+      this.mainColliderX = centerX;
+      this.mainColliderY = centerY;
+
+      this.mainColliderRadius =
+        Math.hypot((maxX - minX) / 2, (maxY - minY) / 2) + 1;
+    }
   }
 }

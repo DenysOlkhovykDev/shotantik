@@ -83,3 +83,21 @@ export function rotatePointByCenter(
     y: centerY + dx * sin + dy * cos,
   };
 }
+
+export function transformCoordinatesByHexOddRows(
+  x: number,
+  y: number,
+  offsetX: number,
+  offsetY: number,
+) {
+  return {
+    y: y * offsetY,
+    x: x * offsetX + (y % 2 === 0 ? 0 : offsetX / 2),
+  };
+}
+
+export function getValueFromCoordinates(x: number, y: number, seed: number) {
+  const value = Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43758.5453;
+
+  return value - Math.floor(value);
+}

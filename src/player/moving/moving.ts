@@ -5,6 +5,7 @@ import { Engine } from "@aircraft/modules/engine";
 
 import { getGameScreenCenter } from "@utils/ui-config";
 import { rotatePointByCenter } from "@utils/basic-geometry";
+import { chunkManager } from "../../main";
 
 export function moveWorld(
   delta: number,
@@ -63,14 +64,24 @@ function thrustShip(delta: number, thrustInput: number) {
     1e-2,
   );
 
-  aircraft.x -=
+  const newX =
+    aircraft.x -
     aircraft.motionParameters.thrustVelocity *
-    Math.sin(aircraft.rotation) *
-    delta;
-  aircraft.y +=
+      Math.sin(aircraft.rotation) *
+      delta;
+
+  const newY =
+    aircraft.y +
     aircraft.motionParameters.thrustVelocity *
-    Math.cos(aircraft.rotation) *
-    delta;
+      Math.cos(aircraft.rotation) *
+      delta;
+
+  const isCollide = chunkManager.checkCollision(aircraft.rotation, newX, newY);
+
+  if (!isCollide) {
+    aircraft.x = newX;
+    aircraft.y = newY;
+  }
 }
 
 function turnShip(delta: number, turnInput: number) {
@@ -91,7 +102,18 @@ function turnShip(delta: number, turnInput: number) {
     1e-6,
   );
 
-  aircraft.rotation += aircraft.motionParameters.angularVelocity * delta;
+  const newRotation =
+    aircraft.rotation + aircraft.motionParameters.angularVelocity * delta;
+
+  const isCollide = chunkManager.checkCollision(
+    newRotation,
+    aircraft.x,
+    aircraft.y,
+  );
+
+  if (!isCollide) {
+    aircraft.rotation = newRotation;
+  }
 }
 
 function approach(current: number, target: number, response: number) {

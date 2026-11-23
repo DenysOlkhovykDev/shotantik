@@ -2,6 +2,16 @@ import { Container } from "pixi.js";
 import { Background } from "./background";
 import { Island } from "./island";
 
+import { aircraft } from "@aircraft/aircraft";
+
+import { Building } from "@aircraft/building";
+
+import {
+  getDistance,
+  getValueFromCoordinates,
+  transformCoordinatesByHexOddRows,
+} from "@utils/basic-geometry";
+
 export class Chunk extends Container {
   private background: Background;
   private island: Island | undefined = undefined;
@@ -29,9 +39,9 @@ export class Chunk extends Container {
 
     this.addChild(this.background);
 
-    const isIslandInChunk = this.getValueFromCoordinates(chunkX, chunkY, seed);
+    const isIslandInChunk = getValueFromCoordinates(chunkX, chunkY, seed);
 
-    if (isIslandInChunk <= 0.6 && chunkX !== 0 && chunkY !== 0) {
+    if (isIslandInChunk <= 0.6 && (chunkX !== 0 || chunkY !== 0)) {
       this.island = new Island(
         chunkX,
         chunkY,
@@ -46,9 +56,89 @@ export class Chunk extends Container {
     }
   }
 
-  getValueFromCoordinates(x: number, y: number, seed: number) {
-    const value = Math.sin(x * 127.1 + y * 311.7 + seed * 74.7) * 43758.5453;
+  public isCollideWithIsland(
+    rotation: number,
+    aircraftX: number,
+    aircraftY: number,
+  ) {
+    if (this.island === undefined) return false;
 
-    return value - Math.floor(value);
+    if (this.overlapWithAircraftBounds(aircraftX, aircraftY)) {
+      const worldAngle = rotation;
+      const cos = Math.cos(worldAngle);
+      const sin = Math.sin(worldAngle);
+
+      for (const building of aircraft.buildings) {
+        for (const islandTile of this.island.colliders) {
+          const result = this.overlapWithBuilding(
+            islandTile,
+            building,
+            aircraftX,
+            aircraftY,
+            sin,
+            cos,
+          );
+
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+  }
+
+  private overlapWithAircraftBounds(aircraftX: number, aircraftY: number) {
+    if (this.island === undefined) return false;
+
+    const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+      this.island.mainColliderX,
+      this.island.mainColliderY,
+      Chunk.offsetX,
+      Chunk.offsetY,
+    );
+
+    const islandX = -((Chunk.offsetX * Chunk.gridSize) / 2) + this.x + tileX;
+    const islandY = -((Chunk.offsetY * Chunk.gridSize) / 2) + this.y + tileY;
+
+    return (
+      getDistance(aircraftX, aircraftY, islandX, islandY) <=
+      aircraft.boundsRadius + this.island.mainColliderRadius * Chunk.cellSize
+    );
+  }
+
+  private overlapWithBuilding(
+    collider: { y: number; x: number },
+    building: Building,
+    worldX: number,
+    worldY: number,
+    sin: number,
+    cos: number,
+  ) {
+    const localX = building.x + building.buildingConfig.boundsCenter.x;
+    const localY = building.y + building.buildingConfig.boundsCenter.y;
+
+    const buildingX = worldX + localX * cos - localY * sin;
+    const buildingY = worldY + localX * sin + localY * cos;
+
+    const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+      collider.x,
+      collider.y,
+      Chunk.offsetX,
+      Chunk.offsetY,
+    );
+
+    const islandTileX =
+      -((Chunk.offsetX * Chunk.gridSize) / 2) + this.x + tileX;
+    const islandTileY =
+      -((Chunk.offsetY * Chunk.gridSize) / 2) + this.y + tileY;
+
+    const distance = getDistance(
+      buildingX,
+      buildingY,
+      islandTileX,
+      islandTileY,
+    );
+
+    return distance < building.buildingConfig.boundsRadius + Chunk.cellSize / 2;
   }
 }

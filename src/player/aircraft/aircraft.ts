@@ -31,6 +31,8 @@ import { header } from "@header/manager";
 
 import { onGroundObjects } from "@objects/research-points";
 
+import { getDistance } from "@utils/basic-geometry";
+
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
 
@@ -123,19 +125,13 @@ class Aircraft extends Container {
     }
 
     for (let i = 0; i < this.buildings.length; i++) {
-      const radiusByX =
-        Math.abs(this.buildings[i].x) +
-        this.buildings[i].buildingConfig.boundsRadius;
-      const radiusByY =
-        Math.abs(this.buildings[i].y) +
+      const distanceFromCenter =
+        getDistance(0, 0, this.buildings[i].x, this.buildings[i].y) +
         this.buildings[i].buildingConfig.boundsRadius;
 
-      const maxDistanceFromCenter =
-        radiusByX > radiusByY ? radiusByX : radiusByY;
-
-      if (maxDistanceFromCenter > this.boundsRadius) {
-        this.boundsRadius = maxDistanceFromCenter;
-        if (import.meta.env.VITE_IS_DEBUG === "false") {
+      if (distanceFromCenter > this.boundsRadius) {
+        this.boundsRadius = distanceFromCenter;
+        if (import.meta.env.VITE_IS_DEBUG === "true") {
           this.DEBUGBoundsRadius.clear();
 
           this.DEBUGBoundsRadius.circle(0, 0, this.boundsRadius).stroke({
