@@ -88,7 +88,7 @@ class Aircraft extends Container {
   };
 
   public initializeAircraft(worldLayer: Container) {
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
+    if (import.meta.env.VITE_IS_DEBUG_AIRCRAFT_BOUNDS === "true") {
       this.airCraftLayer.addChild(this.DEBUGBoundsRadius);
     }
 
@@ -131,7 +131,7 @@ class Aircraft extends Container {
 
       if (distanceFromCenter > this.boundsRadius) {
         this.boundsRadius = distanceFromCenter;
-        if (import.meta.env.VITE_IS_DEBUG === "true") {
+        if (import.meta.env.VITE_IS_DEBUG_AIRCRAFT_BOUNDS === "true") {
           this.DEBUGBoundsRadius.clear();
 
           this.DEBUGBoundsRadius.circle(0, 0, this.boundsRadius).stroke({

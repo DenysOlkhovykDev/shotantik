@@ -120,7 +120,7 @@ export class Island extends Container {
     this.addChild(this.tilesContainer);
     this.filters = this.basicShadowFilter;
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
+    if (import.meta.env.VITE_IS_DEBUG_ISLAND_COLLIDERS === "true") {
       for (let i = 0; i < this.colliders.length; i++) {
         const graphic = new Graphics();
 

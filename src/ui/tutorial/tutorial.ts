@@ -98,7 +98,7 @@ export class Tutorial extends Container {
         )
         .cut();
 
-      if (import.meta.env.VITE_IS_DEBUG === "true") {
+      if (import.meta.env.VITE_IS_DEBUG_TUTORIAL_POSITION === "true") {
         this.overlay
           .moveTo(
             this.pointerX - 100,

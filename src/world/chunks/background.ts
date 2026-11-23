@@ -66,7 +66,7 @@ export class Background extends Container {
         let color = Background.baseTileColor;
 
         if (
-          import.meta.env.VITE_IS_DEBUG === "true" &&
+          import.meta.env.VITE_IS_DEBUG_BACKGROUND_CHUNK_BORDERS === "true" &&
           (x === 0 || y === 0 || x === gridSize - 1 || y === gridSize - 1)
         ) {
           color = "#ff0000";

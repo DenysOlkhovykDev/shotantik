@@ -244,7 +244,7 @@ export class Blueprint extends Building {
       this.contentContainer.tint = "#ff0000";
     }
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
+    if (import.meta.env.VITE_IS_DEBUG_BLUEPRINT_COLLISIONS === "true") {
       this.DEBUGCollisionDisplay.text = Math.trunc(this.collisions);
     }
   }

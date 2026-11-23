@@ -190,7 +190,7 @@ export abstract class Building extends Container {
     if (!this.isDecorative) {
       this.taskManager.refreshTasks();
 
-      if (import.meta.env.VITE_IS_DEBUG === "true") {
+      if (import.meta.env.VITE_IS_DEBUG_BUILDING_TASKS === "true") {
         this.updateTaskDisplay();
       }
     }
