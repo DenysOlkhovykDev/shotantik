@@ -1,11 +1,15 @@
 import { Container } from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
+
 import { Engine } from "@aircraft/modules/engine";
+
+import { chunkManager } from "../../main";
 
 import { getGameScreenCenter } from "@utils/ui-config";
 import { rotatePointByCenter } from "@utils/basic-geometry";
-import { chunkManager } from "../../main";
+
+const isTest = import.meta.env.MODE === "test";
 
 export function moveWorld(
   delta: number,
@@ -76,9 +80,18 @@ function thrustShip(delta: number, thrustInput: number) {
       Math.cos(aircraft.rotation) *
       delta;
 
-  const isCollide = chunkManager.checkCollision(aircraft.rotation, newX, newY);
+  if (isTest) {
+    const isCollide = chunkManager.checkCollision(
+      aircraft.rotation,
+      newX,
+      newY,
+    );
 
-  if (!isCollide) {
+    if (!isCollide) {
+      aircraft.x = newX;
+      aircraft.y = newY;
+    }
+  } else {
     aircraft.x = newX;
     aircraft.y = newY;
   }
@@ -104,14 +117,17 @@ function turnShip(delta: number, turnInput: number) {
 
   const newRotation =
     aircraft.rotation + aircraft.motionParameters.angularVelocity * delta;
+  if (isTest) {
+    const isCollide = chunkManager.checkCollision(
+      newRotation,
+      aircraft.x,
+      aircraft.y,
+    );
 
-  const isCollide = chunkManager.checkCollision(
-    newRotation,
-    aircraft.x,
-    aircraft.y,
-  );
-
-  if (!isCollide) {
+    if (!isCollide) {
+      aircraft.rotation = newRotation;
+    }
+  } else {
     aircraft.rotation = newRotation;
   }
 }

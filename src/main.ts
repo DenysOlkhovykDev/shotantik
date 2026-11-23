@@ -17,6 +17,7 @@ import { header } from "@header/manager";
 import { researchManager } from "@research/manager";
 import { cameraSettings } from "@camera/manager";
 
+import { getGameScreenCenter } from "@utils/ui-config";
 import { gameScreen, getIsGameReady, setIsGameReady } from "@utils/game-config";
 import {
   isCurrentTargetReached,
@@ -80,6 +81,7 @@ UIcontainer.addChild(tutorials);
 UIcontainer.addChild(DEBUG_INFO);
 
 const worldLayer = new Container();
+worldLayer.position.set(getGameScreenCenter().x, getGameScreenCenter().y);
 
 export const chunkManager = new ChunkManager();
 worldLayer.addChild(chunkManager);

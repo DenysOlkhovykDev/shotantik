@@ -12,6 +12,8 @@ import {
   transformCoordinatesByHexOddRows,
 } from "@utils/basic-geometry";
 
+const isTest = import.meta.env.MODE === "test";
+
 export class Chunk extends Container {
   private background: Background;
   private island: Island | undefined = undefined;
@@ -41,7 +43,7 @@ export class Chunk extends Container {
 
     const isIslandInChunk = getValueFromCoordinates(chunkX, chunkY, seed);
 
-    if (isIslandInChunk <= 0.6 && (chunkX !== 0 || chunkY !== 0)) {
+    if (isIslandInChunk <= 0.6 && (chunkX !== 0 || chunkY !== 0) && !isTest) {
       this.island = new Island(
         chunkX,
         chunkY,
