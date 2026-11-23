@@ -30,7 +30,7 @@ export abstract class Resource extends Container {
   protected abstract draw(): void;
 
   protected updateReservation() {
-    if (import.meta.env.VITE_IS_DEBUG !== "true") {
+    if (import.meta.env.VITE_IS_DEBUG_RESOURCE_RESERVATION !== "true") {
       return;
     }
 

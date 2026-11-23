@@ -92,7 +92,7 @@ aircraft.initializeAircraft(worldLayer);
 app.stage.addChild(worldLayer);
 app.stage.addChild(UIcontainer);
 
-if (import.meta.env.VITE_IS_DEBUG === "true") {
+if (import.meta.env.VITE_IS_DEBUG_LOGO === "true") {
   app.stage.addChild(logo);
 }
 
@@ -173,7 +173,7 @@ app.ticker.add((delta) => {
 
     updateAlways();
 
-    if (import.meta.env.VITE_IS_DEBUG === "true") {
+    if (import.meta.env.VITE_IS_DEBUG_UI_UX === "true") {
       DEBUG_INFO.position.set(100, 100);
 
       DEBUG_INFO.text = `${frameTime.toFixed(1)} ms, 

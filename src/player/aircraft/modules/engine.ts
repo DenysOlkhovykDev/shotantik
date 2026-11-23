@@ -155,13 +155,11 @@ export class Engine extends Building {
 
     this.makeDecorativePropellerBlades(baseGraphics);
 
-    if (!this.isDecorative) {
-      if (import.meta.env.VITE_IS_DEBUG === "true") {
-        baseGraphics
-          .moveTo(0, 0)
-          .lineTo(0, 30)
-          .stroke({ width: 4, color: "#ff0000" });
-      }
+    if (import.meta.env.VITE_IS_DEBUG_ENGINE_DIRECTION === "true") {
+      baseGraphics
+        .moveTo(0, 0)
+        .lineTo(0, 30)
+        .stroke({ width: 4, color: "#ff0000" });
     }
 
     Engine.baseTexture = generateTextureFromOrigin(baseGraphics);
