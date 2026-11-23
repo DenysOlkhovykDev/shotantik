@@ -2,15 +2,15 @@ import { Container, Graphics, Text } from "pixi.js";
 
 import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 import {
-  type RecipeIngredient,
+  RecipeIngredient,
   RecipeSign,
 } from "@aircraft/building-parts/recipe-sign";
 
 import { Road } from "@roads/road";
 
-import { menuItems, type MenuItem } from "@utils/menu-items";
+import { menuItems, MenuItem } from "@utils/menu-items";
 
 export class ConstructionMenu extends Container {
   public menuItems: MenuItem[] = menuItems.filter((item) =>

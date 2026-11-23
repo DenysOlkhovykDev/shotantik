@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 
-import { type Resource } from "@resources/resource";
+import { Resource } from "@resources/resource";
 
 export class Inventory extends Container {
   storage: Resource | undefined;

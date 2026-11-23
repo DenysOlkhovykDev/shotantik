@@ -1,9 +1,9 @@
-import { type Building } from "@aircraft/building";
+import { Building } from "@aircraft/building";
 
 import { aircraft } from "@aircraft/aircraft";
 
-import { type Task } from "@tasks/task";
-import { type Worker } from "@workers/worker";
+import { Task } from "@tasks/task";
+import { Worker } from "@workers/worker";
 
 import { getRandomPointInRadius } from "@utils/basic-geometry";
 

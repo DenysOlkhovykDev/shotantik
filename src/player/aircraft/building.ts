@@ -1,13 +1,8 @@
-import {
-  type FederatedPointerEvent,
-  Container,
-  type Texture,
-  Graphics,
-} from "pixi.js";
+import { FederatedPointerEvent, Container, Texture, Graphics } from "pixi.js";
 import { aircraft } from "@aircraft/aircraft";
 import {
-  type Recipe,
-  type RecipeIngredient,
+  Recipe,
+  RecipeIngredient,
   RecipeSign,
 } from "@aircraft/building-parts/recipe-sign";
 import { ResourceStorage } from "@aircraft/building-parts/resource-storage";
@@ -16,13 +11,13 @@ import { CraftingProcessor } from "@aircraft/building-parts/crafting-processor";
 import { GeometryCalculator } from "@aircraft/building-parts/geometry-calculator";
 import { shadowFilter } from "@aircraft/building-parts/shadow-filter";
 
-import { type Road } from "@roads/road";
-import { type Task } from "@tasks/task";
+import { Road } from "@roads/road";
+import { Task } from "@tasks/task";
 import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "@research/manager";
 import { cameraSettings } from "@camera/manager";
-import { type Resource } from "@resources/resource";
+import { Resource } from "@resources/resource";
 
 import { getRadialPoint } from "@utils/basic-geometry";
 

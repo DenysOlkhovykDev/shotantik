@@ -2,8 +2,8 @@ import { Container } from "pixi.js";
 
 import { aircraft } from "@aircraft/aircraft";
 
-import { type Resource } from "@resources/resource";
-import { type Task } from "@tasks/task";
+import { Resource } from "@resources/resource";
+import { Task } from "@tasks/task";
 
 import { getRandomPointInRadius } from "@utils/basic-geometry";
 

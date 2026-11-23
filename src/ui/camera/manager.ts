@@ -1,4 +1,4 @@
-import { Container, type FederatedPointerEvent } from "pixi.js";
+import { Container, FederatedPointerEvent } from "pixi.js";
 
 import { resetButton } from "./reset-button";
 

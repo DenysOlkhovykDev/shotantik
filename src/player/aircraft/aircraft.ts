@@ -1,10 +1,7 @@
-import { Container, Graphics, type Texture } from "pixi.js";
+import { Container, Graphics, Texture } from "pixi.js";
 
-import { type Building, type BuildingConfig } from "@aircraft/building";
-import {
-  type Recipe,
-  type RecipeIngredient,
-} from "@aircraft/building-parts/recipe-sign";
+import { Building, BuildingConfig } from "@aircraft/building";
+import { Recipe, RecipeIngredient } from "@aircraft/building-parts/recipe-sign";
 import { Platform } from "@aircraft/modules/platform";
 import { Assembler } from "@aircraft/modules/assembler";
 import { Collector } from "@aircraft/modules/collector";
@@ -24,8 +21,8 @@ import { Road } from "@roads/road";
 import { BlueprintRoad } from "@roads/blueprint-road";
 
 import { Workers } from "@workers/manager";
-import { JobType, type Task, TaskStatus } from "@tasks/task";
-import { type Resource } from "@resources/resource";
+import { JobType, Task, TaskStatus } from "@tasks/task";
+import { Resource } from "@resources/resource";
 
 import { researchManager } from "@research/manager";
 import { constructionManager } from "@construction/manager";
@@ -33,6 +30,8 @@ import { joystick } from "@joystick/joystick";
 import { header } from "@header/manager";
 
 import { onGroundObjects } from "@objects/research-points";
+
+import { getDistance } from "@utils/basic-geometry";
 
 export type BuildingClass = {
   new (x: number, y: number, isDecorative: boolean): Building;
@@ -126,19 +125,13 @@ class Aircraft extends Container {
     }
 
     for (let i = 0; i < this.buildings.length; i++) {
-      const radiusByX =
-        Math.abs(this.buildings[i].x) +
-        this.buildings[i].buildingConfig.boundsRadius;
-      const radiusByY =
-        Math.abs(this.buildings[i].y) +
+      const distanceFromCenter =
+        getDistance(0, 0, this.buildings[i].x, this.buildings[i].y) +
         this.buildings[i].buildingConfig.boundsRadius;
 
-      const maxDistanceFromCenter =
-        radiusByX > radiusByY ? radiusByX : radiusByY;
-
-      if (maxDistanceFromCenter > this.boundsRadius) {
-        this.boundsRadius = maxDistanceFromCenter;
-        if (import.meta.env.VITE_IS_DEBUG === "false") {
+      if (distanceFromCenter > this.boundsRadius) {
+        this.boundsRadius = distanceFromCenter;
+        if (import.meta.env.VITE_IS_DEBUG === "true") {
           this.DEBUGBoundsRadius.clear();
 
           this.DEBUGBoundsRadius.circle(0, 0, this.boundsRadius).stroke({

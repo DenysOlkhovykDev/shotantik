@@ -6,7 +6,7 @@ import { Platform } from "@aircraft/modules/platform";
 import { Road } from "@roads/road";
 import { Worker } from "@workers/worker";
 
-import { menuItems, type MenuItem } from "@utils/menu-items";
+import { menuItems, MenuItem } from "@utils/menu-items";
 
 interface ResearchMenuItem extends MenuItem {
   level: number;

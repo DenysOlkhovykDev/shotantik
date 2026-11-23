@@ -1,21 +1,24 @@
 import { Container } from "pixi.js";
-import { BackgroundTile } from "@background/tile";
+import { Chunk } from "./chunk";
 
-export class BackgroundManager extends Container {
-  private backgroundTiles = new Map<string, BackgroundTile>();
+export class ChunkManager extends Container {
+  private chunks = new Map<string, Chunk>();
 
   private renderDistance = 3;
 
-  private seed: number;
+  private chunkWidth: number;
+  private chunkHeight: number;
 
-  private chunkWidth = 640;
-  private chunkHeight = 544;
+  private seed: number;
 
   private chunksToCreate: [number, number, string][] = [];
   private pendingChunks = new Set<string>();
 
   constructor() {
     super();
+
+    this.chunkWidth = Chunk.offsetX * Chunk.gridSize;
+    this.chunkHeight = Chunk.offsetY * Chunk.gridSize;
 
     this.seed = Math.trunc(Math.random() * 250);
     this.position.set(-this.chunkWidth / 2, -this.chunkHeight / 2);
@@ -24,26 +27,17 @@ export class BackgroundManager extends Container {
       for (let y = -1; y <= 1; y++) {
         const key = `${x}:${y}`;
 
-        const tile = new BackgroundTile(x, y, this.seed);
+        const chunk = new Chunk(x, y, this.seed);
 
-        tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
+        chunk.position.set(this.chunkWidth * x, this.chunkHeight * y);
 
-        this.backgroundTiles.set(key, tile);
-        this.addChild(tile);
+        this.chunks.set(key, chunk);
+        this.addChild(chunk);
       }
     }
   }
 
-  update(playerX: number, playerY: number, zoom: number) {
-    const minZoom = 0.5;
-    const maxZoom = 1;
-
-    const alpha = (zoom - minZoom) / (maxZoom - minZoom);
-
-    for (const tile of this.backgroundTiles.values()) {
-      tile.alpha = Math.max(0, Math.min(1, alpha));
-    }
-
+  update(playerX: number, playerY: number) {
     const playerChunkX = Math.floor(playerX / this.chunkWidth);
     const playerChunkY = Math.floor(playerY / this.chunkHeight);
 
@@ -65,7 +59,7 @@ export class BackgroundManager extends Container {
 
         requiredChunks.add(key);
 
-        if (!this.backgroundTiles.has(key) && !this.pendingChunks.has(key)) {
+        if (!this.chunks.has(key) && !this.pendingChunks.has(key)) {
           this.pendingChunks.add(key);
 
           newChunks.push([x, y, key]);
@@ -85,36 +79,55 @@ export class BackgroundManager extends Container {
 
     this.chunksToCreate.push(...newChunks);
 
-    for (const [key, tile] of this.backgroundTiles) {
+    for (const [key, chunk] of this.chunks) {
       if (!requiredChunks.has(key)) {
-        this.removeChild(tile);
-        tile.destroy();
-        this.backgroundTiles.delete(key);
+        this.removeChild(chunk);
+        chunk.destroy();
+        this.chunks.delete(key);
       }
     }
   }
 
   createNextChunk() {
-    const chunk = this.chunksToCreate.shift();
+    const chunkToCreate = this.chunksToCreate.shift();
 
-    if (!chunk) {
+    if (!chunkToCreate) {
       return;
     }
 
-    const [x, y, key] = chunk;
+    const [x, y, key] = chunkToCreate;
 
-    if (this.backgroundTiles.has(key)) {
+    if (this.chunks.has(key)) {
       this.pendingChunks.delete(key);
       return;
     }
 
-    const tile = new BackgroundTile(x, y, this.seed);
+    const chunk = new Chunk(x, y, this.seed);
 
-    tile.position.set(this.chunkWidth * x, this.chunkHeight * y);
+    chunk.position.set(this.chunkWidth * x, this.chunkHeight * y);
 
-    this.backgroundTiles.set(key, tile);
-    this.addChild(tile);
+    this.chunks.set(key, chunk);
+    this.addChild(chunk);
 
     this.pendingChunks.delete(key);
+  }
+
+  public checkCollision(
+    rotation: number,
+    aircraftX: number,
+    aircraftY: number,
+  ) {
+    for (const chunk of this.chunks) {
+      const result = chunk[1].isCollideWithIsland(
+        rotation,
+        aircraftX,
+        aircraftY,
+      );
+
+      if (result) {
+        return result;
+      }
+    }
+    return false;
   }
 }

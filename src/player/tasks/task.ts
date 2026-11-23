@@ -1,8 +1,8 @@
 import { aircraft } from "@aircraft/aircraft";
-import { type Building } from "@aircraft/building";
-import { type Blueprint } from "@aircraft/blueprint";
+import { Building } from "@aircraft/building";
+import { Blueprint } from "@aircraft/blueprint";
 
-import { type Resource } from "@resources/resource";
+import { Resource } from "@resources/resource";
 
 import { aStar, dijkstra, buildPath } from "@utils/algorithms";
 

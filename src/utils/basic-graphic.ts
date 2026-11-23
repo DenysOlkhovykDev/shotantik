@@ -1,4 +1,4 @@
-import { type Graphics, type Container, Rectangle } from "pixi.js";
+import { Graphics, Container, Rectangle } from "pixi.js";
 
 import { app } from "../main";
 
@@ -106,6 +106,15 @@ export function makeBrighterColor(color: string, variation: number): string {
   return `#${((newR << 16) | (newG << 8) | newB)
     .toString(16)
     .padStart(6, "0")}`;
+}
+
+export function generateHexTexture(size: number) {
+  const graphics = new Graphics();
+
+  drawHex(graphics, 0, 0, size);
+  graphics.fill({ color: "#ffffff" });
+
+  return app.renderer.generateTexture(graphics);
 }
 
 export function drawHex(

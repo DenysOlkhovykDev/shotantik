@@ -1,4 +1,4 @@
-import { type Scenario } from "@test-situations/test-situation";
+import { Scenario } from "@test-situations/test-situation";
 
 import { defaultScenario } from "@test-scenarios/_default";
 

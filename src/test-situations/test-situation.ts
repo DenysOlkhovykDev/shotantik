@@ -1,4 +1,4 @@
-import { type Container } from "pixi.js";
+import { Container } from "pixi.js";
 import { aircraft } from "@aircraft/aircraft";
 
 import { constructionManager } from "@construction/manager";

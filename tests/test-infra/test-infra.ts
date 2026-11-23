@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export const testSettings = {
   threshold: 0,
