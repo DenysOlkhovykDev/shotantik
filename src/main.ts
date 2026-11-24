@@ -25,6 +25,7 @@ import {
 } from "@utils/tutorial-conditions";
 import { setTestRandom } from "@utils/initializers";
 import { logo } from "@utils/logo";
+import { rotatePointByCenter } from "@utils/basic-geometry";
 
 export const app = new Application();
 
@@ -210,10 +211,16 @@ function updateGame(deltaTime: number) {
   );
 
   const shipPosition = getWorldCoordinates();
-  chunkManager.update(
-    shipPosition.x + cameraSettings.offsetX,
-    shipPosition.y + cameraSettings.offsetY,
+
+  const { x: cameraX, y: cameraY } = rotatePointByCenter(
+    cameraSettings.offsetX,
+    cameraSettings.offsetY,
+    0,
+    0,
+    aircraft.rotation,
   );
+
+  chunkManager.update(shipPosition.x + cameraX, shipPosition.y + cameraY);
   onGroundObjects.checkCollision();
 
   aircraft.workers.moveWorkers(deltaTime);
