@@ -117,6 +117,17 @@ export function generateHexTexture(size: number) {
   return app.renderer.generateTexture(graphics);
 }
 
+export function generateDoubleHexTexture(size: number) {
+  const graphics = new Graphics();
+
+  drawHex(graphics, 0, 0, size);
+  graphics.fill({ color: "#f7f7f7" });
+  drawHex(graphics, 0, 0, size - size / 3);
+  graphics.fill({ color: "#ffffff" });
+
+  return app.renderer.generateTexture(graphics);
+}
+
 export function drawHex(
   graphic: Graphics,
   x: number,

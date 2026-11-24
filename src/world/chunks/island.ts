@@ -6,9 +6,11 @@ import {
   Texture,
   Graphics,
 } from "pixi.js";
-import { DropShadowFilter } from "pixi-filters";
 
-import { generateHexTexture, makeBrighterColor } from "@utils/basic-graphic";
+import {
+  generateDoubleHexTexture,
+  makeBrighterColor,
+} from "@utils/basic-graphic";
 import {
   getValueFromCoordinates,
   transformCoordinatesByHexOddRows,
@@ -31,12 +33,6 @@ export class Island extends Container {
       rotation: false,
       color: false,
     },
-  });
-
-  private basicShadowFilter = new DropShadowFilter({
-    color: "#000000",
-    alpha: 0.5,
-    offset: { x: 0, y: 0 },
   });
 
   private tilesValues: number[][];
@@ -65,7 +61,7 @@ export class Island extends Container {
     );
 
     if (!Island.tileTexture) {
-      Island.tileTexture = generateHexTexture((cellSize + 8) / 2);
+      Island.tileTexture = generateDoubleHexTexture((cellSize + 8) / 2);
     }
 
     this.tilesValues = Array.from({ length: gridSize }, () =>
@@ -118,7 +114,6 @@ export class Island extends Container {
 
     this.tilesContainer.update();
     this.addChild(this.tilesContainer);
-    this.filters = this.basicShadowFilter;
 
     if (import.meta.env.VITE_IS_DEBUG_ISLAND_COLLIDERS === "true") {
       for (let i = 0; i < this.colliders.length; i++) {

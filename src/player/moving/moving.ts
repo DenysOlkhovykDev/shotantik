@@ -80,7 +80,7 @@ function thrustShip(delta: number, thrustInput: number) {
       Math.cos(aircraft.rotation) *
       delta;
 
-  if (isTest) {
+  if (!isTest) {
     const isCollide = chunkManager.checkCollision(
       aircraft.rotation,
       newX,
@@ -117,7 +117,8 @@ function turnShip(delta: number, turnInput: number) {
 
   const newRotation =
     aircraft.rotation + aircraft.motionParameters.angularVelocity * delta;
-  if (isTest) {
+
+  if (!isTest) {
     const isCollide = chunkManager.checkCollision(
       newRotation,
       aircraft.x,
