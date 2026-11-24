@@ -7,7 +7,7 @@ import { Road } from "@roads/road";
 
 import { constructionManager } from "@construction/manager";
 
-import { menuItems } from "@utils/menu-items";
+import { buildingThemes } from "@utils/building-themes";
 
 export class ConstructionDisplay extends Container {
   private static display = {
@@ -31,7 +31,7 @@ export class ConstructionDisplay extends Container {
     super();
   }
 
-  public displayBuildingType(buildingName: string | undefined) {
+  public update(buildingName: string | undefined) {
     if (buildingName) {
       this.createDisplayBackground(buildingName);
       this.createCancelButton();
@@ -59,7 +59,7 @@ export class ConstructionDisplay extends Container {
   }
 
   private createDisplayBackground(buildingName: string) {
-    const backgroundColor = menuItems.find(
+    const backgroundColor = buildingThemes.find(
       (item) => item.label === buildingName,
     )?.color;
 
@@ -122,7 +122,7 @@ export class ConstructionDisplay extends Container {
 
       constructionManager.hideButton();
       constructionManager.hideMenu();
-      constructionManager.updateDisplayBuildingType();
+      constructionManager.updateDisplay();
     });
 
     this.addChild(cancelButton);

@@ -99,11 +99,11 @@ export class DeleteButton extends Container {
     aircraft.deleteSelectedNode();
   }
 
-  public showButton() {
+  public show() {
     this.visible = true;
   }
 
-  public hideButton() {
+  public hide() {
     this.visible = false;
   }
 }

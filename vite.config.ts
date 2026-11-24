@@ -22,10 +22,10 @@ export default defineConfig(({ mode }) => ({
       "@pause": path.resolve(__dirname, "src/ui/pause"),
       "@speed": path.resolve(__dirname, "src/ui/speed"),
       "@research": path.resolve(__dirname, "src/ui/research"),
+      "@questlist": path.resolve(__dirname, "src/ui/questlist"),
       "@tutorial": path.resolve(__dirname, "src/ui/tutorial"),
       //World
-      "@background": path.resolve(__dirname, "src/world/background"),
-      "@islands": path.resolve(__dirname, "src/world/islands"),
+      "@chunks": path.resolve(__dirname, "src/world/chunks"),
       "@objects": path.resolve(__dirname, "src/world/objects"),
       //Other
       "@utils": path.resolve(__dirname, "src/utils"),

@@ -61,11 +61,11 @@ export class InfoButton extends Container {
     this.addChild(this.symbol);
   }
 
-  public showButton() {
+  public show() {
     this.visible = true;
   }
 
-  public hideButton() {
+  public hide() {
     this.visible = false;
     this.hideInfoBoard();
   }

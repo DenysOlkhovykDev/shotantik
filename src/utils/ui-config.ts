@@ -28,6 +28,27 @@ export function getConstructionMenuPosition() {
   };
 }
 
+export function getResearchMenuPosition() {
+  return {
+    x: getGameScreenCenter().x,
+    y: gameScreen.height - gameScreen.height / 50,
+  };
+}
+
+export function getQuestListMenuPosition() {
+  return {
+    x: 20,
+    y: gameScreen.height - gameScreen.height / 250,
+  };
+}
+
+export function getQuestListButtonPosition() {
+  return {
+    x: 20,
+    y: gameScreen.height - gameScreen.height / 18,
+  };
+}
+
 export function getMixerPositionInConstructionMenu() {
   return {
     x: 360,

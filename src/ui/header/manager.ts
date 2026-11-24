@@ -48,18 +48,18 @@ class Header extends Container {
       const buildingType = aircraft.getSelectedNodeType();
 
       if (buildingType !== undefined) {
-        this.display.showText(buildingType);
-        this.infoButton.showButton();
-        this.deleteButton.showButton();
+        this.display.show(buildingType);
+        this.infoButton.show();
+        this.deleteButton.show();
       } else {
-        this.display.hideText();
-        this.infoButton.hideButton();
-        this.deleteButton.hideButton();
+        this.display.hide();
+        this.infoButton.hide();
+        this.deleteButton.hide();
       }
     } else {
-      this.display.hideText();
-      this.infoButton.hideButton();
-      this.deleteButton.hideButton();
+      this.display.hide();
+      this.infoButton.hide();
+      this.deleteButton.hide();
     }
   }
 }

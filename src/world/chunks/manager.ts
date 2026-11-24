@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
-import { Chunk } from "./chunk";
+
+import { Chunk } from "@chunks/chunk";
 
 export class ChunkManager extends Container {
   private chunks = new Map<string, Chunk>();

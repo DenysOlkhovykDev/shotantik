@@ -1,6 +1,6 @@
 import { Container, FederatedPointerEvent } from "pixi.js";
 
-import { resetButton } from "./reset-button";
+import { resetButton } from "@camera/reset-button";
 
 import { getCameraResetButtonPosition } from "@utils/ui-config";
 
@@ -266,11 +266,11 @@ class CameraSettings extends Container {
   }
 
   private showResetButton() {
-    this.resetButton.visible = true;
+    this.resetButton.show();
   }
 
   private hideResetButton() {
-    this.resetButton.visible = false;
+    this.resetButton.hide();
   }
 }
 

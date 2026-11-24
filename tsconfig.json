@@ -22,10 +22,10 @@
       "@pause/*": ["./src/ui/pause/*"],
       "@speed/*": ["./src/ui/speed/*"],
       "@research/*": ["./src/ui/research/*"],
+      "@questlist/*": ["./src/ui/questlist/*"],
       "@tutorial/*": ["./src/ui/tutorial/*"],
       //World
-      "@background/*": ["./src/world/background/*"], 
-      "@islands/*": ["./src/world/islands/*"],
+      "@chunks/*": ["./src/world/chunks/*"], 
       "@objects/*": ["./src/world/objects/*"],
       //Other
       "@utils/*": ["./src/utils/*"],

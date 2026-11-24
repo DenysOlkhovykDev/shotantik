@@ -6,7 +6,7 @@ import { constructionManager } from "@construction/manager";
 import { joystick } from "@joystick/joystick";
 import { researchManager } from "@research/manager";
 
-import { menuItems } from "@utils/menu-items";
+import { buildingThemes } from "@utils/building-themes";
 
 export function hasAtLeastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -68,7 +68,7 @@ export function checkFirstTargetReached() {
 
   firstTargetReached = true;
 
-  const researcher = menuItems.find((item) => item.label === "Researcher");
+  const researcher = buildingThemes.find((item) => item.label === "Researcher");
 
   if (researcher) {
     constructionManager.addMenuElement(researcher);
