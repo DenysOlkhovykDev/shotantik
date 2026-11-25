@@ -1,9 +1,9 @@
-export interface MenuItem {
+export interface buildingTheme {
   label: string;
   color: string;
 }
 
-export const menuItems: MenuItem[] = [
+export const buildingThemes: buildingTheme[] = [
   {
     label: "Collector",
     color: "#a8d0db",

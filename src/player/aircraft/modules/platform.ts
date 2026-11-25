@@ -93,7 +93,7 @@ export class Platform extends Building {
           constructionManager.setBuildingType(undefined);
 
           aircraft.resetConstructionSource();
-          constructionManager.updateDisplayBuildingType();
+          constructionManager.updateDisplay();
         }
         constructionManager.hideButton();
         constructionManager.hideMenu();

@@ -5,7 +5,7 @@ import { ConstructionMenu } from "@construction/menu";
 import { ConstructionDisplay } from "@construction/display";
 import { header } from "@header/manager";
 
-import { MenuItem } from "@utils/menu-items";
+import { buildingTheme } from "@utils/building-themes";
 import {
   getConstructionDisplayPosition,
   getConstructionButtonPosition,
@@ -46,7 +46,7 @@ export class ConstructionManager extends Container {
 
     this.menu.on("pointerdown", (e) => {
       this.hideMenu();
-      this.updateDisplayBuildingType();
+      this.updateDisplay();
       e.stopPropagation();
     });
 
@@ -65,24 +65,24 @@ export class ConstructionManager extends Container {
   public showMenu() {
     if (this.menu) {
       this.hideButton();
-      this.menu.visible = true;
+      this.menu.show();
     }
   }
 
   public hideMenu() {
     if (this.menu) {
-      this.menu.visible = false;
+      this.menu.hide();
     }
   }
 
   public isMenuVisible() {
     if (this.menu) {
-      return this.menu.visible;
+      return this.menu.isVisible();
     }
     return false;
   }
 
-  public addMenuElement(newItem: MenuItem) {
+  public addMenuElement(newItem: buildingTheme) {
     if (this.menu) {
       this.menu.menuItems.push(newItem);
 
@@ -96,27 +96,27 @@ export class ConstructionManager extends Container {
 
   public showButton() {
     if (this.button) {
-      this.button.visible = true;
+      this.button.show();
     }
   }
 
   public hideButton() {
     if (this.button) {
-      this.button.visible = false;
+      this.button.hide();
     }
   }
 
-  public updateDisplayBuildingType() {
+  public updateDisplay() {
     const buildingType = this.getBuildingType();
 
     if (this.display) {
-      this.display.displayBuildingType(buildingType);
+      this.display.update(buildingType);
     }
   }
 
   public isButtonVisible() {
     if (this.button) {
-      return this.button.visible;
+      return this.button.isVisible();
     }
     return false;
   }

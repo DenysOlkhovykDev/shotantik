@@ -3,6 +3,7 @@ import { aircraft } from "@aircraft/aircraft";
 
 import { constructionManager } from "@construction/manager";
 import { header } from "@header/manager";
+import { TargetType } from "@tutorial/tutorial";
 
 import { createAirCraftByScenario } from "@test-situations/test-aircraft";
 import { createTestWorld } from "@test-situations/test-world";
@@ -92,9 +93,8 @@ export interface UiElementsScenario {
     showCondition: () => boolean;
     hideCondition: () => boolean;
     needOkButton: boolean;
-    x?: number;
-    y?: number;
-    findTarget?: () => { x: number; y: number };
+    target: TargetType;
+    afterClose?: () => void;
   }[];
 
   compasses?: {

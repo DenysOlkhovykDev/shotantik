@@ -20,6 +20,7 @@ import { cameraSettings } from "@camera/manager";
 import { Resource } from "@resources/resource";
 
 import { getRadialPoint } from "@utils/basic-geometry";
+import { questList } from "@questlist/manager";
 
 export interface BuildingConfig {
   storageCenter: {
@@ -152,13 +153,15 @@ export abstract class Building extends Container {
     constructionManager.hideButton();
     constructionManager.hideMenu();
 
+    questList.hideDisplay();
+
     researchManager.hideMenu();
 
     if (needResetConstructionSettings) {
       aircraft.resetConstructionSource();
 
       constructionManager.setBuildingType(undefined);
-      constructionManager.updateDisplayBuildingType();
+      constructionManager.updateDisplay();
     }
 
     aircraft.selectBuilding(this);
@@ -199,37 +202,37 @@ export abstract class Building extends Container {
   private updateTaskDisplay() {
     this.DEBUGTaskDisplay.clear();
 
-    const taskList = [
+    const buildingTaskList = [
       ...this.taskManager.deliveringTasks,
       ...this.taskManager.productionTasks,
       ...this.taskManager.buildingTasks,
     ];
 
-    for (let i = 0; i < taskList.length; i++) {
+    for (let i = 0; i < buildingTaskList.length; i++) {
       const { x, y } = getRadialPoint(
         i,
         16,
         this.buildingConfig.boundsRadius + 16,
       );
 
-      if (taskList[i].jobType === "delivering") {
+      if (buildingTaskList[i].jobType === "delivering") {
         this.DEBUGTaskDisplay.circle(x, y, 10).fill("#ffff00");
-      } else if (taskList[i].jobType === "production") {
+      } else if (buildingTaskList[i].jobType === "production") {
         this.DEBUGTaskDisplay.circle(x, y, 10).fill("#00ff00");
-      } else if (taskList[i].jobType === "building") {
+      } else if (buildingTaskList[i].jobType === "building") {
         this.DEBUGTaskDisplay.circle(x, y, 10).fill("#0000ff");
       }
 
-      if (taskList[i].status === "available") {
+      if (buildingTaskList[i].status === "available") {
         this.DEBUGTaskDisplay.circle(x, y, 6).fill("#ffffff");
-      } else if (taskList[i].status === "inProgress") {
+      } else if (buildingTaskList[i].status === "inProgress") {
         this.DEBUGTaskDisplay.circle(x, y, 6)
           .fill("#ffffff")
           .moveTo(x, y - 4)
           .lineTo(x, y)
           .lineTo(x + 4, y + 4)
           .stroke({ width: 2, color: "#000000" });
-      } else if (taskList[i].status === "completed") {
+      } else if (buildingTaskList[i].status === "completed") {
         this.DEBUGTaskDisplay.circle(x, y, 6).fill("#000000");
       }
     }

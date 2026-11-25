@@ -1,10 +1,10 @@
 import { Container } from "pixi.js";
-import { Background } from "./background";
-import { Island } from "./island";
 
 import { aircraft } from "@aircraft/aircraft";
-
 import { Building } from "@aircraft/building";
+
+import { Background } from "@chunks/background";
+import { Island } from "@chunks/island";
 
 import {
   getDistance,

@@ -25,14 +25,14 @@ export class Collector extends Building {
   };
 
   static constructionRecipe = [
-    { resourceName: "Organic", amount: 2 },
-    { resourceName: "Water", amount: 1 },
+    { resourceName: "Organic", amount: 1 },
+    { resourceName: "Metal", amount: 1 },
   ];
 
   static craftRecipe = {
     ingredients: [],
     result: "Water",
-    duration: 120,
+    duration: 80,
   };
 
   private static gridsParams = {

@@ -23,7 +23,7 @@ export const showingTutorials: Scenario = {
         showCondition: () => hasPlacedFirstBlueprint(),
         hideCondition: () => false,
         needOkButton: true,
-        findTarget: () => findFirstBlueprint(),
+        target: { type: "finder", findTarget: () => findFirstBlueprint() },
       },
     ],
 

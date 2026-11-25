@@ -5,7 +5,7 @@ import { aircraft } from "@aircraft/aircraft";
 import { onGroundObjects } from "@objects/research-points";
 import { createTestSituation } from "@test-situations/test-situation";
 import { moveWorld } from "@moving/moving";
-import { ChunkManager } from "./world/chunks/manager";
+import { ChunkManager } from "@chunks/manager";
 
 import { joystick } from "@joystick/joystick";
 import { pauseButton } from "@pause/button";
@@ -26,6 +26,7 @@ import {
 import { setTestRandom } from "@utils/initializers";
 import { logo } from "@utils/logo";
 import { rotatePointByCenter } from "@utils/basic-geometry";
+import { questList } from "@questlist/manager";
 
 export const app = new Application();
 
@@ -66,12 +67,13 @@ const rect = app.canvas.getBoundingClientRect();
 const scaleX = app.screen.width / rect.width;
 const scaleY = app.screen.height / rect.height;
 
-cameraSettings.setSensitivity(scaleX);
-
 UIcontainer.addChild(joystick);
 UIcontainer.addChild(pauseButton);
 UIcontainer.addChild(speedButton);
+cameraSettings.setSensitivity(scaleX);
 UIcontainer.addChild(cameraSettings);
+questList.initialize();
+UIcontainer.addChild(questList);
 constructionManager.initialize();
 UIcontainer.addChild(constructionManager);
 researchManager.initialize();
@@ -151,7 +153,9 @@ function clickToBuild(event: FederatedPointerEvent) {
 
     constructionManager.hideButton();
     constructionManager.hideMenu();
-    constructionManager.updateDisplayBuildingType();
+    constructionManager.updateDisplay();
+
+    questList.hideDisplay();
 
     researchManager.hideMenu();
 

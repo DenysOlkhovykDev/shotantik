@@ -5,6 +5,20 @@ import { joystick } from "@joystick/joystick";
 import { getGameScreenCenter } from "@utils/ui-config";
 import { gameScreen } from "@utils/game-config";
 
+export type TargetType =
+  | {
+      type: "coordinates";
+      x: number;
+      y: number;
+    }
+  | {
+      type: "finder";
+      findTarget: () => { x: number; y: number };
+    }
+  | {
+      type: "none";
+    };
+
 export class Tutorial extends Container {
   private isActive = true;
 
@@ -42,16 +56,23 @@ export class Tutorial extends Container {
     }),
   });
 
+  private pointerX: number | undefined;
+  private pointerY: number | undefined;
+
   constructor(
     public text: string,
     public showCondition: () => boolean,
     public hideCondition: () => boolean,
     public needOkButton: boolean,
-    public pointerX?: number,
-    public pointerY?: number,
-    public findTarget?: () => { x: number; y: number },
+    public target: TargetType,
+    public afterClose?: () => void,
   ) {
     super();
+
+    if (this.target.type === "coordinates") {
+      this.pointerX = this.target.x;
+      this.pointerY = this.target.y;
+    }
 
     this.overlay.eventMode = "static";
     this.overlay.on("pointerdown", (event) => {
@@ -84,68 +105,129 @@ export class Tutorial extends Container {
   private drawOverlay() {
     this.overlay.clear();
 
-    if (this.pointerX !== undefined && this.pointerY !== undefined) {
-      this.overlay
-        .rect(0, 0, gameScreen.width, gameScreen.height)
-        .fill({
-          color: "#000000",
-          alpha: 0.15,
-        })
-        .circle(
-          this.pointerX,
-          this.pointerY,
-          Tutorial.tutorialParams.holeRadius,
-        )
-        .cut();
-
-      if (import.meta.env.VITE_IS_DEBUG_TUTORIAL_POSITION === "true") {
+    if (this.target.type === "coordinates" || this.target.type === "finder") {
+      if (this.pointerX !== undefined && this.pointerY !== undefined) {
         this.overlay
-          .moveTo(
-            this.pointerX - 100,
-            this.pointerY - Tutorial.tutorialParams.holeRadius,
+          .rect(0, 0, gameScreen.width, gameScreen.height)
+          .fill({
+            color: "#000000",
+            alpha: 0.15,
+          })
+          .circle(
+            this.pointerX,
+            this.pointerY,
+            Tutorial.tutorialParams.holeRadius,
           )
-          .lineTo(
-            this.pointerX + 100,
-            this.pointerY - Tutorial.tutorialParams.holeRadius,
-          )
-          .stroke({
-            width: 4,
-            color: "#ff0000",
-          });
+          .cut();
 
-        this.overlay
-          .moveTo(this.pointerX - 100, this.pointerY)
-          .lineTo(this.pointerX + 100, this.pointerY)
-          .stroke({
-            width: 4,
-            color: "#ff0000",
-          });
+        if (import.meta.env.VITE_IS_DEBUG_TUTORIAL_POSITION === "true") {
+          this.overlay
+            .moveTo(
+              this.pointerX - 100,
+              this.pointerY - Tutorial.tutorialParams.holeRadius,
+            )
+            .lineTo(
+              this.pointerX + 100,
+              this.pointerY - Tutorial.tutorialParams.holeRadius,
+            )
+            .stroke({
+              width: 4,
+              color: "#ff0000",
+            });
 
-        this.overlay
-          .moveTo(
-            this.pointerX - 100,
-            this.pointerY + Tutorial.tutorialParams.holeRadius,
-          )
-          .lineTo(
-            this.pointerX + 100,
-            this.pointerY + Tutorial.tutorialParams.holeRadius,
-          )
-          .stroke({
-            width: 4,
-            color: "#ff0000",
-          });
+          this.overlay
+            .moveTo(this.pointerX - 100, this.pointerY)
+            .lineTo(this.pointerX + 100, this.pointerY)
+            .stroke({
+              width: 4,
+              color: "#ff0000",
+            });
+
+          this.overlay
+            .moveTo(
+              this.pointerX - 100,
+              this.pointerY + Tutorial.tutorialParams.holeRadius,
+            )
+            .lineTo(
+              this.pointerX + 100,
+              this.pointerY + Tutorial.tutorialParams.holeRadius,
+            )
+            .stroke({
+              width: 4,
+              color: "#ff0000",
+            });
+        }
       }
+    } else {
+      this.overlay.rect(0, 0, gameScreen.width, gameScreen.height).fill({
+        color: "#000000",
+        alpha: 0.15,
+      });
     }
   }
 
   private drawMessage() {
-    if (this.pointerX !== undefined && this.pointerY !== undefined) {
-      const initialX =
-        this.pointerX +
-        Tutorial.tutorialParams.holeRadius +
-        Tutorial.tutorialParams.holeMessageSpacing;
-      const initialY = this.pointerY - this.messageText.height / 2;
+    if (this.target.type === "coordinates" || this.target.type === "finder") {
+      if (this.pointerX !== undefined && this.pointerY !== undefined) {
+        const initialX =
+          this.pointerX +
+          Tutorial.tutorialParams.holeRadius +
+          Tutorial.tutorialParams.holeMessageSpacing;
+        const initialY = this.pointerY - this.messageText.height / 2;
 
+        const buttonOffset = this.needOkButton
+          ? Tutorial.tutorialParams.okButtonHeight / 2
+          : 0;
+
+        const messageWidth =
+          this.messageText.width + Tutorial.tutorialParams.messagePadding * 2;
+        const messageHeight =
+          this.messageText.height +
+          Tutorial.tutorialParams.messagePadding * 2 +
+          (this.needOkButton ? Tutorial.tutorialParams.okButtonHeight : 0);
+
+        const messageRightSide = initialX + messageWidth;
+        const messageBottomSide = initialY + messageHeight;
+
+        const messageX =
+          messageRightSide <
+          gameScreen.width - Tutorial.tutorialParams.threshold
+            ? initialX
+            : this.pointerX -
+              Tutorial.tutorialParams.holeRadius -
+              Tutorial.tutorialParams.holeMessageSpacing -
+              messageWidth;
+
+        const messageY =
+          messageBottomSide >
+          gameScreen.height - Tutorial.tutorialParams.threshold
+            ? initialY +
+              gameScreen.height -
+              Tutorial.tutorialParams.threshold -
+              messageBottomSide
+            : initialY;
+
+        this.drawMessageBackGround(
+          messageX,
+          messageY - Tutorial.tutorialParams.messagePadding - buttonOffset,
+          messageWidth,
+          messageHeight,
+        );
+
+        this.drawMessageText(
+          messageX + Tutorial.tutorialParams.messagePadding,
+          messageY - buttonOffset,
+        );
+
+        this.drawMessageButton(
+          messageX + Tutorial.tutorialParams.messagePadding,
+          messageY +
+            this.messageText.height +
+            Tutorial.tutorialParams.messagePadding * 2 -
+            Tutorial.tutorialParams.okButtonHeight,
+        );
+      }
+    } else {
       const buttonOffset = this.needOkButton
         ? Tutorial.tutorialParams.okButtonHeight / 2
         : 0;
@@ -157,25 +239,8 @@ export class Tutorial extends Container {
         Tutorial.tutorialParams.messagePadding * 2 +
         (this.needOkButton ? Tutorial.tutorialParams.okButtonHeight : 0);
 
-      const messageRightSide = initialX + messageWidth;
-      const messageBottomSide = initialY + messageHeight;
-
-      const messageX =
-        messageRightSide < gameScreen.width - Tutorial.tutorialParams.threshold
-          ? initialX
-          : this.pointerX -
-            Tutorial.tutorialParams.holeRadius -
-            Tutorial.tutorialParams.holeMessageSpacing -
-            messageWidth;
-
-      const messageY =
-        messageBottomSide >
-        gameScreen.height - Tutorial.tutorialParams.threshold
-          ? initialY +
-            gameScreen.height -
-            Tutorial.tutorialParams.threshold -
-            messageBottomSide
-          : initialY;
+      const messageX = getGameScreenCenter().x - messageWidth / 2;
+      const messageY = getGameScreenCenter().y - messageHeight / 2;
 
       this.drawMessageBackGround(
         messageX,
@@ -253,6 +318,9 @@ export class Tutorial extends Container {
       this.okText.eventMode = "none";
       this.okButton.on("pointerdown", (event) => {
         this.isActive = false;
+        if (this.afterClose !== undefined) {
+          this.afterClose();
+        }
         event.stopPropagation();
       });
 
@@ -261,8 +329,8 @@ export class Tutorial extends Container {
   }
 
   public updateTutorial() {
-    if (this.findTarget !== undefined && this.isActive) {
-      const { x, y } = this.findTarget();
+    if (this.target.type === "finder" && this.isActive) {
+      const { x, y } = this.target.findTarget();
 
       this.pointerX = x + getGameScreenCenter().x;
       this.pointerY = y + getGameScreenCenter().y;
@@ -271,6 +339,9 @@ export class Tutorial extends Container {
     }
 
     if ((!this.showCondition() && this.visible) || this.hideCondition()) {
+      if (this.afterClose !== undefined) {
+        this.afterClose();
+      }
       this.isActive = false;
     }
 

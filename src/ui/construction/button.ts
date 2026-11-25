@@ -42,4 +42,16 @@ export class ConstructionButton extends Container {
 
     this.addChild(this.graphic);
   }
+
+  public show() {
+    this.visible = true;
+  }
+
+  public hide() {
+    this.visible = false;
+  }
+
+  public isVisible() {
+    return this.visible;
+  }
 }

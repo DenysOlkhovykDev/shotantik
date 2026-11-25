@@ -26,13 +26,13 @@ export class Extractor extends Building {
 
   static constructionRecipe = [
     { resourceName: "Organic", amount: 1 },
-    { resourceName: "Water", amount: 2 },
+    { resourceName: "Water", amount: 1 },
   ];
 
   static craftRecipe = {
     ingredients: [],
     result: "Metal",
-    duration: 120,
+    duration: 80,
   };
 
   private static antennasParams = {

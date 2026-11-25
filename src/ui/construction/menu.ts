@@ -10,10 +10,10 @@ import {
 
 import { Road } from "@roads/road";
 
-import { menuItems, MenuItem } from "@utils/menu-items";
+import { buildingThemes, buildingTheme } from "@utils/building-themes";
 
 export class ConstructionMenu extends Container {
-  public menuItems: MenuItem[] = menuItems.filter((item) =>
+  public menuItems: buildingTheme[] = buildingThemes.filter((item) =>
     [
       "Collector",
       "Farm",
@@ -118,7 +118,7 @@ export class ConstructionMenu extends Container {
     });
   }
 
-  private createMenuItem(item: MenuItem, container: Container) {
+  private createMenuItem(item: buildingTheme, container: Container) {
     this.createMenuItemBackground(item.color, container, item.label);
 
     this.createBuildingLabel(item.label, container);
@@ -239,5 +239,17 @@ export class ConstructionMenu extends Container {
     );
 
     container.addChild(recipeSign);
+  }
+
+  public show() {
+    this.visible = true;
+  }
+
+  public hide() {
+    this.visible = false;
+  }
+
+  public isVisible() {
+    return this.visible;
   }
 }

@@ -25,8 +25,8 @@ export class Mixer extends Building {
   };
 
   static constructionRecipe = [
-    { resourceName: "Organic", amount: 2 },
-    { resourceName: "Metal", amount: 1 },
+    { resourceName: "Organic", amount: 1 },
+    { resourceName: "Metal", amount: 2 },
     { resourceName: "Water", amount: 1 },
   ];
 
@@ -36,7 +36,7 @@ export class Mixer extends Building {
       { resourceName: "Water", amount: 2 },
     ],
     result: "Gum",
-    duration: 120,
+    duration: 200,
   };
 
   private static satellitesParams = {

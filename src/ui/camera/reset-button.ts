@@ -46,4 +46,12 @@ export class resetButton extends Container {
 
     this.addChild(this.graphic);
   }
+
+  public show() {
+    this.visible = true;
+  }
+
+  public hide() {
+    this.visible = false;
+  }
 }

@@ -6,14 +6,14 @@ import { Platform } from "@aircraft/modules/platform";
 import { Road } from "@roads/road";
 import { Worker } from "@workers/worker";
 
-import { menuItems, MenuItem } from "@utils/menu-items";
+import { buildingThemes, buildingTheme } from "@utils/building-themes";
 
-interface ResearchMenuItem extends MenuItem {
+interface ResearchMenuItem extends buildingTheme {
   level: number;
 }
 
 export class ResearchMenu extends Container {
-  public menuItems: ResearchMenuItem[] = menuItems
+  public menuItems: ResearchMenuItem[] = buildingThemes
     .filter((item) =>
       [
         "Collector",
@@ -308,11 +308,12 @@ export class ResearchMenu extends Container {
         } else {
           const BuildingClass = buildingMap[item.label] || Platform;
 
-          if (BuildingClass.craftRecipe) {
-            const defaultDuration = 120;
-
-            BuildingClass.craftRecipe.duration =
-              defaultDuration / (1 + (item.level - 1) * 0.25);
+          if (
+            BuildingClass.craftRecipe !== undefined &&
+            BuildingClass.craftRecipe.duration !== undefined
+          ) {
+            BuildingClass.craftRecipe.duration -=
+              BuildingClass.craftRecipe.duration / 3;
           }
         }
       }

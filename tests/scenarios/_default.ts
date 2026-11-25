@@ -1,46 +1,67 @@
 import { Scenario } from "@test-situations/test-situation";
 import {
   getConstructionButtonPosition,
-  getMixerPositionInConstructionMenu,
+  getCollectorPositionInConstructionMenu,
   getPositionOfEngineUpgradeButton,
   getPositionOfResearchingProgressBar,
+  getQuestListButtonPosition,
 } from "@utils/ui-config";
 
 import {
+  addQuestsForAdvancedBuilding,
+  addQuestsForBuilding,
+  closeGameAboutTutorial,
+  closeNotEnoughResourcesTutorial,
   findFirstBlueprint,
   findFirstBuilding,
   findFirstBuildingByName,
   hasAtLeastOneBlueprint,
+  hasBuildedAssembler,
+  hasBuildedCollector,
+  hasBuildedExtractor,
+  hasBuildedFarm,
+  hasBuildedGrinder,
+  hasBuildedMixer,
+  hasCheckedQuests,
   hasClickedOnConstructionMenuButton,
   hasClickedOnEngine,
   hasClickedOnFirstBlueprint,
   hasClickedOnPlatform,
-  hasClickedOnPlatformAfterPlacingBlueprint,
   hasClickedOnPlatformNearTarget,
   hasClickedOnResearcher,
   hasClickedOnUpgradeEngineButton,
+  hasClosedGameAboutTutorial,
+  hasClosedNotEnoughResourcesTutorial,
+  hasClosedQuestDisplay,
   hasClosedResearchMenu,
-  hasDestroyedOneOfImportantBuildings,
   hasEngineBuilded,
+  hasOpenedQuestListDisplay,
   hasPlacedSecondBlueprint,
   hasResearcherBuilded,
   hasSelectedBuildingFromConstructionMenu,
   isFirstTargetReached,
+  removeQuestAboutAssembler,
+  removeQuestAboutCollector,
+  removeQuestAboutExtractor,
+  removeQuestAboutFarm,
+  removeQuestAboutGrinder,
+  removeQuestAboutMixer,
 } from "@utils/tutorial-conditions";
 
 export const defaultScenario: Scenario = {
   aircraft: {
     buildings: [
       { from: "", id: "p0", type: "Platform", x: 0, y: 0 },
-      { from: "p0", id: "collector", type: "Collector", x: -100, y: -50 },
-      { from: "p0", id: "extractor", type: "Extractor", x: 100, y: -50 },
-      { from: "p0", id: "farm", type: "Farm", x: 0, y: -100 },
       { from: "p0", id: "p1", type: "Platform", x: 0, y: 100 },
       { from: "p1", id: "p2", type: "Platform", x: 0, y: 200 },
     ],
+    resources: [
+      { buildingId: "p1", resourceName: "Organic", amount: 1 },
+      { buildingId: "p1", resourceName: "Metal", amount: 2 },
+    ],
     workers: [
-      { buildingId: "p0", profession: "building" },
-      { buildingId: "p0", profession: "production" },
+      { buildingId: "p2", profession: "building" },
+      { buildingId: "p1", profession: "production" },
       { buildingId: "p0", profession: "delivering" },
     ],
     buildingTasks: [
@@ -55,24 +76,83 @@ export const defaultScenario: Scenario = {
   uiElements: {
     tutorials: [
       {
-        text: `This is the
-blueprint 
-of Engine`,
+        text: `Hi! Shotantik is
+a simple resource
+management game.
+Let's take a look at it`,
         showCondition: () => hasAtLeastOneBlueprint() && !hasEngineBuilded(),
+        hideCondition: () => false,
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => closeGameAboutTutorial(),
+      },
+      {
+        text: `Here's what we're 
+going to build.
+Let's check what
+we need`,
+        showCondition: () =>
+          hasAtLeastOneBlueprint() &&
+          !hasEngineBuilded() &&
+          hasClosedGameAboutTutorial(),
         hideCondition: () => hasClickedOnFirstBlueprint(),
         needOkButton: false,
-        findTarget: () => findFirstBlueprint(),
+        target: { type: "finder", findTarget: () => findFirstBlueprint() },
+        afterClose: () => closeGameAboutTutorial(),
+      },
+      {
+        text: `We don't have 
+the materials 
+to build this yet.
+So let's make a few
+other structures
+to make simple 
+resources.`,
+        showCondition: () =>
+          hasClickedOnFirstBlueprint() && !hasEngineBuilded(),
+        hideCondition: () => false,
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => {
+          closeNotEnoughResourcesTutorial();
+          addQuestsForBuilding();
+        },
+      },
+      {
+        text: `Open the quest 
+list to see what 
+to build first`,
+        showCondition: () =>
+          hasClosedNotEnoughResourcesTutorial() && !hasEngineBuilded(),
+        hideCondition: () => hasOpenedQuestListDisplay(),
+        needOkButton: false,
+        target: {
+          type: "coordinates",
+          x: getQuestListButtonPosition().x + 30,
+          y: getQuestListButtonPosition().y + 20,
+        },
+      },
+      {
+        text: `Let's build
+the first module`,
+        showCondition: () => hasOpenedQuestListDisplay() && !hasEngineBuilded(),
+        hideCondition: () => hasCheckedQuests(),
+        needOkButton: true,
+        target: {
+          type: "coordinates",
+          x: 160,
+          y: 1085,
+        },
       },
       {
         text: `This is the
 Platform.
 You can build
 from it`,
-        showCondition: () =>
-          hasClickedOnFirstBlueprint() && !hasEngineBuilded(),
+        showCondition: () => hasClosedQuestDisplay() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnPlatform(),
         needOkButton: false,
-        findTarget: () => findFirstBuilding(),
+        target: { type: "finder", findTarget: () => findFirstBuilding() },
       },
       {
         text: `Click to open
@@ -80,57 +160,137 @@ building menu`,
         showCondition: () => hasClickedOnPlatform() && !hasEngineBuilded(),
         hideCondition: () => hasClickedOnConstructionMenuButton(),
         needOkButton: false,
-        x: getConstructionButtonPosition().x,
-        y: getConstructionButtonPosition().y,
+        target: {
+          type: "coordinates",
+          x: getConstructionButtonPosition().x,
+          y: getConstructionButtonPosition().y,
+        },
       },
       {
-        text: "Select the Mixer",
+        text: "Select it",
         showCondition: () =>
           hasClickedOnConstructionMenuButton() && !hasEngineBuilded(),
         hideCondition: () => hasSelectedBuildingFromConstructionMenu(),
         needOkButton: false,
-        x: getMixerPositionInConstructionMenu().x,
-        y: getMixerPositionInConstructionMenu().y,
+        target: {
+          type: "coordinates",
+          x: getCollectorPositionInConstructionMenu().x,
+          y: getCollectorPositionInConstructionMenu().y,
+        },
       },
       {
-        text: `Place it 
+        text: `Place it
 here`,
         showCondition: () =>
           hasSelectedBuildingFromConstructionMenu() && !hasEngineBuilded(),
         hideCondition: () => hasPlacedSecondBlueprint(),
         needOkButton: false,
-        x: 475,
-        y: 715,
+        target: {
+          type: "coordinates",
+          x: 275,
+          y: 575,
+        },
       },
       {
         text: `Also build
-Assembler  
-and Grinder`,
-        showCondition: () => hasPlacedSecondBlueprint() && !hasEngineBuilded(),
-        hideCondition: () => hasClickedOnPlatformAfterPlacingBlueprint(),
+other two modules`,
+        showCondition: () => hasBuildedCollector() && !hasEngineBuilded(),
+        hideCondition: () =>
+          hasBuildedCollector() && hasOpenedQuestListDisplay(),
         needOkButton: true,
-        findTarget: () => findFirstBuilding(),
+        target: {
+          type: "coordinates",
+          x: getQuestListButtonPosition().x + 30,
+          y: getQuestListButtonPosition().y + 20,
+        },
+        afterClose: () => removeQuestAboutCollector(),
       },
       {
-        text: `Use Engine
-to follow the
+        text: `One more`,
+        showCondition: () =>
+          hasBuildedCollector() && hasBuildedFarm() && !hasEngineBuilded(),
+        hideCondition: () =>
+          hasBuildedCollector() &&
+          hasBuildedFarm() &&
+          hasOpenedQuestListDisplay(),
+        needOkButton: true,
+        target: {
+          type: "coordinates",
+          x: getQuestListButtonPosition().x + 30,
+          y: getQuestListButtonPosition().y + 20,
+        },
+        afterClose: () => removeQuestAboutFarm(),
+      },
+      {
+        text: `Now build new
+type of modules.
+They can make 
+new resources`,
+        showCondition: () =>
+          hasBuildedCollector() &&
+          hasBuildedFarm() &&
+          hasBuildedExtractor() &&
+          !hasEngineBuilded(),
+        hideCondition: () => false,
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => {
+          removeQuestAboutExtractor();
+          addQuestsForAdvancedBuilding();
+        },
+      },
+      {
+        text: `Mixer`,
+        showCondition: () => false,
+        hideCondition: () => hasBuildedMixer(),
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => {
+          removeQuestAboutMixer();
+        },
+      },
+      {
+        text: `Grinder`,
+        showCondition: () => false,
+        hideCondition: () => hasBuildedGrinder(),
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => {
+          removeQuestAboutGrinder();
+        },
+      },
+      {
+        text: `Assembler`,
+        showCondition: () => false,
+        hideCondition: () => hasBuildedAssembler(),
+        needOkButton: true,
+        target: { type: "none" },
+        afterClose: () => {
+          removeQuestAboutAssembler();
+        },
+      },
+      {
+        text: `Use it to 
+follow the
 green compass 
 arrow`,
         showCondition: () => hasEngineBuilded(),
         hideCondition: () => hasClickedOnEngine(),
         needOkButton: false,
-        findTarget: () => findFirstBuildingByName("Engine"),
+        target: {
+          type: "finder",
+          findTarget: () => findFirstBuildingByName("Engine"),
+        },
       },
       {
         text: `You found a
-new module: 
-Researcher.
+new module.
 Build it to unlock
 upgrades`,
         showCondition: () => isFirstTargetReached(),
         hideCondition: () => hasClickedOnPlatformNearTarget(),
         needOkButton: true,
-        findTarget: () => findFirstBuilding(),
+        target: { type: "none" },
       },
       {
         text: `Click
@@ -140,7 +300,10 @@ menu`,
         showCondition: () => hasResearcherBuilded(),
         hideCondition: () => hasClickedOnResearcher(),
         needOkButton: false,
-        findTarget: () => findFirstBuildingByName("Researcher"),
+        target: {
+          type: "finder",
+          findTarget: () => findFirstBuildingByName("Researcher"),
+        },
       },
       {
         text: `Use points
@@ -149,8 +312,11 @@ modules`,
         showCondition: () => hasClickedOnResearcher(),
         hideCondition: () => hasClickedOnUpgradeEngineButton(),
         needOkButton: false,
-        x: getPositionOfEngineUpgradeButton().x,
-        y: getPositionOfEngineUpgradeButton().y,
+        target: {
+          type: "coordinates",
+          x: getPositionOfEngineUpgradeButton().x,
+          y: getPositionOfEngineUpgradeButton().y,
+        },
       },
       {
         text: `The bar
@@ -159,32 +325,22 @@ to the next point`,
         showCondition: () => hasClickedOnUpgradeEngineButton(),
         hideCondition: () => hasClosedResearchMenu(),
         needOkButton: true,
-        x: getPositionOfResearchingProgressBar().x,
-        y: getPositionOfResearchingProgressBar().y,
+        target: {
+          type: "coordinates",
+          x: getPositionOfResearchingProgressBar().x,
+          y: getPositionOfResearchingProgressBar().y,
+        },
       },
       {
         text: `You are free now!
-Build more
-Researchers
-to upgrade
-your ship,
-or find 
+Try to find 
 research points
 while exploring 
 the world`,
         showCondition: () => hasClosedResearchMenu(),
         hideCondition: () => false,
         needOkButton: true,
-        findTarget: () => findFirstBuilding(),
-      },
-      {
-        text: `You can't
-complete tutorial.
-Try again`,
-        showCondition: () => hasDestroyedOneOfImportantBuildings(),
-        hideCondition: () => false,
-        needOkButton: true,
-        findTarget: () => findFirstBuilding(),
+        target: { type: "none" },
       },
     ],
 
