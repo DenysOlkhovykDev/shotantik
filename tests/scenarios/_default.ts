@@ -8,6 +8,8 @@ import {
 } from "@utils/ui-config";
 
 import {
+  addQuestsAboutResearcher,
+  addQuestsFollowTheGreenArrow,
   addQuestsForAdvancedBuilding,
   addQuestsForBuilding,
   closeGameAboutTutorial,
@@ -46,6 +48,8 @@ import {
   removeQuestAboutFarm,
   removeQuestAboutGrinder,
   removeQuestAboutMixer,
+  removeQuestAboutResearcher,
+  removeQuestFollowTheGreenArrow,
 } from "@utils/tutorial-conditions";
 
 export const defaultScenario: Scenario = {
@@ -281,6 +285,9 @@ arrow`,
           type: "finder",
           findTarget: () => findFirstBuildingByName("Engine"),
         },
+        afterClose: () => {
+          addQuestsFollowTheGreenArrow();
+        },
       },
       {
         text: `You found a
@@ -291,6 +298,10 @@ upgrades`,
         hideCondition: () => hasClickedOnPlatformNearTarget(),
         needOkButton: true,
         target: { type: "none" },
+        afterClose: () => {
+          removeQuestFollowTheGreenArrow();
+          addQuestsAboutResearcher();
+        },
       },
       {
         text: `Click
@@ -303,6 +314,9 @@ menu`,
         target: {
           type: "finder",
           findTarget: () => findFirstBuildingByName("Researcher"),
+        },
+        afterClose: () => {
+          removeQuestAboutResearcher();
         },
       },
       {

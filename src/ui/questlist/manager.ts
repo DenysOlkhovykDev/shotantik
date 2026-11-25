@@ -93,6 +93,10 @@ export class QuestListManager extends Container {
     this.addQuest({ name, text, resource });
   }
 
+  public addSimpleQuest(name: string, text: string) {
+    this.addQuest({ name, text });
+  }
+
   private addQuest(quest: Quest) {
     if (this.display) {
       if (
