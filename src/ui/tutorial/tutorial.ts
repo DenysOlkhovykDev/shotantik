@@ -108,7 +108,7 @@ export class Tutorial extends Container {
     if (this.target.type === "coordinates" || this.target.type === "finder") {
       if (this.pointerX !== undefined && this.pointerY !== undefined) {
         this.overlay
-          .rect(0, 0, gameScreen.width, gameScreen.height)
+          .rect(-100, -100, gameScreen.width + 100, gameScreen.height + 100)
           .fill({
             color: "#000000",
             alpha: 0.15,
@@ -159,10 +159,12 @@ export class Tutorial extends Container {
         }
       }
     } else {
-      this.overlay.rect(0, 0, gameScreen.width, gameScreen.height).fill({
-        color: "#000000",
-        alpha: 0.15,
-      });
+      this.overlay
+        .rect(-100, -100, gameScreen.width + 100, gameScreen.height + 100)
+        .fill({
+          color: "#000000",
+          alpha: 0.15,
+        });
     }
   }
 
