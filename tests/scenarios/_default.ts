@@ -93,8 +93,8 @@ Let's check what
 we need`,
         showCondition: () =>
           hasAtLeastOneBlueprint() &&
-          !hasEngineBuilded() &&
-          hasClosedGameAboutTutorial(),
+          hasClosedGameAboutTutorial() &&
+          !hasEngineBuilded(),
         hideCondition: () => hasClickedOnFirstBlueprint(),
         needOkButton: false,
         target: { type: "finder", findTarget: () => findFirstBlueprint() },

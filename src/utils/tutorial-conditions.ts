@@ -232,9 +232,7 @@ export function removeQuestAboutExtractor() {
 }
 
 export function hasBuildedMixer() {
-  const mixer = aircraft.buildings.filter(
-    (b) => b.buildingType === "Mixer",
-  );
+  const mixer = aircraft.buildings.filter((b) => b.buildingType === "Mixer");
 
   return mixer.length > 0;
 }

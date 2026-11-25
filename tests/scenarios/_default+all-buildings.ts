@@ -6,6 +6,9 @@ export const defaultPlusAllBuildings: Scenario = {
   aircraft: {
     buildings: [
       ...defaultScenario.aircraft.buildings,
+      { from: "p0", id: "collector", type: "Collector", x: -100, y: -50 },
+      { from: "p0", id: "extractor", type: "Extractor", x: 100, y: -50 },
+      { from: "p0", id: "farm", type: "Farm", x: 0, y: -100 },
       { from: "p0", id: "mixer", type: "Mixer", x: 115, y: 75 },
       { from: "p0", id: "assembler", type: "Assembler", x: -110, y: 75 },
       { from: "p1", id: "grinder", type: "Grinder", x: 110, y: 175 },
