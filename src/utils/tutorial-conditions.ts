@@ -7,6 +7,7 @@ import { joystick } from "@joystick/joystick";
 import { researchManager } from "@research/manager";
 
 import { buildingThemes } from "@utils/building-themes";
+import { questList } from "@questlist/manager";
 
 export function hasAtLeastOneBlueprint() {
   return aircraft.blueprints.length > 0;
@@ -103,18 +104,6 @@ export function hasClosedResearchMenu() {
   return hasClickedOnUpgradeEngineButton() && !researchManager.isMenuVisible();
 }
 
-export function hasDestroyedOneOfImportantBuildings() {
-  const buildings = aircraft.buildings;
-
-  const farms = buildings.filter((b) => b.buildingType === "Farm");
-  const extractors = buildings.filter((b) => b.buildingType === "Extractor");
-  const collectors = buildings.filter((b) => b.buildingType === "Collector");
-
-  return (
-    farms.length === 0 || extractors.length === 0 || collectors.length === 0
-  );
-}
-
 export function findFirstBlueprint() {
   if (aircraft.blueprints.length > 0) {
     const blueprint = aircraft.blueprints[0];
@@ -166,4 +155,120 @@ export function findFirstBuildingByName(name: string) {
       y: 0,
     };
   }
+}
+
+let hasClosedGameAboutTutorialFlag = false;
+export function hasClosedGameAboutTutorial() {
+  return hasClosedGameAboutTutorialFlag;
+}
+
+export function closeGameAboutTutorial() {
+  hasClosedGameAboutTutorialFlag = true;
+}
+
+export function hasOpenedQuestListDisplay() {
+  return questList.isDisplayVisible();
+}
+
+let hasClosedNotEnoughResourcesTutorialFlag = false;
+export function hasClosedNotEnoughResourcesTutorial() {
+  return hasClosedNotEnoughResourcesTutorialFlag;
+}
+
+export function closeNotEnoughResourcesTutorial() {
+  hasClosedNotEnoughResourcesTutorialFlag = true;
+}
+
+export function addQuestsForBuilding() {
+  questList.addBuildingQuest("build collector", "Build x1", "Collector");
+  questList.addBuildingQuest("build farm", "Build x1", "Farm");
+  questList.addBuildingQuest("build extractor", "Build x1", "Extractor");
+}
+
+export function hasCheckedQuests() {
+  return questList.isButtonIndicatorVisible() && hasOpenedQuestListDisplay();
+}
+
+export function hasClosedQuestDisplay() {
+  return (
+    !questList.isButtonIndicatorVisible() &&
+    !hasOpenedQuestListDisplay() &&
+    questList.getCurrentQuestsAmount() === 3
+  );
+}
+
+export function hasBuildedCollector() {
+  const collectors = aircraft.buildings.filter(
+    (b) => b.buildingType === "Collector",
+  );
+
+  return collectors.length > 0;
+}
+
+export function removeQuestAboutCollector() {
+  questList.deleteQuest("build collector");
+}
+
+export function hasBuildedFarm() {
+  const farm = aircraft.buildings.filter((b) => b.buildingType === "Farm");
+
+  return farm.length > 0;
+}
+
+export function removeQuestAboutFarm() {
+  questList.deleteQuest("build farm");
+}
+
+export function hasBuildedExtractor() {
+  const extractor = aircraft.buildings.filter(
+    (b) => b.buildingType === "Extractor",
+  );
+
+  return extractor.length > 0;
+}
+
+export function removeQuestAboutExtractor() {
+  questList.deleteQuest("build extractor");
+}
+
+export function hasBuildedMixer() {
+  const mixer = aircraft.buildings.filter(
+    (b) => b.buildingType === "Mixer",
+  );
+
+  return mixer.length > 0;
+}
+
+export function removeQuestAboutMixer() {
+  questList.deleteQuest("build mixer");
+}
+
+export function hasBuildedGrinder() {
+  const grinder = aircraft.buildings.filter(
+    (b) => b.buildingType === "Grinder",
+  );
+
+  return grinder.length > 0;
+}
+
+export function removeQuestAboutGrinder() {
+  questList.deleteQuest("build grinder");
+}
+
+export function hasBuildedAssembler() {
+  const assembler = aircraft.buildings.filter(
+    (b) => b.buildingType === "Assembler",
+  );
+
+  return assembler.length > 0;
+}
+
+export function removeQuestAboutAssembler() {
+  questList.deleteQuest("build assembler");
+}
+
+export function addQuestsForAdvancedBuilding() {
+  questList.addBuildingQuest("build mixer", "Build x1", "Mixer");
+  questList.addBuildingQuest("build assembler", "Build x1", "Assembler");
+  questList.addBuildingQuest("build grinder", "Build x1", "Grinder");
 }

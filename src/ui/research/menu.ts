@@ -308,11 +308,12 @@ export class ResearchMenu extends Container {
         } else {
           const BuildingClass = buildingMap[item.label] || Platform;
 
-          if (BuildingClass.craftRecipe) {
-            const defaultDuration = 120;
-
-            BuildingClass.craftRecipe.duration =
-              defaultDuration / (1 + (item.level - 1) * 0.25);
+          if (
+            BuildingClass.craftRecipe !== undefined &&
+            BuildingClass.craftRecipe.duration !== undefined
+          ) {
+            BuildingClass.craftRecipe.duration -=
+              BuildingClass.craftRecipe.duration / 3;
           }
         }
       }

@@ -49,10 +49,10 @@ export function getQuestListButtonPosition() {
   };
 }
 
-export function getMixerPositionInConstructionMenu() {
+export function getCollectorPositionInConstructionMenu() {
   return {
-    x: 360,
-    y: 1050,
+    x: 228,
+    y: 915,
   };
 }
 

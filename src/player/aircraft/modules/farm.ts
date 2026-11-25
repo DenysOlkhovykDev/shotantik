@@ -24,12 +24,15 @@ export class Farm extends Building {
     maxRoadLength: 200,
   };
 
-  static constructionRecipe = [{ resourceName: "Organic", amount: 3 }];
+  static constructionRecipe = [
+    { resourceName: "Metal", amount: 1 },
+    { resourceName: "Water", amount: 1 },
+  ];
 
   static craftRecipe = {
     ingredients: [],
     result: "Organic",
-    duration: 120,
+    duration: 80,
   };
 
   private static kelpsParams = {

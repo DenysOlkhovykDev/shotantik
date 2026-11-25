@@ -10,9 +10,8 @@ export function createUiElementsByScenario(scenario: UiElementsScenario) {
       tutorial.showCondition,
       tutorial.hideCondition,
       tutorial.needOkButton,
-      tutorial.x,
-      tutorial.y,
-      tutorial.findTarget,
+      tutorial.target,
+      tutorial.afterClose,
     );
   }
 

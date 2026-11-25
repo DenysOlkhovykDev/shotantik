@@ -26,8 +26,9 @@ export class Grinder extends Building {
   };
 
   static constructionRecipe = [
-    { resourceName: "Organic", amount: 2 },
+    { resourceName: "Organic", amount: 1 },
     { resourceName: "Water", amount: 2 },
+    { resourceName: "Metal", amount: 1 },
   ];
 
   static craftRecipe = {
@@ -36,7 +37,7 @@ export class Grinder extends Building {
       { resourceName: "Organic", amount: 2 },
     ],
     result: "Gear",
-    duration: 120,
+    duration: 200,
   };
 
   private static buildingParams = {

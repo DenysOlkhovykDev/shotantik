@@ -11,7 +11,7 @@ import {
 import {
   getConstructionButtonPosition,
   getGameScreenCenter,
-  getMixerPositionInConstructionMenu,
+  getCollectorPositionInConstructionMenu,
 } from "@utils/ui-config";
 
 const testName = "construction-menu";
@@ -49,8 +49,8 @@ test(testName, async ({ page }) => {
 
   await clickCanvas(
     page,
-    getMixerPositionInConstructionMenu().x,
-    getMixerPositionInConstructionMenu().y,
+    getCollectorPositionInConstructionMenu().x,
+    getCollectorPositionInConstructionMenu().y,
   );
 
   await skipFrames(page, 2);
@@ -91,8 +91,8 @@ test(testName, async ({ page }) => {
 
   await clickCanvas(
     page,
-    getMixerPositionInConstructionMenu().x,
-    getMixerPositionInConstructionMenu().y,
+    getCollectorPositionInConstructionMenu().x,
+    getCollectorPositionInConstructionMenu().y,
   );
 
   await clickCanvas(
@@ -122,8 +122,8 @@ test(testName, async ({ page }) => {
 
   await clickCanvas(
     page,
-    getMixerPositionInConstructionMenu().x,
-    getMixerPositionInConstructionMenu().y,
+    getCollectorPositionInConstructionMenu().x,
+    getCollectorPositionInConstructionMenu().y,
   );
 
   await clickCanvas(

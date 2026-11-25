@@ -3,7 +3,7 @@ import { Container } from "pixi.js";
 import { constructionManager } from "@construction/manager";
 import { researchManager } from "@research/manager";
 import { joystick } from "@joystick/joystick";
-import { QuestListDisplay } from "@questlist/display";
+import { QuestListDisplay, Quest } from "@questlist/display";
 import { QuestListButton } from "@questlist/button";
 
 import {
@@ -36,12 +36,6 @@ export class QuestListManager extends Container {
       getQuestListMenuPosition().x,
       getQuestListMenuPosition().y,
     );
-
-    this.display.eventMode = "static";
-
-    this.display.on("pointerdown", (e) => {
-      e.stopPropagation();
-    });
 
     this.hideDisplay();
 
@@ -77,26 +71,56 @@ export class QuestListManager extends Container {
     return false;
   }
 
-  public addQuest(name: string, text: string) {
-    if (this.display) {
-      this.display.quests.push({ name: name, text: text });
-
-      this.display.createDisplay(
-        getQuestListMenuPosition().x,
-        getQuestListMenuPosition().y,
-      );
-
-      this.hideDisplay();
-    }
+  public isButtonIndicatorVisible() {
     if (this.button) {
-      this.button.showIndicator();
+      return this.button.isIndicatorVisible();
     }
+    return false;
   }
 
+  public getCurrentQuestsAmount() {
+    if (this.display) {
+      return this.display.quests.length;
+    }
+    return 0;
+  }
+
+  public addBuildingQuest(name: string, text: string, building: string) {
+    this.addQuest({ name, text, building });
+  }
+
+  public addCraftingQuest(name: string, text: string, resource: string) {
+    this.addQuest({ name, text, resource });
+  }
+
+  private addQuest(quest: Quest) {
+    if (this.display) {
+      if (
+        this.display.quests.findIndex((el) => el.name === quest.name) === -1
+      ) {
+        this.display.quests.push(quest);
+
+        const position = getQuestListMenuPosition();
+
+        this.display.createDisplay(position.x, position.y);
+
+        this.hideDisplay();
+
+        if (this.button) {
+          this.button.showIndicator();
+        }
+      }
+    }
+  }
   public deleteQuest(name: string) {
     if (this.display) {
       this.display.quests = this.display.quests.filter(
         (quest) => quest.name !== name,
+      );
+
+      this.display.createDisplay(
+        getQuestListMenuPosition().x,
+        getQuestListMenuPosition().y,
       );
     }
   }

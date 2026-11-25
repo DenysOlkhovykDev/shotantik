@@ -77,4 +77,8 @@ export class QuestListButton extends Container {
   public hideIndicator() {
     this.indicator.visible = false;
   }
+
+  public isIndicatorVisible() {
+    return this.indicator.visible;
+  }
 }

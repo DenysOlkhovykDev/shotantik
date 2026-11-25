@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 
-import { Tutorial } from "@tutorial/tutorial";
+import { TargetType, Tutorial } from "@tutorial/tutorial";
 import { cameraSettings } from "@camera/manager";
 
 export class Tutorials extends Container {
@@ -13,18 +13,16 @@ export class Tutorials extends Container {
     showCondition: () => boolean,
     hideCondition: () => boolean,
     needOkButton: boolean,
-    x?: number,
-    y?: number,
-    findTarget?: () => { x: number; y: number },
+    target: TargetType,
+    afterClose?: () => void,
   ) {
     const tutorial = new Tutorial(
       text,
       showCondition,
       hideCondition,
       needOkButton,
-      x,
-      y,
-      findTarget,
+      target,
+      afterClose,
     );
     this.tutorials.push(tutorial);
     this.addChild(tutorial);

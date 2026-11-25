@@ -116,7 +116,7 @@ export class Legs extends Container {
     movingSpeed: number,
     delta: number,
   ) {
-    const rotationSpeed = 0.15 * movingSpeed;
+    const rotationSpeed = 0.25 * movingSpeed;
     const maxRotation = rotationSpeed * delta;
 
     const currentAngleFromStandingToFreeLeg = Math.atan2(

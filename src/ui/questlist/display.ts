@@ -7,7 +7,7 @@ import { buildingThemes } from "@utils/building-themes";
 import { resourceThemes } from "@utils/resource-themes";
 import { createResource } from "@resources/create-resources";
 
-interface Quest {
+export interface Quest {
   name: string;
   text: string;
   building?: string;
@@ -15,16 +15,7 @@ interface Quest {
 }
 
 export class QuestListDisplay extends Container {
-  public quests: Quest[] = [
-    { name: "build", text: "Build 1x ", building: "Collector" },
-    { name: "craft", text: "Craft 5x ", resource: "Battery" },
-    { name: "craft", text: "Craft 5x ", resource: "Gum" },
-    { name: "craft", text: "Craft 5x ", resource: "Gear" },
-    { name: "craft", text: "Craft 5x ", resource: "Metal" },
-    { name: "craft", text: "Craft 5x ", resource: "Organic" },
-    { name: "craft", text: "Craft 5x ", resource: "Truss" },
-    { name: "craft", text: "Craft 5x ", resource: "Water" },
-  ];
+  public quests: Quest[] = [];
 
   private static params = {
     columnWidth: 170,
