@@ -1,17 +1,20 @@
 import {
   Container,
   Particle,
-  Rectangle,
   ParticleContainer,
   Texture,
   Graphics,
 } from "pixi.js";
+
+import { aircraft } from "@aircraft/aircraft";
+import { Building } from "@aircraft/building";
 
 import {
   generateDoubleHexTexture,
   makeBrighterColor,
 } from "@utils/basic-graphic";
 import {
+  getDistance,
   getValueFromCoordinates,
   transformCoordinatesByHexOddRows,
 } from "@utils/basic-geometry";
@@ -43,45 +46,38 @@ export class Island extends Container {
   public colliders: { y: number; x: number }[] = [];
 
   constructor(
-    chunkX: number,
-    chunkY: number,
-    cellSize: number,
-    gridSize: number,
-    offsetX: number,
-    offsetY: number,
+    private chunkX: number,
+    private chunkY: number,
+    private cellSize: number,
+    private gridSize: number,
+    private offsetX: number,
+    private offsetY: number,
     seed: number,
   ) {
     super();
 
-    this.tilesContainer.boundsArea = new Rectangle(
-      0,
-      0,
-      gridSize * offsetX + offsetX / 2,
-      gridSize * offsetY,
-    );
-
     if (!Island.tileTexture) {
-      Island.tileTexture = generateDoubleHexTexture((cellSize + 8) / 2);
+      Island.tileTexture = generateDoubleHexTexture((this.cellSize + 8) / 2);
     }
 
-    this.tilesValues = Array.from({ length: gridSize }, () =>
-      Array(gridSize).fill(0),
+    this.tilesValues = Array.from({ length: this.gridSize }, () =>
+      Array(this.gridSize).fill(0),
     );
 
-    this.generateNoise(gridSize, chunkX, chunkY, seed);
+    this.generateNoise(seed);
 
-    this.setColliders(gridSize);
+    this.setColliders();
 
-    for (let y = 0; y < gridSize; y++) {
-      for (let x = 0; x < gridSize; x++) {
+    for (let y = 0; y < this.gridSize; y++) {
+      for (let x = 0; x < this.gridSize; x++) {
         const value = this.tilesValues[y][x];
 
         if (value > 1) {
           const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
             x,
             y,
-            offsetX,
-            offsetY,
+            this.offsetX,
+            this.offsetY,
           );
 
           const tile = new Particle({
@@ -122,12 +118,12 @@ export class Island extends Container {
         const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
           this.colliders[i].x,
           this.colliders[i].y,
-          offsetX,
-          offsetY,
+          this.offsetX,
+          this.offsetY,
         );
 
         graphic
-          .circle(tileX, tileY, cellSize / 2)
+          .circle(tileX, tileY, this.cellSize / 2)
           .stroke({ width: 4, color: "#ff0000" });
         this.addChild(graphic);
       }
@@ -137,45 +133,41 @@ export class Island extends Container {
       const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
         this.mainColliderX,
         this.mainColliderY,
-        offsetX,
-        offsetY,
+        this.offsetX,
+        this.offsetY,
       );
 
       graphic
         .circle(tileX, tileY, 5)
-        .circle(tileX, tileY, this.mainColliderRadius * cellSize)
+        .circle(tileX, tileY, this.mainColliderRadius * this.cellSize)
         .stroke({ width: 4, color: "#ff0000" });
       this.addChild(graphic);
     }
   }
 
-  private generateNoise(
-    gridSize: number,
-    chunkX: number,
-    chunkY: number,
-    seed: number,
-  ) {
+  private generateNoise(seed: number) {
     const step = 10;
 
     const maxAmplitude = 0.5;
 
     const centerX =
-      (gridSize - 1) / 2 +
-      (getValueFromCoordinates(chunkX, chunkY, seed) - 0.5) *
-        gridSize *
+      (this.gridSize - 1) / 2 +
+      (getValueFromCoordinates(this.chunkX, this.chunkY, seed) - 0.5) *
+        this.gridSize *
         maxAmplitude;
     const centerY =
-      (gridSize - 1) / 2 +
-      (getValueFromCoordinates(chunkX + 100, chunkY + 100, seed) - 0.5) *
-        gridSize *
+      (this.gridSize - 1) / 2 +
+      (getValueFromCoordinates(this.chunkX + 100, this.chunkY + 100, seed) -
+        0.5) *
+        this.gridSize *
         maxAmplitude;
 
-    const radius = gridSize * 0.38;
+    const radius = this.gridSize * 0.38;
 
-    for (let y = 0; y < gridSize; y++) {
-      for (let x = 0; x < gridSize; x++) {
-        const globalX = chunkX * gridSize + x;
-        const globalY = chunkY * gridSize + y;
+    for (let y = 0; y < this.gridSize; y++) {
+      for (let x = 0; x < this.gridSize; x++) {
+        const globalX = this.chunkX * this.gridSize + x;
+        const globalY = this.chunkY * this.gridSize + y;
 
         const gx = Math.floor(globalX / step);
         const gy = Math.floor(globalY / step);
@@ -210,14 +202,14 @@ export class Island extends Container {
     }
   }
 
-  private setColliders(gridSize: number) {
+  private setColliders() {
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
 
-    for (let y = 0; y < gridSize; y++) {
-      for (let x = 0; x < gridSize; x++) {
+    for (let y = 0; y < this.gridSize; y++) {
+      for (let x = 0; x < this.gridSize; x++) {
         if (this.tilesValues[y][x] <= 0) continue;
 
         const isOdd = y % 2 !== 0;
@@ -241,7 +233,7 @@ export class Island extends Container {
             ];
 
         const isEdge = neighbors.some(([nx, ny]) => {
-          if (nx < 0 || nx >= gridSize || ny < 0 || ny >= gridSize) {
+          if (nx < 0 || nx >= this.gridSize || ny < 0 || ny >= this.gridSize) {
             return true;
           }
 
@@ -282,5 +274,99 @@ export class Island extends Container {
       this.mainColliderRadius =
         Math.hypot((maxX - minX) / 2, (maxY - minY) / 2) + 1;
     }
+  }
+
+  public isCollideWithAircraft(
+    rotation: number,
+    aircraftX: number,
+    aircraftY: number,
+  ) {
+    if (this.overlapWithAircraftBounds(aircraftX, aircraftY)) {
+      const worldAngle = rotation;
+      const cos = Math.cos(worldAngle);
+      const sin = Math.sin(worldAngle);
+
+      for (const building of aircraft.buildings) {
+        for (const tile of this.colliders) {
+          const result = this.overlapWithBuilding(
+            tile,
+            building,
+            aircraftX,
+            aircraftY,
+            sin,
+            cos,
+          );
+
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+  }
+
+  private overlapWithAircraftBounds(aircraftX: number, aircraftY: number) {
+    if (this === undefined) return false;
+
+    const { x: mainTileX, y: mainTileY } = transformCoordinatesByHexOddRows(
+      this.mainColliderX,
+      this.mainColliderY,
+      this.offsetX,
+      this.offsetY,
+    );
+
+    const { x: globalMainTileX, y: globalMainTileY } =
+      this.getGLobalTIleCoordinates(mainTileX, mainTileY);
+
+    return (
+      getDistance(aircraftX, aircraftY, globalMainTileX, globalMainTileY) <=
+      aircraft.boundsRadius + this.mainColliderRadius * this.cellSize
+    );
+  }
+
+  private overlapWithBuilding(
+    collider: { y: number; x: number },
+    building: Building,
+    worldX: number,
+    worldY: number,
+    sin: number,
+    cos: number,
+  ) {
+    const localX = building.x + building.buildingConfig.boundsCenter.x;
+    const localY = building.y + building.buildingConfig.boundsCenter.y;
+
+    const buildingX = worldX + localX * cos - localY * sin;
+    const buildingY = worldY + localX * sin + localY * cos;
+
+    const { x: tileX, y: tileY } = transformCoordinatesByHexOddRows(
+      collider.x,
+      collider.y,
+      this.offsetX,
+      this.offsetY,
+    );
+
+    const { x: globalTileX, y: globalTileY } = this.getGLobalTIleCoordinates(
+      tileX,
+      tileY,
+    );
+
+    const distance = getDistance(
+      buildingX,
+      buildingY,
+      globalTileX,
+      globalTileY,
+    );
+
+    return distance < building.buildingConfig.boundsRadius + this.cellSize / 2;
+  }
+
+  private getGLobalTIleCoordinates(tileX: number, tileY: number) {
+    const chunkWidth = this.offsetX * this.gridSize;
+    const chunkHeight = this.offsetY * this.gridSize;
+
+    return {
+      x: -(chunkWidth / 2) + chunkWidth * this.chunkX + tileX,
+      y: -(chunkHeight / 2) + chunkHeight * this.chunkY + tileY,
+    };
   }
 }
