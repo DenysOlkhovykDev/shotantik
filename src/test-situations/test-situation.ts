@@ -97,6 +97,15 @@ export interface UiElementsScenario {
     afterClose?: () => void;
   }[];
 
+  quests?: {
+    name: string;
+    text: string;
+    showCondition: () => boolean;
+    hideCondition: () => boolean;
+    building?: string;
+    resource?: string;
+  }[];
+
   compasses?: {
     condition: () => boolean;
     x: number;

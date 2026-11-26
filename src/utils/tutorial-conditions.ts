@@ -46,8 +46,8 @@ export function hasClickedOnPlatformAfterPlacingBlueprint() {
   );
 }
 
-export function hasEngineBuilded() {
-  return aircraft.buildings.some((b) => b.buildingType === "Engine");
+export function hasBuilt(name: string) {
+  return aircraft.buildings.some((b) => b.buildingType === name);
 }
 
 export function hasClickedOnEngine() {
@@ -78,16 +78,8 @@ export function isCurrentTargetReached() {
   return onGroundObjects.objectsOnGround[0]?.isCollide ?? false;
 }
 
-export function hasClickedOnPlatformNearTarget() {
-  return isFirstTargetReached() && hasClickedOnPlatform();
-}
-
 export function hasClickedOnUpgradeEngineButton() {
   return researchManager.researchProgress.usedPoints > 0;
-}
-
-export function hasResearcherBuilded() {
-  return aircraft.buildings.some((b) => b.buildingType === "Researcher");
 }
 
 export function hasClickedOnResearcher() {
@@ -155,7 +147,6 @@ let hasClosedGameAboutTutorialFlag = false;
 export function hasClosedGameAboutTutorial() {
   return hasClosedGameAboutTutorialFlag;
 }
-
 export function closeGameAboutTutorial() {
   hasClosedGameAboutTutorialFlag = true;
 }
@@ -164,23 +155,20 @@ export function hasOpenedQuestListDisplay() {
   return questList.isDisplayVisible();
 }
 
+let hasClosedRecipeSignTutorialFlag = false;
+export function hasClosedRecipeSignTutorial() {
+  return hasClosedRecipeSignTutorialFlag;
+}
+export function closeRecipeSignTutorial() {
+  hasClosedRecipeSignTutorialFlag = true;
+}
+
 let hasClosedNotEnoughResourcesTutorialFlag = false;
 export function hasClosedNotEnoughResourcesTutorial() {
   return hasClosedNotEnoughResourcesTutorialFlag;
 }
-
 export function closeNotEnoughResourcesTutorial() {
   hasClosedNotEnoughResourcesTutorialFlag = true;
-}
-
-let hasAddedQuestsForBuilding = false;
-export function addQuestsForBuilding() {
-  if (!hasAddedQuestsForBuilding) {
-    questList.addBuildingQuest("build collector", "Build x1", "Collector");
-    questList.addBuildingQuest("build farm", "Build x1", "Farm");
-    questList.addBuildingQuest("build extractor", "Build x1", "Extractor");
-    hasAddedQuestsForBuilding = true;
-  }
 }
 
 export function hasCheckedQuests() {
@@ -195,95 +183,15 @@ export function hasClosedQuestDisplay() {
   );
 }
 
-export function hasBuildedCollector() {
-  return aircraft.buildings.some((b) => b.buildingType === "Collector");
-}
+export function isShownCraftSignOn(name: string) {
+  if (aircraft.buildings.length > 0) {
+    const collectors = aircraft.buildings.filter(
+      (b) => b.buildingType === name,
+    );
 
-const removedQuestNames = new Set<string>();
-
-function removeQuestOnce(name: string) {
-  if (removedQuestNames.has(name)) {
-    return;
+    if (collectors.length > 0) {
+      return collectors[0].recipeSign.isShown();
+    }
   }
-
-  questList.deleteQuest(name);
-  removedQuestNames.add(name);
-}
-
-export function removeQuestAboutCollector() {
-  removeQuestOnce("build collector");
-}
-
-export function hasBuildedFarm() {
-  return aircraft.buildings.some((b) => b.buildingType === "Farm");
-}
-
-export function removeQuestAboutFarm() {
-  removeQuestOnce("build farm");
-}
-
-export function hasBuildedExtractor() {
-  return aircraft.buildings.some((b) => b.buildingType === "Extractor");
-}
-
-export function removeQuestAboutExtractor() {
-  removeQuestOnce("build extractor");
-}
-
-export function hasBuildedMixer() {
-  return aircraft.buildings.some((b) => b.buildingType === "Mixer");
-}
-
-export function removeQuestAboutMixer() {
-  removeQuestOnce("build mixer");
-}
-
-export function hasBuildedGrinder() {
-  return aircraft.buildings.some((b) => b.buildingType === "Grinder");
-}
-
-export function removeQuestAboutGrinder() {
-  removeQuestOnce("build grinder");
-}
-
-export function hasBuildedAssembler() {
-  return aircraft.buildings.some((b) => b.buildingType === "Assembler");
-}
-
-export function removeQuestAboutAssembler() {
-  removeQuestOnce("build assembler");
-}
-
-let hasAddedQuestsForAdvancedBuilding = false;
-export function addQuestsForAdvancedBuilding() {
-  if (!hasAddedQuestsForAdvancedBuilding) {
-    questList.addBuildingQuest("build mixer", "Build x1", "Mixer");
-    questList.addBuildingQuest("build assembler", "Build x1", "Assembler");
-    questList.addBuildingQuest("build grinder", "Build x1", "Grinder");
-    hasAddedQuestsForAdvancedBuilding = true;
-  }
-}
-
-let hasAddedQuestsFollowTheGreenArrow = false;
-export function addQuestsFollowTheGreenArrow() {
-  if (!hasAddedQuestsFollowTheGreenArrow) {
-    questList.addSimpleQuest("follow the green arrow", "Move to arrow");
-    hasAddedQuestsFollowTheGreenArrow = true;
-  }
-}
-
-export function removeQuestFollowTheGreenArrow() {
-  removeQuestOnce("follow the green arrow");
-}
-
-let hasAddedQuestsAboutResearcher = false;
-export function addQuestsAboutResearcher() {
-  if (!hasAddedQuestsAboutResearcher) {
-    questList.addBuildingQuest("build researcher", "Build x1", "Researcher");
-    hasAddedQuestsAboutResearcher = true;
-  }
-}
-
-export function removeQuestAboutResearcher() {
-  removeQuestOnce("build researcher");
+  return false;
 }

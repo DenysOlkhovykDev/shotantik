@@ -37,7 +37,7 @@ export function getResearchMenuPosition() {
 
 export function getQuestListMenuPosition() {
   return {
-    x: 20,
+    x: 18,
     y: gameScreen.height - gameScreen.height / 250,
   };
 }
