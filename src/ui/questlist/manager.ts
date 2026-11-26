@@ -15,6 +15,8 @@ export class QuestListManager extends Container {
   private display: QuestListDisplay | undefined = undefined;
   private button: QuestListButton | undefined = undefined;
 
+  public quests = new Map<string, Quest>();
+
   initialize() {
     this.button = new QuestListButton();
 
@@ -32,10 +34,7 @@ export class QuestListManager extends Container {
 
     this.addChild(this.button);
 
-    this.display = new QuestListDisplay(
-      getQuestListMenuPosition().x,
-      getQuestListMenuPosition().y,
-    );
+    this.display = new QuestListDisplay();
 
     this.hideDisplay();
 
@@ -79,51 +78,86 @@ export class QuestListManager extends Container {
   }
 
   public getCurrentQuestsAmount() {
-    if (this.display) {
-      return this.display.quests.size;
-    }
-    return 0;
+    return new Map([...this.quests].filter(([, quest]) => quest.isActive)).size;
   }
 
-  public addBuildingQuest(name: string, text: string, building: string) {
-    this.addQuest(name, { text, building });
-  }
+  public updateQuests() {
+    let needUpdate = false;
+    this.quests.forEach((item) => {
+      if (item.showCondition() && !item.hideCondition() && !item.isActive) {
+        needUpdate = true;
+        item.isActive = true;
+      }
 
-  public addCraftingQuest(name: string, text: string, resource: string) {
-    this.addQuest(name, { text, resource });
-  }
+      if (item.hideCondition() && item.isActive) {
+        needUpdate = true;
+        item.isActive = false;
+      }
+    });
 
-  public addSimpleQuest(name: string, text: string) {
-    this.addQuest(name, { text });
-  }
+    if (this.display && needUpdate) {
+      this.display.createDisplay(
+        getQuestListMenuPosition().x,
+        getQuestListMenuPosition().y,
+        new Map([...this.quests].filter(([, quest]) => quest.isActive)),
+      );
 
-  private addQuest(name: string, quest: Quest) {
-    if (this.display) {
-      if (!this.display.quests.has(name)) {
-        this.display.quests.set(name, quest);
-
-        const position = getQuestListMenuPosition();
-
-        this.display.createDisplay(position.x, position.y);
-
-        this.hideDisplay();
-
-        if (this.button) {
-          this.button.showIndicator();
-        }
+      if (this.button && !this.isDisplayVisible()) {
+        this.button.showIndicator();
       }
     }
   }
 
-  public deleteQuest(name: string) {
-    if (this.display) {
-      if (this.display.quests.has(name)) {
-        this.display.quests.delete(name);
+  public addBuildingQuest(
+    name: string,
+    text: string,
+    building: string,
+    showCondition: () => boolean,
+    hideCondition: () => boolean,
+  ) {
+    this.addQuest(name, {
+      text,
+      building,
+      showCondition,
+      hideCondition,
+      isActive: false,
+    });
+  }
 
-        this.display.createDisplay(
-          getQuestListMenuPosition().x,
-          getQuestListMenuPosition().y,
-        );
+  public addCraftingQuest(
+    name: string,
+    text: string,
+    resource: string,
+    showCondition: () => boolean,
+    hideCondition: () => boolean,
+  ) {
+    this.addQuest(name, {
+      text,
+      resource,
+      showCondition,
+      hideCondition,
+      isActive: false,
+    });
+  }
+
+  public addSimpleQuest(
+    name: string,
+    text: string,
+    showCondition: () => boolean,
+    hideCondition: () => boolean,
+  ) {
+    this.addQuest(name, {
+      text,
+      showCondition,
+      hideCondition,
+      isActive: false,
+    });
+  }
+
+  private addQuest(name: string, quest: Quest) {
+    if (this.display) {
+      if (!this.quests.has(name)) {
+        this.quests.set(name, quest);
       }
     }
   }

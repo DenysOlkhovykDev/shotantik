@@ -27,6 +27,8 @@ export const defaultPlusAllBuildings: Scenario = {
   uiElements: {
     tutorials: [...(defaultScenario.uiElements?.tutorials ?? [])],
 
+    quests: [...(defaultScenario.uiElements?.quests ?? [])],
+
     compasses: [...(defaultScenario.uiElements?.compasses ?? [])],
   },
 

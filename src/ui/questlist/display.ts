@@ -1,4 +1,10 @@
-import { Container, Graphics, Text } from "pixi.js";
+import {
+  Container,
+  Graphics,
+  Text,
+  TextStyle,
+  CanvasTextMetrics,
+} from "pixi.js";
 
 import { buildingMap } from "@aircraft/aircraft";
 import { Platform } from "@aircraft/modules/platform";
@@ -9,15 +15,15 @@ import { createResource } from "@resources/create-resources";
 
 export interface Quest {
   text: string;
+  showCondition: () => boolean;
+  hideCondition: () => boolean;
+  isActive: boolean;
   building?: string;
   resource?: string;
 }
 
 export class QuestListDisplay extends Container {
-  public quests = new Map<string, Quest>();
-
   private static params = {
-    columnWidth: 170,
     rowHeight: 60,
     gap: 10,
     borderRadius: 26,
@@ -31,23 +37,46 @@ export class QuestListDisplay extends Container {
   private displayBackground = new Graphics();
   private displayItemsContainers: Container[] = [];
 
-  private rows!: number;
+  private rows = 0;
   private columns = 1;
 
-  private displayWidth!: number;
-  private displayHeight!: number;
+  private columnWidth = 0;
 
-  constructor(x: number, y: number) {
-    super();
+  private displayWidth = 0;
+  private displayHeight = 0;
 
-    this.createDisplay(x, y);
-  }
+  private textStyle = new TextStyle({
+    fontSize: 25,
+    fill: "#000000",
+  });
 
-  public createDisplay(x: number, y: number) {
-    this.rows = Math.ceil(this.quests.size / this.columns);
+  private headerTextStyle = new TextStyle({
+    fontSize: 28,
+    fill: "#000000",
+  });
+
+  public createDisplay(x: number, y: number, quests: Map<string, Quest>) {
+    this.rows = Math.ceil(quests.size / this.columns);
+
+    let maxWidth = 170;
+
+    quests.forEach((item) => {
+      const width =
+        CanvasTextMetrics.measureText(item.text, this.textStyle).width +
+        QuestListDisplay.params.buildingLabelX * 2 +
+        (item.building !== undefined || item.resource !== undefined
+          ? QuestListDisplay.params.rowHeight
+          : 0);
+
+      if (width > maxWidth) {
+        maxWidth = width;
+      }
+    });
+
+    this.columnWidth = maxWidth;
 
     this.displayWidth =
-      this.columns * QuestListDisplay.params.columnWidth +
+      this.columns * this.columnWidth +
       (this.columns - 1) * QuestListDisplay.params.gap +
       2 * QuestListDisplay.params.gap;
 
@@ -56,19 +85,23 @@ export class QuestListDisplay extends Container {
       (this.rows - 1) * QuestListDisplay.params.gap +
       2 * QuestListDisplay.params.gap;
 
-    this.draw();
+    this.draw(quests);
 
     this.x = x;
     this.y = y - this.displayHeight;
   }
 
-  private draw() {
+  private draw(quests: Map<string, Quest>) {
+    this.removeChild();
+
     this.makeDisplayBackground();
 
-    this.makeDisplayItems();
+    this.makeDisplayItems(quests);
   }
 
   private makeDisplayBackground() {
+    this.displayBackground.clear();
+
     this.displayBackground
       .roundRect(
         -QuestListDisplay.params.gap,
@@ -83,29 +116,28 @@ export class QuestListDisplay extends Container {
 
     const text = new Text({
       text: "Quests",
-      style: {
-        fill: "#000000",
-        fontSize: 28,
-      },
+      style: this.headerTextStyle,
     });
 
-    text.x = QuestListDisplay.params.columnWidth / 2 - text.width / 2;
+    text.x = this.columnWidth / 2 - text.width / 2;
     text.y = -QuestListDisplay.params.rowHeight / 2 - text.height / 2;
 
     text.eventMode = "none";
     this.addChild(text);
   }
 
-  private makeDisplayItems() {
+  private makeDisplayItems(quests: Map<string, Quest>) {
     let index = 0;
 
-    this.quests.forEach((item) => {
+    this.removeChild(...this.displayItemsContainers);
+
+    this.displayItemsContainers = [];
+
+    quests.forEach((item) => {
       const column = index % this.columns;
       const row = Math.floor(index / this.columns);
 
-      const x =
-        column *
-        (QuestListDisplay.params.columnWidth + QuestListDisplay.params.gap);
+      const x = column * (this.columnWidth + QuestListDisplay.params.gap);
       const y =
         row * (QuestListDisplay.params.rowHeight + QuestListDisplay.params.gap);
 
@@ -138,7 +170,7 @@ export class QuestListDisplay extends Container {
       .roundRect(
         0,
         0,
-        QuestListDisplay.params.columnWidth,
+        this.columnWidth,
         QuestListDisplay.params.rowHeight,
         QuestListDisplay.params.borderRadius - QuestListDisplay.params.gap,
       )
@@ -150,10 +182,7 @@ export class QuestListDisplay extends Container {
   private createDisplayItemText(label: string, container: Container) {
     const text = new Text({
       text: label,
-      style: {
-        fill: "#000000",
-        fontSize: 25,
-      },
+      style: this.textStyle,
     });
 
     text.x = QuestListDisplay.params.buildingLabelX;
@@ -166,7 +195,7 @@ export class QuestListDisplay extends Container {
   private createBuildingImage(buildingName: string, container: Container) {
     const background = new Graphics()
       .roundRect(
-        QuestListDisplay.params.columnWidth - QuestListDisplay.params.rowHeight,
+        this.columnWidth - QuestListDisplay.params.rowHeight,
         0,
         QuestListDisplay.params.rowHeight,
         QuestListDisplay.params.rowHeight,
@@ -179,8 +208,7 @@ export class QuestListDisplay extends Container {
     const BuildingClass = buildingMap[buildingName] || Platform;
 
     const building = new BuildingClass(
-      QuestListDisplay.params.columnWidth -
-        QuestListDisplay.params.rowHeight / 2,
+      this.columnWidth - QuestListDisplay.params.rowHeight / 2,
       QuestListDisplay.params.rowHeight / 2,
       true,
     );
@@ -195,7 +223,7 @@ export class QuestListDisplay extends Container {
   private createResourceImage(resourceName: string, container: Container) {
     const background = new Graphics()
       .roundRect(
-        QuestListDisplay.params.columnWidth - QuestListDisplay.params.rowHeight,
+        this.columnWidth - QuestListDisplay.params.rowHeight,
         0,
         QuestListDisplay.params.rowHeight,
         QuestListDisplay.params.rowHeight,
@@ -209,8 +237,7 @@ export class QuestListDisplay extends Container {
 
     resource.scale = 1.5;
     resource.position.set(
-      QuestListDisplay.params.columnWidth -
-        QuestListDisplay.params.rowHeight / 2,
+      this.columnWidth - QuestListDisplay.params.rowHeight / 2,
       QuestListDisplay.params.rowHeight / 2,
     );
     resource.eventMode = "none";

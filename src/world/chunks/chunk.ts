@@ -55,7 +55,7 @@ export class Chunk extends Container {
     const isIslandInChunk = getValueFromCoordinates(chunkX, chunkY, Chunk.seed);
 
     return (
-      isIslandInChunk <= 0.9 &&
+      isIslandInChunk <= 0.6 &&
       (Math.abs(chunkX) > 1 || Math.abs(chunkY) > 1) &&
       (chunkX !== 2 || chunkY !== 0)
     );

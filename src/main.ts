@@ -243,6 +243,8 @@ function updateGame(deltaTime: number) {
 
   tutorials.updateTutorials();
 
+  questList.updateQuests();
+
   researchManager.updateResearchProgress(deltaTime);
 }
 

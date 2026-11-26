@@ -136,8 +136,8 @@ export class ChunkManager extends Container {
 
   public getChunkCoordinates(x: number, y: number) {
     return {
-      x: Math.floor(x / this.chunkWidth),
-      y: Math.floor(y / this.chunkHeight),
+      x: Math.floor((x + this.chunkWidth / 2) / this.chunkWidth),
+      y: Math.floor((y + this.chunkHeight / 2) / this.chunkHeight),
     };
   }
 }

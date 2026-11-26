@@ -2,6 +2,7 @@ import { compasses } from "@compass/manager";
 import { tutorials } from "@tutorial/manager";
 
 import { UiElementsScenario } from "@test-situations/test-situation";
+import { questList } from "@questlist/manager";
 
 export function createUiElementsByScenario(scenario: UiElementsScenario) {
   for (const tutorial of scenario.tutorials || []) {
@@ -13,6 +14,33 @@ export function createUiElementsByScenario(scenario: UiElementsScenario) {
       tutorial.target,
       tutorial.afterClose,
     );
+  }
+
+  for (const quest of scenario.quests || []) {
+    if (quest.building !== undefined) {
+      questList.addBuildingQuest(
+        quest.name,
+        quest.text,
+        quest.building,
+        quest.showCondition,
+        quest.hideCondition,
+      );
+    } else if (quest.resource !== undefined) {
+      questList.addCraftingQuest(
+        quest.name,
+        quest.text,
+        quest.resource,
+        quest.showCondition,
+        quest.hideCondition,
+      );
+    } else {
+      questList.addSimpleQuest(
+        quest.name,
+        quest.text,
+        quest.showCondition,
+        quest.hideCondition,
+      );
+    }
   }
 
   for (const compass of scenario.compasses || []) {
