@@ -7,8 +7,8 @@ export class ChunkManager extends Container {
 
   private renderDistance = 3;
 
-  private chunkWidth: number;
-  private chunkHeight: number;
+  public chunkWidth: number;
+  public chunkHeight: number;
 
   private seed: number;
 
@@ -38,9 +38,11 @@ export class ChunkManager extends Container {
     }
   }
 
-  update(playerX: number, playerY: number) {
-    const playerChunkX = Math.floor(playerX / this.chunkWidth);
-    const playerChunkY = Math.floor(playerY / this.chunkHeight);
+  public update(playerX: number, playerY: number) {
+    const { x: playerChunkX, y: playerChunkY } = this.getChunkCoordinates(
+      playerX - this.chunkWidth / 2,
+      playerY - this.chunkHeight / 2,
+    );
 
     const requiredChunks = new Set<string>();
 
@@ -89,7 +91,7 @@ export class ChunkManager extends Container {
     }
   }
 
-  createNextChunk() {
+  public createNextChunk() {
     const chunkToCreate = this.chunksToCreate.shift();
 
     if (!chunkToCreate) {
@@ -130,5 +132,12 @@ export class ChunkManager extends Container {
       }
     }
     return false;
+  }
+
+  public getChunkCoordinates(x: number, y: number) {
+    return {
+      x: Math.floor(x / this.chunkWidth),
+      y: Math.floor(y / this.chunkHeight),
+    };
   }
 }
