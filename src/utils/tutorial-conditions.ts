@@ -155,7 +155,6 @@ let hasClosedGameAboutTutorialFlag = false;
 export function hasClosedGameAboutTutorial() {
   return hasClosedGameAboutTutorialFlag;
 }
-
 export function closeGameAboutTutorial() {
   hasClosedGameAboutTutorialFlag = true;
 }
@@ -173,14 +172,10 @@ export function closeNotEnoughResourcesTutorial() {
   hasClosedNotEnoughResourcesTutorialFlag = true;
 }
 
-let hasAddedQuestsForBuilding = false;
 export function addQuestsForBuilding() {
-  if (!hasAddedQuestsForBuilding) {
-    questList.addBuildingQuest("build collector", "Build x1", "Collector");
-    questList.addBuildingQuest("build farm", "Build x1", "Farm");
-    questList.addBuildingQuest("build extractor", "Build x1", "Extractor");
-    hasAddedQuestsForBuilding = true;
-  }
+  questList.addBuildingQuest("build collector", "Build x1", "Collector");
+  questList.addBuildingQuest("build farm", "Build x1", "Farm");
+  questList.addBuildingQuest("build extractor", "Build x1", "Extractor");
 }
 
 export function hasCheckedQuests() {
@@ -199,19 +194,8 @@ export function hasBuildedCollector() {
   return aircraft.buildings.some((b) => b.buildingType === "Collector");
 }
 
-const removedQuestNames = new Set<string>();
-
-function removeQuestOnce(name: string) {
-  if (removedQuestNames.has(name)) {
-    return;
-  }
-
-  questList.deleteQuest(name);
-  removedQuestNames.add(name);
-}
-
 export function removeQuestAboutCollector() {
-  removeQuestOnce("build collector");
+  questList.deleteQuest("build collector");
 }
 
 export function hasBuildedFarm() {
@@ -219,7 +203,7 @@ export function hasBuildedFarm() {
 }
 
 export function removeQuestAboutFarm() {
-  removeQuestOnce("build farm");
+  questList.deleteQuest("build farm");
 }
 
 export function hasBuildedExtractor() {
@@ -227,15 +211,21 @@ export function hasBuildedExtractor() {
 }
 
 export function removeQuestAboutExtractor() {
-  removeQuestOnce("build extractor");
+  questList.deleteQuest("build extractor");
 }
 
 export function hasBuildedMixer() {
   return aircraft.buildings.some((b) => b.buildingType === "Mixer");
 }
 
+export function addQuestsForAdvancedBuilding() {
+  questList.addBuildingQuest("build mixer", "Build x1", "Mixer");
+  questList.addBuildingQuest("build assembler", "Build x1", "Assembler");
+  questList.addBuildingQuest("build grinder", "Build x1", "Grinder");
+}
+
 export function removeQuestAboutMixer() {
-  removeQuestOnce("build mixer");
+  questList.deleteQuest("build mixer");
 }
 
 export function hasBuildedGrinder() {
@@ -243,7 +233,7 @@ export function hasBuildedGrinder() {
 }
 
 export function removeQuestAboutGrinder() {
-  removeQuestOnce("build grinder");
+  questList.deleteQuest("build grinder");
 }
 
 export function hasBuildedAssembler() {
@@ -251,39 +241,21 @@ export function hasBuildedAssembler() {
 }
 
 export function removeQuestAboutAssembler() {
-  removeQuestOnce("build assembler");
+  questList.deleteQuest("build assembler");
 }
 
-let hasAddedQuestsForAdvancedBuilding = false;
-export function addQuestsForAdvancedBuilding() {
-  if (!hasAddedQuestsForAdvancedBuilding) {
-    questList.addBuildingQuest("build mixer", "Build x1", "Mixer");
-    questList.addBuildingQuest("build assembler", "Build x1", "Assembler");
-    questList.addBuildingQuest("build grinder", "Build x1", "Grinder");
-    hasAddedQuestsForAdvancedBuilding = true;
-  }
-}
-
-let hasAddedQuestsFollowTheGreenArrow = false;
 export function addQuestsFollowTheGreenArrow() {
-  if (!hasAddedQuestsFollowTheGreenArrow) {
-    questList.addSimpleQuest("follow the green arrow", "Move to arrow");
-    hasAddedQuestsFollowTheGreenArrow = true;
-  }
+  questList.addSimpleQuest("follow the green arrow", "Move to arrow");
 }
 
 export function removeQuestFollowTheGreenArrow() {
-  removeQuestOnce("follow the green arrow");
+  questList.deleteQuest("follow the green arrow");
 }
 
-let hasAddedQuestsAboutResearcher = false;
 export function addQuestsAboutResearcher() {
-  if (!hasAddedQuestsAboutResearcher) {
-    questList.addBuildingQuest("build researcher", "Build x1", "Researcher");
-    hasAddedQuestsAboutResearcher = true;
-  }
+  questList.addBuildingQuest("build researcher", "Build x1", "Researcher");
 }
 
 export function removeQuestAboutResearcher() {
-  removeQuestOnce("build researcher");
+  questList.deleteQuest("build researcher");
 }

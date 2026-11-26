@@ -8,14 +8,13 @@ import { resourceThemes } from "@utils/resource-themes";
 import { createResource } from "@resources/create-resources";
 
 export interface Quest {
-  name: string;
   text: string;
   building?: string;
   resource?: string;
 }
 
 export class QuestListDisplay extends Container {
-  public quests: Quest[] = [];
+  public quests = new Map<string, Quest>();
 
   private static params = {
     columnWidth: 170,
@@ -45,7 +44,7 @@ export class QuestListDisplay extends Container {
   }
 
   public createDisplay(x: number, y: number) {
-    this.rows = Math.ceil(this.quests.length / this.columns);
+    this.rows = Math.ceil(this.quests.size / this.columns);
 
     this.displayWidth =
       this.columns * QuestListDisplay.params.columnWidth +
@@ -98,7 +97,9 @@ export class QuestListDisplay extends Container {
   }
 
   private makeDisplayItems() {
-    this.quests.forEach((item, index) => {
+    let index = 0;
+
+    this.quests.forEach((item) => {
       const column = index % this.columns;
       const row = Math.floor(index / this.columns);
 
@@ -115,6 +116,8 @@ export class QuestListDisplay extends Container {
       this.createDisplayItem(item, this.displayItemsContainers[index]);
 
       this.addChild(this.displayItemsContainers[index]);
+
+      index++;
     });
   }
 
